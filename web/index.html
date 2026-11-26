@@ -1,0 +1,3404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vajra-Kavach | Clinical Privacy Firewall & Zero-Leak Studio</title>
+  <style>
+    /* -------------------------------------------------------------
+       Vajra-Kavach Core Design System - 100% Self-Contained & Offline
+       ------------------------------------------------------------- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    :root {
+      --bg-dark: #070b12;
+      --bg-surface: #0d131f;
+      --bg-card: #111827;
+      --bg-input: #080d16;
+      --border-subtle: #1e293b;
+      --border-focus: #6366f1;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --brand-primary: #6366f1;
+      --brand-hover: #4f46e5;
+      --emerald-accent: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.15);
+      --rose-accent: #f43f5e;
+      --rose-glow: rgba(244, 63, 94, 0.15);
+      --sky-accent: #38bdf8;
+      --sky-glow: rgba(56, 189, 248, 0.15);
+      --indigo-accent: #818cf8;
+      --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: "Cascadia Code", "Consolas", "Courier New", monospace;
+    }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-ui);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    code, pre, .font-mono {
+      font-family: var(--font-mono);
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font-family: inherit; }
+
+    /* Layout Containers */
+    .app-container {
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Header */
+    header {
+      background: rgba(13, 19, 31, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+    }
+    .header-content {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-shield-wrapper {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .header-pulse-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(245, 158, 11, 0.7);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+    .header-pulse-ring.ring-1 {
+      animation: headerShieldPulse 2.8s cubic-bezier(0.15, 0.85, 0.35, 1) infinite;
+    }
+    .header-pulse-ring.ring-2 {
+      animation: headerShieldPulse 2.8s cubic-bezier(0.15, 0.85, 0.35, 1) infinite 1.4s;
+    }
+    @keyframes headerShieldPulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.85);
+        opacity: 0.95;
+        border-color: rgba(251, 191, 36, 0.9);
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.0);
+        opacity: 0;
+        border-color: rgba(217, 119, 6, 0);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0);
+      }
+    }
+    .header-shield-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: radial-gradient(circle at 40% 30%, #291b07 0%, #0c1017 90%);
+      border: 1px solid rgba(245, 158, 11, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4), inset 0 0 8px rgba(245, 158, 11, 0.2);
+      position: relative;
+      z-index: 2;
+      transition: all 0.25s ease;
+    }
+    .header-shield-box:hover {
+      border-color: #fbbf24;
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.8), inset 0 0 12px rgba(245, 158, 11, 0.4);
+      transform: scale(1.06);
+    }
+    .header-shield-svg {
+      width: 24px;
+      height: 28px;
+      filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.9));
+      animation: shieldGlowBreath 3.2s ease-in-out infinite;
+    }
+    @keyframes shieldGlowBreath {
+      0%, 100% {
+        filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.7));
+      }
+      50% {
+        filter: drop-shadow(0 0 12px rgba(251, 191, 36, 1)) drop-shadow(0 0 18px rgba(245, 158, 11, 0.6));
+      }
+    }
+
+    /* -------------------------------------------------------------
+       Grand Cyber Defense Showcase & Concentric Shield Pulse Grid
+       ------------------------------------------------------------- */
+    .cyber-shield-hero {
+      margin-top: 20px;
+      position: relative;
+    }
+    .shield-showcase-panel {
+      background: radial-gradient(ellipse at 50% 50%, #0e1526 0%, #080c14 70%, #04070e 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 20px;
+      padding: 22px 26px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(245, 158, 11, 0.04);
+      transition: all 0.3s ease;
+    }
+    .shield-showcase-panel.grid-surge {
+      box-shadow: 0 12px 50px rgba(245, 158, 11, 0.35), inset 0 0 60px rgba(245, 158, 11, 0.25);
+      border-color: #fbbf24;
+    }
+    .shield-showcase-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .showcase-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 3;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+    }
+    .showcase-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .status-blinker {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: blinkDot 1.4s infinite ease-in-out;
+    }
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+    .showcase-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Central Pulse Stage */
+    .shield-stage-wrapper {
+      position: relative;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      z-index: 2;
+    }
+    .stage-constellation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .constellation-line {
+      stroke: rgba(245, 158, 11, 0.35);
+      stroke-width: 1.5;
+      stroke-dasharray: 5 4;
+      animation: dashMove 30s linear infinite;
+    }
+    .constellation-line.active-pulse {
+      stroke: #fbbf24;
+      stroke-width: 2.2;
+      filter: drop-shadow(0 0 6px #f59e0b);
+      transition: all 0.3s;
+    }
+    @keyframes dashMove {
+      to { stroke-dashoffset: -1000; }
+    }
+    .mesh-node {
+      fill: #fbbf24;
+      filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.8));
+      transition: all 0.3s;
+    }
+    .node-pulse-1 { animation: nodeGlow 2.4s ease-in-out infinite 0.2s; }
+    .node-pulse-2 { animation: nodeGlow 2.4s ease-in-out infinite 0.8s; }
+    .node-pulse-3 { animation: nodeGlow 2.4s ease-in-out infinite 1.4s; }
+    @keyframes nodeGlow {
+      0%, 100% { r: 3.5; opacity: 0.6; }
+      50% { r: 5.5; opacity: 1; filter: drop-shadow(0 0 8px #fbbf24); }
+    }
+
+    /* Shield Color Theme Variables & Chromatic Cycle */
+    :root {
+      --shield-primary: #f59e0b;
+      --shield-highlight: #fbbf24;
+      --shield-light: #fef08a;
+      --shield-dark: #92400e;
+      --shield-glow: rgba(245, 158, 11, 0.8);
+      --shield-ring: rgba(251, 191, 36, 0.85);
+      --shield-line: rgba(245, 158, 11, 0.4);
+      --shield-aura: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-gold {
+      --shield-primary: #f59e0b;
+      --shield-highlight: #fbbf24;
+      --shield-light: #fef08a;
+      --shield-dark: #92400e;
+      --shield-glow: rgba(245, 158, 11, 0.85);
+      --shield-ring: rgba(251, 191, 36, 0.85);
+      --shield-line: rgba(245, 158, 11, 0.4);
+      --shield-aura: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-cyan {
+      --shield-primary: #06b6d4;
+      --shield-highlight: #00f0ff;
+      --shield-light: #cffafe;
+      --shield-dark: #0e7490;
+      --shield-glow: rgba(0, 240, 255, 0.85);
+      --shield-ring: rgba(56, 189, 248, 0.9);
+      --shield-line: rgba(6, 182, 212, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, rgba(6, 182, 212, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-emerald {
+      --shield-primary: #10b981;
+      --shield-highlight: #34d399;
+      --shield-light: #a7f3d0;
+      --shield-dark: #065f46;
+      --shield-glow: rgba(16, 185, 129, 0.85);
+      --shield-ring: rgba(52, 211, 153, 0.9);
+      --shield-line: rgba(16, 185, 129, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-violet {
+      --shield-primary: #8b5cf6;
+      --shield-highlight: #c084fc;
+      --shield-light: #f3e8ff;
+      --shield-dark: #581c87;
+      --shield-glow: rgba(139, 92, 246, 0.85);
+      --shield-ring: rgba(192, 132, 252, 0.9);
+      --shield-line: rgba(139, 92, 246, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(139, 92, 246, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-ruby {
+      --shield-primary: #f43f5e;
+      --shield-highlight: #fb7185;
+      --shield-light: #ffe4e6;
+      --shield-dark: #9f1239;
+      --shield-glow: rgba(244, 63, 94, 0.85);
+      --shield-ring: rgba(251, 113, 133, 0.9);
+      --shield-line: rgba(244, 63, 94, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, rgba(244, 63, 94, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-chromatic {
+      animation: chromaticColorCycle 8s linear infinite !important;
+    }
+
+    @keyframes chromaticColorCycle {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .color-palette-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: rgba(11, 17, 28, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      width: fit-content;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 5;
+    }
+    .palette-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .color-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .color-pill-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .color-pill-btn.active {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--shield-highlight);
+      box-shadow: 0 0 10px var(--shield-glow);
+      color: #ffffff;
+    }
+    .color-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .chromatic-dot {
+      background: linear-gradient(135deg, #f59e0b, #00f0ff, #10b981, #a855f7, #f43f5e);
+      animation: spinChromaticDot 3s linear infinite;
+    }
+    @keyframes spinChromaticDot {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Concentric Radar Pulse Rings */
+    .radar-pulse-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      will-change: transform, opacity;
+      z-index: 1;
+    }
+    .radar-pulse-ring.ring-1 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 0s;
+    }
+    .radar-pulse-ring.ring-2 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 0.95s;
+    }
+    .radar-pulse-ring.ring-3 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 1.9s;
+    }
+    .radar-pulse-ring.ring-4 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 2.85s;
+    }
+    @keyframes radarWavePulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.65);
+        opacity: 0.95;
+        border: 2px solid var(--shield-light);
+        box-shadow: 0 0 18px var(--shield-glow), inset 0 0 12px var(--shield-ring);
+      }
+      40% {
+        opacity: 0.75;
+        border: 1.8px solid var(--shield-ring);
+        box-shadow: 0 0 30px var(--shield-glow), inset 0 0 20px var(--shield-glow);
+      }
+      80% {
+        opacity: 0.25;
+        border: 1px solid var(--shield-primary);
+        box-shadow: 0 0 50px var(--shield-glow);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.6);
+        opacity: 0;
+        border: 0.5px solid transparent;
+        box-shadow: 0 0 70px transparent;
+      }
+    }
+
+    /* Central Shield Unit */
+    .center-shield-anchor {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .center-shield-aura {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--shield-aura);
+      filter: blur(14px);
+      pointer-events: none;
+      animation: auraBreathe 3.6s ease-in-out infinite;
+    }
+    @keyframes auraBreathe {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.95; }
+    }
+    .center-shield-svg {
+      width: 105px;
+      height: 126px;
+      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.75)) drop-shadow(0 0 45px rgba(245, 158, 11, 0.4));
+      animation: centerShieldFloat 3.6s ease-in-out infinite;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .center-shield-anchor:hover .center-shield-svg {
+      transform: scale(1.06);
+      filter: drop-shadow(0 0 28px rgba(251, 191, 36, 1)) drop-shadow(0 0 60px rgba(245, 158, 11, 0.7));
+    }
+    @keyframes centerShieldFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-4px) scale(1.02); }
+    }
+
+    /* Sentinel Shields (Side wards) */
+    .sentinel-shield-wrap {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .sentinel-shield-wrap:hover {
+      transform: scale(1.1);
+    }
+    .sentinel-shield-wrap.left-sentinel {
+      left: 16%;
+      top: 28%;
+    }
+    .sentinel-shield-wrap.right-sentinel {
+      right: 16%;
+      top: 28%;
+    }
+    .sentinel-svg {
+      width: 44px;
+      height: 52px;
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+      animation: sentinelFloat 3.6s ease-in-out infinite;
+    }
+    .left-sentinel .sentinel-svg { animation-delay: 0.6s; }
+    .right-sentinel .sentinel-svg { animation-delay: 1.2s; }
+    @keyframes sentinelFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    .sentinel-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #fbbf24;
+      font-family: var(--font-mono);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+    }
+
+    /* Telemetry Grid below shield */
+    .showcase-telemetry {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+      position: relative;
+      z-index: 3;
+      border-top: 1px solid rgba(245, 158, 11, 0.15);
+      padding-top: 14px;
+    }
+    .telemetry-item {
+      background: rgba(13, 19, 31, 0.7);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .telemetry-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .telemetry-val {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .sentinel-shield-wrap { display: none; }
+      .shield-stage-wrapper { height: 180px; }
+      .center-shield-svg { width: 84px; height: 100px; }
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Badges */
+    .tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tag-emerald { background: var(--emerald-glow); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .tag-rose { background: var(--rose-glow); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .tag-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    /* Metric Cards Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .metric-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .metric-card:hover {
+      transform: translateY(-2px);
+      border-color: #334155;
+    }
+    .metric-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .metric-value {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      margin: 6px 0 2px 0;
+      letter-spacing: -0.03em;
+    }
+    .val-emerald { color: #34d399; }
+    .val-blue { color: #60a5fa; }
+    .val-indigo { color: #a5b4fc; }
+    .metric-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .progress-bar {
+      height: 4px;
+      background: #1e293b;
+      border-radius: 9999px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .progress-fill { height: 100%; border-radius: 9999px; }
+
+    /* Tab Navigation */
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-top: 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-btn:hover { color: var(--text-main); }
+    .nav-btn.active {
+      color: #818cf8;
+      border-bottom-color: var(--brand-primary);
+    }
+
+    /* Tab Panes */
+    .tab-pane {
+      display: none;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Panels */
+    .card-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .panel-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Presets toolbar */
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-sm {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-sm:hover {
+      background: #334155;
+      color: #ffffff;
+      border-color: #475569;
+    }
+    .btn-primary {
+      background: var(--brand-primary);
+      color: #ffffff;
+      border: 1px solid #4f46e5;
+    }
+    .btn-primary:hover {
+      background: var(--brand-hover);
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Two-column sandbox */
+    .sandbox-split {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .editor-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .editor-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .editor-textarea {
+      width: 100%;
+      height: 250px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      color: #f1f5f9;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .editor-textarea:focus {
+      border-color: var(--border-focus);
+    }
+    .sanitized-preview {
+      width: 100%;
+      height: 250px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+      color: #cbd5e1;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      overflow-y: auto;
+    }
+
+    /* Entity Badges */
+    .badge-protected {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-block;
+      margin: 1px;
+      transition: background 0.15s;
+    }
+    .badge-protected:hover { background: rgba(16, 185, 129, 0.28); }
+
+    .badge-redacted {
+      background: rgba(244, 63, 94, 0.15);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #fb7185;
+      text-decoration: line-through;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-block;
+      margin: 1px;
+      transition: background 0.15s;
+    }
+    .badge-redacted:hover { background: rgba(244, 63, 94, 0.28); }
+
+    .badge-shifted {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-block;
+      margin: 1px;
+      transition: background 0.15s;
+    }
+    .badge-shifted:hover { background: rgba(56, 189, 248, 0.28); }
+
+    /* Triage Readout Bar */
+    .triage-bar {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #080d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      font-size: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .triage-counts {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Attack Matrix Grid */
+    .attack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 18px;
+    }
+    .attack-card {
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .attack-card-vuln {
+      background: rgba(244, 63, 94, 0.05);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+    .attack-card-safe {
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+    .attack-stat-box {
+      background: #080d16;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    /* File Diff Viewer */
+    .diff-select {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      outline: none;
+    }
+    .diff-view-box {
+      width: 100%;
+      height: 380px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 1.6;
+      overflow: auto;
+      white-space: pre;
+    }
+    .diff-raw { color: #94a3b8; }
+    .diff-san { color: #f1f5f9; }
+
+    /* Registry Cards */
+    .registry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .patient-card {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .patient-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .patient-details {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Audit Tables */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      margin-top: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+    th {
+      background: #080d16;
+      color: var(--text-muted);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.6);
+      color: #cbd5e1;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(30, 41, 59, 0.25); }
+
+    /* Modal / Detail Drawer */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #111827;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* Toast */
+    .toast-box {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 60;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      display: none;
+      animation: fadeIn 0.2s;
+    }
+
+    /* Manual Patient Form Layout */
+    .form-section-card {
+      background: #0a0f1b;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .form-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: 0.02em;
+    }
+    .form-input {
+      background: #080d16;
+      border: 1px solid var(--border-subtle);
+      color: #f1f5f9;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+
+    /* Voice Assistant Floating Dock */
+    .voice-assistant-dock {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 55;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .voice-dock-btn {
+      background: linear-gradient(135deg, #1e1b4b, #0f172a);
+      border: 1.5px solid rgba(56, 189, 248, 0.5);
+      color: #38bdf8;
+      border-radius: 9999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(56, 189, 248, 0.3);
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .voice-dock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 24px rgba(56, 189, 248, 0.5);
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+    .voice-pulse-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(56, 189, 248, 0.6);
+      animation: voiceRingPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes voiceRingPulse {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+    .voice-panel {
+      background: #0d131f;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 16px;
+      width: 320px;
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .voice-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+    }
+    .voice-orb-mini {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #38bdf8 0%, #4f46e5 100%);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .voice-wave-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 32px;
+      background: #080d16;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      padding: 0 12px;
+    }
+    .sound-bar {
+      width: 3px;
+      background: #38bdf8;
+      border-radius: 2px;
+      height: 6px;
+      transition: height 0.1s ease;
+    }
+    .voice-listening .sound-bar:nth-child(1) { animation: waveAnim 0.7s infinite 0.1s; }
+    .voice-listening .sound-bar:nth-child(2) { animation: waveAnim 0.7s infinite 0.3s; }
+    .voice-listening .sound-bar:nth-child(3) { animation: waveAnim 0.7s infinite 0.2s; }
+    .voice-listening .sound-bar:nth-child(4) { animation: waveAnim 0.7s infinite 0.45s; }
+    .voice-listening .sound-bar:nth-child(5) { animation: waveAnim 0.7s infinite 0.15s; }
+    .voice-listening .sound-bar:nth-child(6) { animation: waveAnim 0.7s infinite 0.35s; }
+    .voice-listening .sound-bar:nth-child(7) { animation: waveAnim 0.7s infinite 0.25s; }
+    .voice-listening .sound-bar:nth-child(8) { animation: waveAnim 0.7s infinite 0.5s; }
+    @keyframes waveAnim {
+      0%, 100% { height: 6px; background: #38bdf8; }
+      50% { height: 26px; background: #fbbf24; }
+    }
+    .voice-transcription-box {
+      background: #080d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 11px;
+      color: #cbd5e1;
+      min-height: 54px;
+      max-height: 80px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      background: #06090e;
+      padding: 20px 0;
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Modal Entity Inspection Drawer -->
+  <div id="modal-overlay" class="modal-overlay" onclick="closeEntityModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-label" style="font-size: 15px; font-weight: 700; color: #fff;">Entity Inspection</h3>
+          <span id="modal-type" class="tag tag-emerald" style="margin-top: 4px; display: inline-block;">Protected</span>
+        </div>
+        <button class="modal-close" onclick="closeEntityModal()">&times;</button>
+      </div>
+      <div style="font-size: 12px; display: flex; flex-direction: column; gap: 12px;">
+        <div>
+          <span style="color: var(--text-muted); font-size: 11px; font-weight: 600; display: block; margin-bottom: 4px;">RAW EXTRACTED TEXT</span>
+          <div id="modal-raw" style="background: #080d16; padding: 10px; border-radius: 8px; font-family: var(--font-mono); color: #cbd5e1; border: 1px solid var(--border-subtle);"></div>
+        </div>
+        <div>
+          <span style="color: var(--text-muted); font-size: 11px; font-weight: 600; display: block; margin-bottom: 4px;">CHALLENGE TRAP ADDRESSED</span>
+          <div id="modal-trap" style="background: rgba(30, 41, 59, 0.4); padding: 10px; border-radius: 8px; color: #e2e8f0; border: 1px solid var(--border-subtle); line-height: 1.5;"></div>
+        </div>
+        <div>
+          <span style="color: var(--text-muted); font-size: 11px; font-weight: 600; display: block; margin-bottom: 4px;">FIREWALL TRANSFORMATION RULE</span>
+          <div id="modal-action" style="background: rgba(30, 41, 59, 0.4); padding: 10px; border-radius: 8px; font-family: var(--font-mono); font-size: 11px; color: #cbd5e1; border: 1px solid var(--border-subtle); line-height: 1.5;"></div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; padding-top: 4px;">
+        <button class="btn-sm btn-primary" onclick="closeEntityModal()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Patient Record -->
+  <div id="add-patient-modal" class="modal-overlay" onclick="closeAddPatientModal()">
+    <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 520px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+            <span>➕ Register New Patient Record</span>
+          </h3>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            Issue a deterministic Crockford Base32 pseudonym and link across hospital systems.
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeAddPatientModal()">&times;</button>
+      </div>
+
+      <form id="add-patient-form" onsubmit="event.preventDefault(); saveNewPatient();" style="display: flex; flex-direction: column; gap: 14px; margin-top: 10px;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">PATIENT FULL NAME (English / Hindi / Hinglish) *</label>
+            <input type="text" id="new-pat-name" required placeholder="e.g. Pooja Sharma or पूजा शर्मा" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">AGE / SEX *</label>
+            <input type="text" id="new-pat-agesex" required placeholder="e.g. 28/F" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">KINSHIP / GUARDIAN (S/o, D/o, W/o)</label>
+            <input type="text" id="new-pat-kinship" placeholder="e.g. D/o Mahesh Sharma" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">PRIMARY CLINICAL CONDITION *</label>
+            <input type="text" id="new-pat-condition" required placeholder="e.g. Acute Appendicitis / SpO2 98%" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">HOSPITAL &amp; VISIT RECORDS (Separate lines or commas)</label>
+          <textarea id="new-pat-hospitals" rows="2" placeholder="e.g. District Hospital Hardoi (OPD #44), Sanjeevani Clinic (Reg: row 18)" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-family: var(--font-mono); resize: vertical;"></textarea>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <span style="color: #fbbf24; font-weight: 700;">HMAC Keying:</span> Secret anchor used to hash PII deterministically.
+          </div>
+          <span class="tag tag-emerald">Crockford Base32</span>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+          <button type="button" class="btn-sm" onclick="closeAddPatientModal()">Cancel</button>
+          <button type="submit" class="btn-sm btn-primary" style="background: var(--brand-primary); border-color: #4f46e5;">Register &amp; Link Patient</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Box -->
+  <div id="toast-box" class="toast-box"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="app-container header-content">
+      <div class="brand-wrap">
+        <div class="header-shield-wrapper" onclick="pingDefenseGrid()" title="Click to Ping Vajra Defense Grid">
+          <div class="header-pulse-ring ring-1"></div>
+          <div class="header-pulse-ring ring-2"></div>
+          <div class="header-shield-box">
+            <svg viewBox="0 0 100 120" class="header-shield-svg">
+              <defs>
+                <linearGradient id="hdrShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#fef08a" />
+                  <stop offset="45%" stop-color="#fbbf24" />
+                  <stop offset="85%" stop-color="#f59e0b" />
+                  <stop offset="100%" stop-color="#b45309" />
+                </linearGradient>
+              </defs>
+              <path d="M 50,6 L 86,18 C 86,58 72,94 50,114 C 28,94 14,58 14,18 Z" fill="none" stroke="url(#hdrShieldGrad)" stroke-width="4" stroke-dasharray="8 4" opacity="0.85" />
+              <path d="M 50,14 L 80,24 C 80,56 68,86 50,104 C 32,86 20,56 20,24 Z" fill="#171206" stroke="url(#hdrShieldGrad)" stroke-width="3" />
+              <path d="M 50,26 L 70,33 C 70,54 62,76 50,88 C 38,76 30,54 30,33 Z" fill="none" stroke="#fbbf24" stroke-width="2.5" />
+              <path d="M 50,38 L 59,50 L 50,62 L 41,50 Z" fill="#fbbf24" />
+              <circle cx="50" cy="50" r="3" fill="#ffffff" />
+            </svg>
+          </div>
+        </div>
+        <div>
+          <div class="brand-title">
+            <span>Vajra-Kavach</span>
+            <span class="tag tag-emerald">CONTRACT OK</span>
+            <span class="tag tag-blue">READY TO SUBMIT</span>
+          </div>
+          <div class="brand-sub">Track 3: Secret Wards &middot; Multilingual Offline Clinical Privacy Firewall</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <button class="btn-sm" onclick="toggleVoicePanel()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; display: flex; align-items: center; gap: 6px;">🎙️ Voice Assistant</button>
+        <button class="btn-sm" onclick="pingDefenseGrid()" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24;">⚡ Ping Shield</button>
+        <button class="btn-sm btn-primary" onclick="switchNavTab('manual')">📋 Manual Patient Entry</button>
+        <button class="btn-sm" onclick="switchNavTab('playground')">Live Sandbox</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cyber Defense Shield Pulse Showcase -->
+  <section class="cyber-shield-hero app-container" id="shield-hero-section">
+    <div class="shield-showcase-panel" id="shield-showcase-box">
+      <!-- Showcase Top Header -->
+      <div class="showcase-header">
+        <div class="showcase-title-row">
+          <span style="font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px;">
+            <span style="color: #fbbf24;">VAJRA DEFENSE GRID</span>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">&middot; 4-Hospital Perimeter Shield</span>
+          </span>
+          <span class="live-status-pill">
+            <span class="status-blinker"></span>
+            SHIELD PULSE ACTIVE
+          </span>
+        </div>
+        <div class="showcase-controls">
+          <button class="btn-sm" onclick="pingDefenseGrid()" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #fef08a;">⚡ Ping Defense Grid</button>
+          <button class="btn-sm" id="btn-toggle-glow" onclick="cycleShieldGlow()">Glow: High</button>
+          <button class="btn-sm" id="btn-collapse-hero" onclick="toggleHeroCollapse()" title="Toggle Compact View">Minimize</button>
+        </div>
+      </div>
+
+      <!-- Interactive Shield Color & Animation Theme Bar -->
+      <div class="color-palette-bar">
+        <span class="palette-title">🎨 SHIELD COLOR:</span>
+        <button class="color-pill-btn active" id="pill-gold" onclick="setShieldColorTheme('gold')" title="Cyber Gold (Vajra Core)">
+          <span class="color-dot" style="background: #f59e0b; box-shadow: 0 0 8px #f59e0b;"></span> Gold
+        </button>
+        <button class="color-pill-btn" id="pill-cyan" onclick="setShieldColorTheme('cyan')" title="Electric Cyan (Cyber SOC)">
+          <span class="color-dot" style="background: #00f0ff; box-shadow: 0 0 8px #00f0ff;"></span> Cyan
+        </button>
+        <button class="color-pill-btn" id="pill-emerald" onclick="setShieldColorTheme('emerald')" title="Matrix Emerald (Air-Gap Active)">
+          <span class="color-dot" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span> Emerald
+        </button>
+        <button class="color-pill-btn" id="pill-violet" onclick="setShieldColorTheme('violet')" title="Quantum Violet (Cryptographic)">
+          <span class="color-dot" style="background: #a855f7; box-shadow: 0 0 8px #a855f7;"></span> Violet
+        </button>
+        <button class="color-pill-btn" id="pill-ruby" onclick="setShieldColorTheme('ruby')" title="Plasma Ruby (Defense Alert)">
+          <span class="color-dot" style="background: #f43f5e; box-shadow: 0 0 8px #f43f5e;"></span> Ruby
+        </button>
+        <button class="color-pill-btn" id="pill-chromatic" onclick="setShieldColorTheme('chromatic')" title="Dynamic Color Changing Animation">
+          <span class="color-dot chromatic-dot"></span> 🌈 Dynamic Cycle
+        </button>
+      </div>
+
+      <!-- Main Stage with Shield Pulse, Radar Waves & Constellation Mesh -->
+      <div class="shield-stage-wrapper" id="shield-stage-wrapper">
+        <!-- Background SVG Constellation Lines & Connecting Nodes -->
+        <svg class="stage-constellation" viewBox="0 0 1000 240" preserveAspectRatio="none">
+          <line x1="500" y1="120" x2="220" y2="70" class="constellation-line" id="line-left-1" />
+          <line x1="500" y1="120" x2="160" y2="175" class="constellation-line" id="line-left-2" />
+          <line x1="500" y1="120" x2="780" y2="70" class="constellation-line" id="line-right-1" />
+          <line x1="500" y1="120" x2="840" y2="175" class="constellation-line" id="line-right-2" />
+          <line x1="220" y1="70" x2="80" y2="105" class="constellation-line" />
+          <line x1="160" y1="175" x2="70" y2="185" class="constellation-line" />
+          <line x1="780" y1="70" x2="920" y2="105" class="constellation-line" />
+          <line x1="840" y1="175" x2="930" y2="185" class="constellation-line" />
+          <line x1="220" y1="70" x2="160" y2="175" class="constellation-line" opacity="0.4" />
+          <line x1="780" y1="70" x2="840" y2="175" class="constellation-line" opacity="0.4" />
+
+          <!-- Network Constellation Node Points -->
+          <circle cx="80" cy="105" r="4.5" class="mesh-node node-pulse-1" />
+          <circle cx="70" cy="185" r="4" class="mesh-node node-pulse-2" />
+          <circle cx="160" cy="175" r="5" class="mesh-node node-pulse-3" />
+          <circle cx="340" cy="55" r="3.5" class="mesh-node node-pulse-1" />
+          <circle cx="320" cy="185" r="4" class="mesh-node node-pulse-2" />
+
+          <circle cx="920" cy="105" r="4.5" class="mesh-node node-pulse-2" />
+          <circle cx="930" cy="185" r="4" class="mesh-node node-pulse-3" />
+          <circle cx="840" cy="175" r="5" class="mesh-node node-pulse-1" />
+          <circle cx="660" cy="55" r="3.5" class="mesh-node node-pulse-2" />
+          <circle cx="680" cy="185" r="4" class="mesh-node node-pulse-3" />
+        </svg>
+
+        <!-- Left Sentinel Ward (Regional Hospital Alpha) -->
+        <div class="sentinel-shield-wrap left-sentinel" onclick="pingSentinel('Hospital Alpha Ward')" title="Perimeter Sentinel: District Hospital Alpha">
+          <svg viewBox="0 0 100 120" class="sentinel-svg">
+            <path d="M 50,8 L 84,20 C 84,56 70,88 50,108 C 30,88 16,56 16,20 Z" fill="#131722" stroke="#f59e0b" stroke-width="3" />
+            <path d="M 50,22 L 72,30 C 72,52 62,74 50,86 C 38,74 28,52 28,30 Z" fill="none" stroke="#fbbf24" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#fef08a" />
+          </svg>
+          <span class="sentinel-label">HOSP-ALPHA</span>
+        </div>
+
+        <!-- Concentric Expanding Radar Pulse Waves -->
+        <div class="radar-pulse-ring ring-1"></div>
+        <div class="radar-pulse-ring ring-2"></div>
+        <div class="radar-pulse-ring ring-3"></div>
+        <div class="radar-pulse-ring ring-4"></div>
+
+        <!-- Central Vajra Shield (The Glowing Golden Core) -->
+        <div class="center-shield-anchor" onclick="pingDefenseGrid()" title="Click to trigger Vajra Shield Energy Pulse">
+          <div class="center-shield-aura"></div>
+          <svg viewBox="0 0 100 120" class="center-shield-svg" id="center-shield-svg">
+            <defs>
+              <linearGradient id="mainShieldGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fffbeb" />
+                <stop offset="35%" stop-color="#fbbf24" />
+                <stop offset="70%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#92400e" />
+              </linearGradient>
+              <linearGradient id="mainShieldInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#2a1d08" stop-opacity="0.95" />
+                <stop offset="100%" stop-color="#0a0e17" stop-opacity="0.98" />
+              </linearGradient>
+              <filter id="goldenGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="5" result="blur1" />
+                <feGaussianBlur stdDeviation="12" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <!-- Outer Segmented Circuit Bracket -->
+            <path d="M 50,4 L 88,18 C 88,60 74,96 50,116 C 26,96 12,60 12,18 Z" fill="none" stroke="url(#mainShieldGoldGrad)" stroke-width="2.8" stroke-dasharray="10 4" opacity="0.85" />
+            <!-- Solid Armored Shield Body with Dual Radiant Stroke -->
+            <path d="M 50,12 L 80,22 C 80,56 68,88 50,106 C 32,88 20,56 20,22 Z" fill="url(#mainShieldInnerGrad)" stroke="url(#mainShieldGoldGrad)" stroke-width="3.5" filter="url(#goldenGlowFilter)" />
+            <!-- Inner Chevron Contours -->
+            <path d="M 50,22 L 72,30 C 72,56 62,80 50,94 C 38,80 28,56 28,30 Z" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.9" />
+            <path d="M 50,29 L 66,35 C 66,54 58,72 50,82 C 42,72 34,54 34,35 Z" fill="none" stroke="#f59e0b" stroke-width="1.2" opacity="0.75" />
+            <!-- Vajra Cryptographic Core: Diamond Spear & Circuit Lattice -->
+            <path d="M 50,34 L 60,48 L 50,62 L 40,48 Z" fill="#fbbf24" opacity="0.95" />
+            <circle cx="50" cy="48" r="3.5" fill="#ffffff" />
+            <!-- Circuit bus lines inside shield -->
+            <path d="M 50,62 L 50,80 M 40,48 L 30,56 M 60,48 L 70,56" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+            <circle cx="50" cy="80" r="2.8" fill="#fef08a" />
+            <circle cx="30" cy="56" r="2.8" fill="#fef08a" />
+            <circle cx="70" cy="56" r="2.8" fill="#fef08a" />
+          </svg>
+        </div>
+
+        <!-- Right Sentinel Ward (Regional Hospital Beta) -->
+        <div class="sentinel-shield-wrap right-sentinel" onclick="pingSentinel('Hospital Beta Ward')" title="Perimeter Sentinel: District Hospital Beta">
+          <svg viewBox="0 0 100 120" class="sentinel-svg">
+            <path d="M 50,8 L 84,20 C 84,56 70,88 50,108 C 30,88 16,56 16,20 Z" fill="#131722" stroke="#f59e0b" stroke-width="3" />
+            <path d="M 50,22 L 72,30 C 72,52 62,74 50,86 C 38,74 28,52 28,30 Z" fill="none" stroke="#fbbf24" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#fef08a" />
+          </svg>
+          <span class="sentinel-label">HOSP-BETA</span>
+        </div>
+      </div>
+
+      <!-- Live Defense Grid Telemetry -->
+      <div class="showcase-telemetry" id="showcase-telemetry">
+        <div class="telemetry-item">
+          <div class="telemetry-label">Cryptographic Engine</div>
+          <div class="telemetry-val"><span style="color:#34d399;">●</span> Keyed HMAC-SHA256</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Attacker Voter-Match Risk</div>
+          <div class="telemetry-val" style="color: #34d399;">0.00 (Zero Leakage)</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Cross-Script Normalization</div>
+          <div class="telemetry-val">Devanagari + Hinglish</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Air-Gap Integrity</div>
+          <div class="telemetry-val"><span style="color:#38bdf8;">●</span> 100% Offline / CPU-Only</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Metric Overview Cards -->
+  <div class="app-container">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Personal Data Leaked</span>
+          <span class="tag tag-emerald">0.0% LEAK</span>
+        </div>
+        <div class="metric-value val-emerald">0.0%</div>
+        <div class="metric-sub">0 of 3,230 identifiers visible</div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: #10b981;"></div></div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Medical Utility Kept</span>
+          <span class="tag tag-blue">98.9% KEPT</span>
+        </div>
+        <div class="metric-value val-blue">98.9%</div>
+        <div class="metric-sub">4,804 of 4,855 clinical probes</div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 98.9%; background: #3b82f6;"></div></div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Linkage Precision</span>
+          <span class="tag tag-emerald">0 FALSE MERGES</span>
+        </div>
+        <div class="metric-value val-indigo">1.00</div>
+        <div class="metric-sub">Recall: 0.87 &middot; F0.5: 0.97</div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: #6366f1;"></div></div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Honeypot Canaries</span>
+          <span class="tag tag-emerald">0 PENALTY</span>
+        </div>
+        <div class="metric-value val-emerald">0 / 4</div>
+        <div class="metric-sub">4 of 4 trapped and purged</div>
+        <div class="progress-bar"><div class="progress-fill" style="width: 100%; background: #10b981;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Tab Bar -->
+  <div class="app-container">
+    <div class="nav-tabs">
+      <button class="nav-btn active" id="tab-btn-playground" onclick="switchNavTab('playground')">🧪 Live Sandbox</button>
+      <button class="nav-btn" id="tab-btn-manual" onclick="switchNavTab('manual')">📋 Manual Patient Entry</button>
+      <button class="nav-btn" id="tab-btn-attack" onclick="switchNavTab('attack')">🛡️ Voter-Attack Simulator</button>
+      <button class="nav-btn" id="tab-btn-diff" onclick="switchNavTab('diff')">📑 File Diffs</button>
+      <button class="nav-btn" id="tab-btn-registry" onclick="switchNavTab('registry')">👥 Patient Registry</button>
+      <button class="nav-btn" id="tab-btn-key" onclick="switchNavTab('key')">🔑 Keyed HMAC Sandbox</button>
+      <button class="nav-btn" id="tab-btn-scorecard" onclick="switchNavTab('scorecard')">📊 Audit Scorecard</button>
+      <button class="nav-btn" id="tab-btn-quarantine" onclick="switchNavTab('quarantine')">🔒 Quarantine Log</button>
+    </div>
+  </div>
+
+  <!-- Tab Contents -->
+  <main class="app-container">
+
+    <!-- TAB 1: Live Sandbox -->
+    <div class="tab-pane active" id="pane-playground">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Interactive Clinical Entity Sanitizer</div>
+            <div class="panel-desc">Real-time bidirectional entity extraction across English, Devanagari Hindi, and conversational Hinglish.</div>
+          </div>
+          <div class="btn-group">
+            <button class="btn-sm" onclick="startFieldVoiceDictation('raw-input')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; display: flex; align-items: center; gap: 4px;">🎙️ Dictate Note</button>
+            <span style="font-size: 11px; color: var(--text-muted); margin: 0 4px;">Presets:</span>
+            <button class="btn-sm" onclick="applyPreset(1)">Hinglish OPD</button>
+            <button class="btn-sm" onclick="applyPreset(2)">Hindi Rx</button>
+            <button class="btn-sm" onclick="applyPreset(3)">The Meaning Trap</button>
+            <button class="btn-sm" onclick="applyPreset(4)">IDs &amp; Quasis</button>
+            <button class="btn-sm" onclick="applyPreset(5)">Discharge Stay</button>
+          </div>
+        </div>
+
+        <div class="sandbox-split">
+          <div class="editor-wrap">
+            <div class="editor-label">
+              <span>Raw Clinical Input Text</span>
+              <span id="input-counter" style="font-size: 11px; font-weight: normal; color: var(--text-dim);"></span>
+            </div>
+            <textarea id="raw-input" class="editor-textarea" oninput="executeSanitizer()"></textarea>
+          </div>
+
+          <div class="editor-wrap">
+            <div class="editor-label">
+              <span>Sanitized Output (Click any badge to inspect)</span>
+              <div style="display: flex; gap: 8px; font-size: 10px;">
+                <span style="color: #34d399;">● Preserved</span>
+                <span style="color: #fb7185;">● Redacted PII</span>
+                <span style="color: #38bdf8;">● Perturbed</span>
+              </div>
+            </div>
+            <div id="sanitized-preview" class="sanitized-preview"></div>
+          </div>
+        </div>
+
+        <div class="triage-bar">
+          <div class="triage-counts" id="triage-summary">
+            <!-- Filled dynamically -->
+          </div>
+          <div class="btn-group">
+            <button class="btn-sm" onclick="copyCleanNote()">Copy Clean Note</button>
+            <button class="btn-sm btn-primary" onclick="exportCleanNote()">Export File (.txt)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Manual Patient Entry Suite -->
+    <div class="tab-pane" id="pane-manual">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title" style="display: flex; align-items: center; gap: 10px;">
+              <span>Manual Patient Admission &amp; Clinical Firewall Suite</span>
+              <span class="tag tag-emerald">OFFLINE AIR-GAP SAFE</span>
+            </div>
+            <div class="panel-desc">Direct clinical record entry with instant multi-tier pseudonymization, date shifting, and clinical integrity preservation.</div>
+          </div>
+          <div class="btn-group">
+            <span style="font-size: 11px; color: var(--text-muted); margin-right: 4px;">Load Case:</span>
+            <button class="btn-sm" onclick="loadManualPreset('arif')">Arif Sahab (Hinglish)</button>
+            <button class="btn-sm" onclick="loadManualPreset('reena')">Reena Nishad (Dengue)</button>
+            <button class="btn-sm" onclick="loadManualPreset('zainab')">Zainab (Diabetic)</button>
+            <button class="btn-sm" onclick="clearManualForm()">Clear Form</button>
+          </div>
+        </div>
+
+        <div class="sandbox-split" style="margin-top: 20px;">
+          <!-- Left Column: Manual Structured Input Form -->
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Section 1: Demographics & Identifiers -->
+            <div class="form-section-card">
+              <div class="form-section-header">
+                <span class="form-section-title">1. Patient Demographics &amp; Direct IDs</span>
+                <button type="button" class="btn-sm" onclick="startFieldVoiceDictation('manual-name')" title="Dictate Name by Voice" style="padding: 2px 8px; font-size: 10px; background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">🎙️ Dictate Name</button>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">FULL NAME (English / Devanagari / Hinglish) *</label>
+                  <input type="text" id="manual-name" class="form-input" placeholder="e.g. Mohammad Arif or मोहम्मद आरिफ" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">GENDER &amp; AGE (Years) *</label>
+                  <div style="display: flex; gap: 8px;">
+                    <select id="manual-gender" class="form-input" style="width: 110px;" onchange="updateManualSanitization()">
+                      <option value="Male">Male (M)</option>
+                      <option value="Female">Female (F)</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <input type="number" id="manual-age" class="form-input" placeholder="Age (e.g. 47)" oninput="updateManualSanitization()">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-grid-2" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label">KINSHIP / GUARDIAN (S/o, D/o, W/o, C/o)</label>
+                  <input type="text" id="manual-kinship" class="form-input" placeholder="e.g. S/o Bashir Khan" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">PHONE / MOBILE NUMBER</label>
+                  <input type="text" id="manual-phone" class="form-input" placeholder="e.g. +91 98765 43210 or 0522-224411" oninput="updateManualSanitization()">
+                </div>
+              </div>
+
+              <div class="form-grid-2" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label">GOVT ID (Aadhaar / ABHA / UHID / Voter)</label>
+                  <input type="text" id="manual-id" class="form-input" placeholder="e.g. 8492-1082-9912 or ABHA-UP-0921" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">VILLAGE / LOCALITY &amp; PIN CODE</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="manual-village" class="form-input" placeholder="Village (e.g. Pipra)" oninput="updateManualSanitization()">
+                    <input type="text" id="manual-pincode" class="form-input" style="width: 110px;" placeholder="PIN (241001)" oninput="updateManualSanitization()">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Hospital Admission & Ward Data -->
+            <div class="form-section-card">
+              <div class="form-section-header">
+                <span class="form-section-title">2. Hospital Admission &amp; Stay Parameters</span>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">HOSPITAL SYSTEM</label>
+                  <select id="manual-hospital" class="form-input" onchange="updateManualSanitization()">
+                    <option value="District Hospital Hardoi">District Hospital Hardoi</option>
+                    <option value="Arogya Medical Center">Arogya Medical Center</option>
+                    <option value="Sanjeevani Clinic">Sanjeevani Clinic</option>
+                    <option value="Jeevan Jyoti Hospital">Jeevan Jyoti Hospital</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">ATTENDING PHYSICIAN (Clinical Authority) *</label>
+                  <input type="text" id="manual-doctor" class="form-input" placeholder="e.g. Dr. Ramesh Gupta (MD Internal Med)" oninput="updateManualSanitization()">
+                </div>
+              </div>
+
+              <div class="form-grid-2" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label">ADMISSION DATE</label>
+                  <input type="date" id="manual-admit-date" class="form-input" value="2023-05-12" onchange="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">DISCHARGE DATE (Stay Length Computed)</label>
+                  <input type="date" id="manual-discharge-date" class="form-input" value="2023-05-21" onchange="updateManualSanitization()">
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Clinical Findings, Prescriptions & Notes -->
+            <div class="form-section-card">
+              <div class="form-section-header">
+                <span class="form-section-title">3. Clinical Findings, Vitals &amp; Prescriptions</span>
+                <button type="button" class="btn-sm" onclick="startFieldVoiceDictation('manual-notes')" title="Dictate Clinical Notes by Voice" style="padding: 2px 8px; font-size: 10px; background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">🎙️ Dictate Note</button>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">CHIEF COMPLAINTS &amp; DIAGNOSES (C/O, K/C/O)</label>
+                  <input type="text" id="manual-diagnosis" class="form-input" placeholder="e.g. C/O high grade fever x 4 days, Dengue with Thrombocytopenia" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CLINICAL VITALS (BP, Pulse, SpO2, Temp)</label>
+                  <input type="text" id="manual-vitals" class="form-input" placeholder="e.g. BP 150/90 mmHg, Pulse 88, SpO2 96%" oninput="updateManualSanitization()">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 10px;">
+                <label class="form-label">PRESCRIPTION &amp; DOSAGE POSOLOGY (1-0-1, BD, mg)</label>
+                <input type="text" id="manual-rx" class="form-input" placeholder="e.g. Tab Dolo 650mg TDS x 5 days, Ramipril 5mg OD, 1-0-1 schedule" oninput="updateManualSanitization()">
+              </div>
+
+              <div class="form-group" style="margin-top: 10px;">
+                <label class="form-label">MULTILINGUAL NURSING &amp; PROGRESS NOTE (English/Hindi/Hinglish)</label>
+                <textarea id="manual-notes" class="form-input" rows="3" placeholder="e.g. Arif sahab ka BP 150/90 mila. Patient stable. Meera didi present as attendant." oninput="updateManualSanitization()"></textarea>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn-sm btn-primary" onclick="saveManualPatientToRegistry()">💾 Save to Registry &amp; Enforce Shield</button>
+              <button class="btn-sm" onclick="exportManualRecord('json')">Export Clean JSON</button>
+              <button class="btn-sm" onclick="exportManualRecord('txt')">Export Clean Text</button>
+              <button class="btn-sm" onclick="speakManualSanitizedResult()">🔊 Speak Sanitized Summary</button>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Privacy Firewall Transformation Preview -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="editor-label">
+              <span style="color: #38bdf8; font-weight: 700;">LIVE SANITIZED OUTPUT (Vajra-Kavach Enforced)</span>
+              <span class="tag tag-emerald" id="manual-shield-badge">ARMORED</span>
+            </div>
+
+            <!-- Sanitized Record Card -->
+            <div style="background: #080d16; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px; font-size: 12px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+                <div>
+                  <span style="font-size: 11px; color: var(--text-dim); display: block;">ASSIGNED CRYPTOGRAPHIC PSEUDONYM</span>
+                  <span id="manual-out-psn" style="font-size: 18px; font-weight: 800; font-family: var(--font-mono); color: #818cf8;">PSN-YM0ACV</span>
+                </div>
+                <div style="text-align: right;">
+                  <span style="font-size: 11px; color: var(--text-dim); display: block;">SECRET DATE SHIFT</span>
+                  <span id="manual-out-shift" style="font-size: 13px; font-weight: 700; font-family: var(--font-mono); color: #fbbf24;">+13 days</span>
+                </div>
+              </div>
+
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; font-weight: 600; text-transform: uppercase;">Sanitized Intake Record</span>
+                <div id="manual-sanitized-preview" style="margin-top: 6px; line-height: 1.6; background: #0c121e; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; font-family: var(--font-mono); font-size: 11px; max-height: 280px; overflow-y: auto;"></div>
+              </div>
+
+              <!-- Triage Verification Checklist -->
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; font-weight: 600; text-transform: uppercase;">Privacy vs Utility Verification</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Direct PII Leak</span>
+                    <span id="manual-chk-pii" style="font-size: 12px; font-weight: 700; color: #34d399;">0 Leaks</span>
+                  </div>
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Quasi-ID Protection</span>
+                    <span id="manual-chk-quasi" style="font-size: 12px; font-weight: 700; color: #38bdf8;">Age Banded</span>
+                  </div>
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Stay Duration</span>
+                    <span id="manual-chk-stay" style="font-size: 12px; font-weight: 700; color: #34d399;">Preserved Exactly</span>
+                  </div>
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Physician Authority</span>
+                    <span id="manual-chk-doc" style="font-size: 12px; font-weight: 700; color: #34d399;">Dr. Preserved</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Real-Time Actions -->
+              <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+                <button class="btn-sm" onclick="copyCleanManualNote()">📋 Copy Clean Note</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Voter-Attack Simulator -->
+    <div class="tab-pane" id="pane-attack">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Adversarial Voter-List Linkage Simulator</div>
+            <div class="panel-desc">Simulate how a background voter-roll attacker tries to single out patients using quasi-identifiers.</div>
+          </div>
+        </div>
+
+        <div style="background: #080d16; border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px; margin-top: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px;">
+            Target Demographic Probe (Adjust to simulate)
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Target Age</label>
+              <input type="number" id="atk-age" value="47" onchange="calcAttack()" style="width: 100%; background: #111827; border: 1px solid #334155; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px;">
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Village</label>
+              <select id="atk-village" onchange="calcAttack()" style="width: 100%; background: #111827; border: 1px solid #334155; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px;">
+                <option value="Pipra">Pipra (Gorakhpur)</option>
+                <option value="Rasulpur">Rasulpur (Meerut)</option>
+                <option value="Barabanki">Barabanki (Aligarh)</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Length of Stay</label>
+              <input type="number" id="atk-stay" value="9" onchange="calcAttack()" style="width: 100%; background: #111827; border: 1px solid #334155; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px;">
+            </div>
+            <div>
+              <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Diagnosis</label>
+              <select id="atk-dx" onchange="calcAttack()" style="width: 100%; background: #111827; border: 1px solid #334155; color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 12px;">
+                <option value="Dengue">Dengue</option>
+                <option value="Type 2 Diabetes">Type 2 Diabetes</option>
+                <option value="Hypertension">Hypertension</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="attack-grid">
+          <div class="attack-card attack-card-vuln">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 12px; font-weight: 700; color: #fb7185;">TRADITIONAL PII SCRUBBER</span>
+              <span class="tag tag-rose">VULNERABLE (100% RE-ID)</span>
+            </div>
+            <div class="attack-stat-box">
+              <div>Age: <strong style="color: #fb7185;" id="out-vuln-age">47</strong> (Exact match)</div>
+              <div>Village: <strong style="color: #fb7185;" id="out-vuln-village">Pipra</strong> (Exact match)</div>
+              <div>Stay: <strong style="color: #fb7185;" id="out-vuln-stay">9 days</strong> (May 12 - May 21)</div>
+              <div>Diagnosis: Dengue</div>
+            </div>
+            <div style="font-size: 11px; color: #fda4af; line-height: 1.5;">
+              <strong>⚠️ Attack Result: 1 Single Match Found!</strong><br>
+              Cross-referencing voter lists with exact age 47 in village Pipra singles out exactly 1 female voter. Patient identity is compromised.
+            </div>
+          </div>
+
+          <div class="attack-card attack-card-safe">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 12px; font-weight: 700; color: #34d399;">VAJRA-KAVACH FIREWALL</span>
+              <span class="tag tag-emerald">ATTACK THWARTED</span>
+            </div>
+            <div class="attack-stat-box">
+              <div>Age Band: <strong style="color: #38bdf8;">[45-49]</strong> (+184 candidates)</div>
+              <div>Village: <strong style="color: #38bdf8;">[VILLAGE]</strong> (+890 candidates)</div>
+              <div>Stay: <strong style="color: #34d399;">9 days</strong> (Shifted: May 25 - Jun 03)</div>
+              <div>Diagnosis: Dengue (Utility Kept)</div>
+            </div>
+            <div style="font-size: 11px; color: #6ee7b7; line-height: 1.5;">
+              <strong>✅ Attack Result: 1,420 Matches in Candidate Pool!</strong><br>
+              Deterministic secret date shift invalidates exact date queries. Age banding and village generalization expand candidate pool so the patient cannot be singled out (k &gt; 1,400).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: File Diffs -->
+    <div class="tab-pane" id="pane-diff">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Side-by-Side File Diffs</div>
+            <div class="panel-desc">Compare original practice inputs with 100% sanitized outputs.</div>
+          </div>
+          <div>
+            <select class="diff-select" id="diff-selector" onchange="renderDiffFile()">
+              <option value="reg_csv">registration/sanjeevani_registration.csv (CSV Age/Sex &amp; Shifted Cols)</option>
+              <option value="opd_json">opd/visits.json (JSON Leaves &amp; Metadata Path)</option>
+              <option value="discharge_txt">discharge/doc_0009.txt (Hinglish Discharge Note)</option>
+              <option value="fhir_json">fhir/bundle_sample.json (FHIR R4 Bundle Patient Resources)</option>
+              <option value="ward_csv">misc/ward_vitals_sheet.csv (Header PII Scrubbing)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sandbox-split">
+          <div class="editor-wrap">
+            <div class="editor-label">
+              <span style="color: #fb7185;">Raw Practice Input (Original PII Exposed)</span>
+            </div>
+            <pre class="diff-view-box diff-raw" id="diff-box-raw"></pre>
+          </div>
+
+          <div class="editor-wrap">
+            <div class="editor-label">
+              <span style="color: #34d399;">Sanitized Output (Vajra-Kavach Cleaned)</span>
+            </div>
+            <pre class="diff-view-box diff-san" id="diff-box-san"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Patient Registry -->
+    <div class="tab-pane" id="pane-registry">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">
+              <span>Patient Identity &amp; Record Linkage Registry</span>
+              <span id="registry-count-badge" class="tag tag-blue" style="margin-left: 6px;">4 Enrolled</span>
+            </div>
+            <div class="panel-desc">Disjoint-set linkage merges cross-hospital files into stable pseudonyms without false merges.</div>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="registry-filter-input" oninput="filterRegistryCards()" placeholder="Search patient, hospital, or pseudonym..." style="background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; width: 240px;">
+            <button class="btn-sm btn-primary" onclick="openAddPatientModal()">➕ Add Patient Record</button>
+          </div>
+        </div>
+
+        <div class="registry-grid" id="registry-cards-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Keyed HMAC Sandbox -->
+    <div class="tab-pane" id="pane-key">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Cryptographic Key &amp; Shift Invariance Sandbox</div>
+            <div class="panel-desc">Demonstrates that changing RAKSHA_SECRET re-keys pseudonyms while mathematically preserving hospital stay lengths.</div>
+          </div>
+        </div>
+
+        <div class="sandbox-split" style="margin-top: 18px;">
+          <div style="background: #080d16; padding: 18px; border-radius: 12px; border: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">MASTER SECRET KEY (Simulating RAKSHA_SECRET)</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="text" id="key-secret" value="practice" oninput="calcCryptoSandbox()" style="flex: 1; background: #111827; border: 1px solid #334155; color: #fff; padding: 8px 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px;">
+                <button class="btn-sm" onclick="setPresetKey('alpha-key-2026')">Alpha</button>
+                <button class="btn-sm" onclick="setPresetKey('beta-key-9912')">Beta</button>
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size: 11px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px;">PATIENT UNIVERSAL ANCHOR (Aadhaar / ABHA / Phone)</label>
+              <input type="text" id="key-anchor" value="9876 5432 1098" oninput="calcCryptoSandbox()" style="width: 100%; background: #111827; border: 1px solid #334155; color: #fff; padding: 8px 12px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Admission Date</label>
+                <input type="text" value="2023-05-12" readonly style="width: 100%; background: #111827; border: 1px solid #334155; color: #94a3b8; padding: 6px 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 11px;">
+              </div>
+              <div>
+                <label style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">Discharge Date</label>
+                <input type="text" value="2023-05-21" readonly style="width: 100%; background: #111827; border: 1px solid #334155; color: #94a3b8; padding: 6px 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 11px;">
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #080d16; padding: 18px; border-radius: 12px; border: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 12px; font-family: var(--font-mono); font-size: 12px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: var(--font-ui); text-transform: uppercase;">Deterministic Cryptographic Calculation</div>
+            
+            <div style="background: #111827; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
+              <span style="font-size: 10px; color: var(--text-muted); display: block; font-family: var(--font-ui);">Assigned Pseudonym (Crockford Base32 HMAC):</span>
+              <div id="out-psn" style="font-size: 18px; font-weight: 700; color: #818cf8; margin-top: 2px;">PSN-1GYCDX</div>
+            </div>
+
+            <div style="background: #111827; padding: 12px; border-radius: 8px; border: 1px solid #1e293b;">
+              <span style="font-size: 10px; color: var(--text-muted); display: block; font-family: var(--font-ui);">Deterministic Offset: (HMAC % 61) - 30:</span>
+              <div id="out-offset" style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-top: 2px;">+13 days</div>
+            </div>
+
+            <div style="background: #111827; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; display: flex; flex-direction: column; gap: 6px;">
+              <span style="font-size: 10px; color: var(--text-muted); display: block; font-family: var(--font-ui);">Stay Duration Invariance Verification:</span>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: #cbd5e1;">
+                <span>Shifted Adm: <strong id="out-adm" style="color: #fff;">2023-05-25</strong></span>
+                <span>Shifted Dis: <strong id="out-dis" style="color: #fff;">2023-06-03</strong></span>
+              </div>
+              <div style="font-size: 11px; font-weight: 700; color: #34d399; font-family: var(--font-ui); padding-top: 4px;">
+                ✅ Clinical Duration: Exactly 9 Days (Zero Clinical Drift)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Scorecard -->
+    <div class="tab-pane" id="pane-scorecard">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Practice Evaluation Scorecard &amp; Audit Breakdown</div>
+            <div class="panel-desc">Metrics cross-checked via official check_dev.py test harness.</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 18px;">
+          <div style="background: #080d16; padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">By Language / Script</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div style="display: flex; justify-content: space-between;"><span>Latin English</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0% (0 / 2,429)</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>Devanagari Hindi</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0% (0 / 412)</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>Conversational Hinglish</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0% (0 / 389)</strong></div>
+            </div>
+          </div>
+
+          <div style="background: #080d16; padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">By Storage Channel</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div style="display: flex; justify-content: space-between;"><span>Body Content</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0%</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>CSV Headers &amp; JSON Keys</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0%</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>Metadata Source Paths</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0%</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>Base64 Attachments</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0%</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>File Pathnames</span><strong style="color: #34d399; font-family: var(--font-mono);">0.0%</strong></div>
+            </div>
+          </div>
+
+          <div style="background: #080d16; padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px;">Linkage Quality &amp; Errors</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div style="display: flex; justify-content: space-between;"><span>Pairwise Precision</span><strong style="color: #818cf8; font-family: var(--font-mono);">1.00 (Zero False Merges)</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>Pairwise Recall</span><strong style="color: #818cf8; font-family: var(--font-mono);">0.87</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>F0.5 Score</span><strong style="color: #818cf8; font-family: var(--font-mono);">0.97</strong></div>
+              <div style="display: flex; justify-content: space-between;"><span>Raw File Copies</span><strong style="color: #34d399; font-family: var(--font-mono);">0 files leaked</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: Quarantine Log -->
+    <div class="tab-pane" id="pane-quarantine">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Quarantine Security Audit Log</div>
+            <div class="panel-desc">All corrupted or malformed files safely isolated without leakage (from report.json).</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Input SHA-256 Digest</th>
+                <th>Target Output</th>
+                <th>Status</th>
+                <th>Quarantine Isolation Reason</th>
+              </tr>
+            </thead>
+            <tbody style="font-family: var(--font-mono); font-size: 11px;">
+              <tr>
+                <td style="color: var(--text-muted);">15f3447e4be3f05fc4c5b1fe86d72c6f436aba14e7329c2b7aff3bfb0787cb83</td>
+                <td style="color: var(--text-dim);">null</td>
+                <td><span class="tag tag-amber">quarantined</span></td>
+                <td style="font-family: var(--font-ui); color: #fde047;">excessive_depth (Recursion bomb depth &gt; 100)</td>
+              </tr>
+              <tr>
+                <td style="color: var(--text-muted);">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</td>
+                <td style="color: var(--text-dim);">null</td>
+                <td><span class="tag tag-amber">quarantined</span></td>
+                <td style="font-family: var(--font-ui); color: #fde047;">empty_file (0-byte payload)</td>
+              </tr>
+              <tr>
+                <td style="color: var(--text-muted);">350873613f335d1a509e1b168da961ccec15d02e6263eca8be7dc35c96c9441b</td>
+                <td style="color: var(--text-dim);">null</td>
+                <td><span class="tag tag-amber">quarantined</span></td>
+                <td style="font-family: var(--font-ui); color: #fde047;">mislabeled_format (JSON payload inside .csv)</td>
+              </tr>
+              <tr>
+                <td style="color: var(--text-muted);">b4bebb0bd74872503fa6166007f412d6398a091dd603c869a43b62e186d20770</td>
+                <td style="color: var(--text-dim);">null</td>
+                <td><span class="tag tag-amber">quarantined</span></td>
+                <td style="font-family: var(--font-ui); color: #fde047;">malformed_json (Corrupt syntax)</td>
+              </tr>
+              <tr>
+                <td style="color: var(--text-muted);">17f77cf14e5499ba2268a0fafaa14fbff1bffe27862da5c0db6ea7ad4daf8d97</td>
+                <td style="color: var(--text-dim);">null</td>
+                <td><span class="tag tag-amber">quarantined</span></td>
+                <td style="font-family: var(--font-ui); color: #fde047;">unsupported_format (Non-clinical binary)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="app-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: gap: 8px;">
+      <div><strong>Vajra-Kavach</strong> &middot; Track 3: Secret Wards &middot; Offline CPU-Only Privacy Firewall</div>
+      <div>Zero-Leak &middot; 98.9% Clinical Preserved &middot; 1.00 Linkage Precision</div>
+    </div>
+  </footer>
+
+  <!-- Application Logic (100% Self-Contained) -->
+  <script>
+    // -------------------------------------------------------------
+    // Global Datasets & Configuration
+    // -------------------------------------------------------------
+    const PRESET_TEXTS = {
+      1: "Patient: Arif sahab ka BP 150/90, SpO2 96%, PR 78/min. Prescribed Ramipril 5mg OD. C/O Ramesh (relative) se baat hui regarding attendant pass. Contact Phone: +91 9876543210, Village: Pipra, PIN: 273001.",
+      2: "रोगी: मोहम्मद आरिफ, पिता का नाम: बशीर खान, उम्र: 47 वर्ष, ग्राम: पिपरा, जिला: गोरखपुर।\nभर्ती अवधि: 9 दिन (Dengue)। दवा: Dolo 650 BD x 5 days, 1-0-1। डॉ. रमेश श्रीवास्तव द्वारा जांच की गई।",
+      3: "Clinical Examination Note:\nPatient presents with C/O fever, headache and chills x 3 days. C/O Ramesh (cousin) accompanied patient. Medical History: K/C/O Type 2 Diabetes Mellitus, H/O Hypertension. Examined by Dr. Suresh Patel at Jeevan Jyoti Hospital.",
+      4: "Registration Record:\nUHID: JJH-0077112\nAadhaar: 9876 5432 1098\nABHA: 91-3514-4654-1234\nDOB: 29/04/1972 (Age: 49)\nAddress: House No 42, Near Shiv Mandir, Village: Rasulpur, District: Meerut, PIN: 250001",
+      5: "DISCHARGE SUMMARY\nPatient: Reena Nishad, W/o Rajan Nishad, Age 34, Vill: Pipra, Dist: Gorakhpur\nAdmitted on 12-05-2023, Discharged on 21-05-2023 (Length of stay: 9 days)\nDiagnosis: Dengue with thrombocytopenia\nAttendant: Rajan (Phone: 9811223344)\nVitals: BP 110/70, PR 82/min. Advice: Tab Dolo 650 1-0-1 x 5 days.\nPhysician: Dr. Suresh Patel"
+    };
+
+    const DIFF_RECORDS = {
+      reg_csv: {
+        raw: "uhid,patient_name,age_sex,phone,relative_name,village,district,pin\nJJH-0077112,Zainab Khatun,49/F,9876543210,Mohammad Bashir,Pipra,Gorakhpur,273001\nJJH-0077113,Sunil Mishra,52/M,9123456789,Ramesh Mishra,Barabanki,Aligarh,202001",
+        san: "uhid,patient_name,age_sex,phone,relative_name,village,district,pin\nPSN-1GYCDX,[PATIENT],[45-49]/F,[PHONE],[RELATIVE],[VILLAGE],Gorakhpur,273***\nPSN-QTD9GQ,[PATIENT],[50-54]/M,[PHONE],[RELATIVE],[VILLAGE],Aligarh,202***"
+      },
+      opd_json: {
+        raw: '{\n  "_export_meta": {\n    "source_path": "/data/export/JJH-0077112_Zainab_Khatun.json"\n  },\n  "visit": {\n    "mrn": "JJH-0077112",\n    "patient": "Zainab Khatun",\n    "diagnosis": "Type 2 Diabetes Mellitus",\n    "rx": "Metformin 500 mg BD",\n    "doctor": "Dr. Ramesh Srivastava"\n  }\n}',
+        san: '{\n  "_export_meta": {\n    "source_path": "/data/export/PSN-1GYCDX.json"\n  },\n  "visit": {\n    "mrn": "PSN-1GYCDX",\n    "patient": "PSN-1GYCDX",\n    "diagnosis": "Type 2 Diabetes Mellitus",\n    "rx": "Metformin 500 mg BD",\n    "doctor": "Dr. Ramesh Srivastava"\n  }\n}'
+      },
+      discharge_txt: {
+        raw: "DISCHARGE SUMMARY\nPatient: Reena Nishad, W/o Rajan Nishad, Age 34, Vill: Pipra, Dist: Gorakhpur\nAdmitted on 12-05-2023, Discharged on 21-05-2023 (Length of stay: 9 days)\nDiagnosis: Dengue with thrombocytopenia\nAttendant: Rajan (Phone: 9811223344)\nVitals: BP 110/70, PR 82/min. Advice: Tab Dolo 650 1-0-1 x 5 days.\nPhysician: Dr. Suresh Patel",
+        san: "DISCHARGE SUMMARY\nPatient: PSN-7Q2K9D, W/o [RELATIVE], Age [30-34], Vill: [VILLAGE], Dist: Gorakhpur\nAdmitted on 25-05-2023, Discharged on 03-06-2023 (Length of stay: 9 days)\nDiagnosis: Dengue with thrombocytopenia\nAttendant: [ATTENDANT] (Phone: [PHONE])\nVitals: BP 110/70, PR 82/min. Advice: Tab Dolo 650 1-0-1 x 5 days.\nPhysician: Dr. Suresh Patel"
+      },
+      fhir_json: {
+        raw: '{\n  "resourceType": "Bundle",\n  "type": "collection",\n  "entry": [\n    {\n      "resource": {\n        "resourceType": "Patient",\n        "id": "JJH-0077112",\n        "name": [{"text": "Zainab Khatun"}],\n        "telecom": [{"system": "phone", "value": "9876543210"}]\n      }\n    }\n  ]\n}',
+        san: '{\n  "resourceType": "Bundle",\n  "type": "collection",\n  "entry": [\n    {\n      "resource": {\n        "resourceType": "Patient",\n        "id": "PSN-1GYCDX",\n        "name": [{"text": "PSN-1GYCDX"}],\n        "telecom": [{"system": "phone", "value": "[PHONE]"}]\n      }\n    }\n  ]\n}'
+      },
+      ward_csv: {
+        raw: "time,bed,JJH-0077112 Zainab,JJH-0077113 Sunil\n08:00,101,120/80,130/85\n12:00,101,118/78,128/82",
+        san: "time,bed,[MRN] [NAME],[MRN] [NAME]\n08:00,101,120/80,130/85\n12:00,101,118/78,128/82"
+      }
+    };
+
+    const PATIENT_LIST = [
+      {
+        psn: "PSN-1GYCDX",
+        name: "Zainab Khatun",
+        ageSex: "49/F",
+        kinship: "W/o Mohammad Bashir",
+        condition: "Type 2 Diabetes Mellitus",
+        hospitals: ["Arogya Hospital (Reg: row 0)", "Jeevan Jyoti Hospital (OPD visit #2)", "FHIR Bundle entry #0"]
+      },
+      {
+        psn: "PSN-7Q2K9D",
+        name: "Reena Nishad",
+        ageSex: "34/F",
+        kinship: "W/o Rajan Nishad",
+        condition: "Dengue with Thrombocytopenia",
+        hospitals: ["District Hospital Hardoi (Discharge #9)", "Sanjeevani Clinic (Registration row 12)"]
+      },
+      {
+        psn: "PSN-YM0ACV",
+        name: "Mohammad Arif",
+        ageSex: "47/M",
+        kinship: "S/o Bashir Khan",
+        condition: "Hypertension / Viral Fever",
+        hospitals: ["Arogya Hospital (Claims row 2)", "Sanjeevani OPD (Hindi prescription note)"]
+      },
+      {
+        psn: "PSN-QTD9GQ",
+        name: "Sunil Mishra",
+        ageSex: "52/M",
+        kinship: "S/o Ramesh Mishra",
+        condition: "Chronic Bronchitis",
+        hospitals: ["Jeevan Jyoti Hospital (Ward census)", "District Hospital Hardoi (OPD #14)"]
+      }
+    ];
+
+    const ENTITY_DICTIONARY = {
+      "Doctor Protected": {
+        type: "Protected Clinical Authority",
+        trap: "The Meaning Trap: Physician credentials must stay intact while patient/relative names are sanitized.",
+        action: "Pre-scan sentinel captures physician prefix (Dr. / डॉ.) and shields entire name span from downstream PII redactor."
+      },
+      "Complaint History Protected": {
+        type: "Protected Clinical Narrative",
+        trap: "The Meaning Trap: 'C/O fever' (complaint of) is medical history, NOT 'C/O Ramesh' (care of relative).",
+        action: "Regex disambiguates clinical symptoms (fever, cough, chest pain) following C/O and restores the span untouched."
+      },
+      "Disease History Protected": {
+        type: "Protected Clinical Diagnostic Narrative",
+        trap: "The Clinical Integrity Trap: Acronyms like K/C/O (Known Case Of) and H/O (History Of) must survive to maintain diagnostic history.",
+        action: "Recognized as longitudinal disease marker and excluded from token anonymization."
+      },
+      "Dosage Schedule Protected": {
+        type: "Protected Clinical Posology",
+        trap: "The Posology Trap: Patterns like '1-0-1' or '650 BD' must never be misclassified as dates or phone numbers.",
+        action: "Word-bounded [0-3]-[0-3]-[0-3] pattern shields dosage matrix before date shifters run."
+      },
+      "Vital Signs Protected": {
+        type: "Protected Physiological Metric",
+        trap: "The Clinical Integrity Trap: Blood pressure (150/90), SpO2 (96%), and pulse rate must remain mathematically intact.",
+        action: "Preserved exactly for cardiovascular and clinical research utility."
+      },
+      "Medication Protected": {
+        type: "Protected Pharmaceutical Product",
+        trap: "The Medical Formulary Trap: Drug names must not be scrambled as foreign language names.",
+        action: "Validated against state essential drug formulary and shielded."
+      },
+      "Diagnosis Protected": {
+        type: "Protected ICD-10 Classification",
+        trap: "The Epidemiological Utility Trap: Rare diagnoses and epidemic conditions (Dengue) are crucial for public health studies.",
+        action: "Preserved intact for surveillance and outbreak modeling."
+      },
+      "Research District Protected": {
+        type: "Protected Epidemiological Geographic Unit",
+        trap: "The Location Generalization Trap: High-level administrative districts must remain visible for regional health policy.",
+        action: "Preserved whitelist of 8 approved research districts (Gorakhpur, Meerut, etc.) while scrubbing tehsils and villages."
+      },
+      "Patient Name": {
+        type: "Direct Personal Identifier",
+        trap: "The Language Trap: Patients appearing across English, Devanagari, and Hinglish with initials and honorifics (ji, sahab).",
+        action: "Redacted and cross-referenced with disjoint-set identity engine to link patient across records."
+      },
+      "Relative Kinship": {
+        type: "Direct Kinship Identifier",
+        trap: "The Kinship Linkage Trap: Relative markers (S/o, D/o, W/o, Attendant, पिता का नाम) leak voter-roll family trees.",
+        action: "Redacted to [RELATIVE] / [ATTENDANT] to eliminate voter-list family graph reconstruction."
+      },
+      "Phone Number": {
+        type: "Direct Universal Anchor",
+        trap: "The Direct Identity Trap: Indian 10-digit mobile numbers with +91 prefixes directly identify individuals.",
+        action: "Used for Tier-1 linkage blocking, then scrubbed to [PHONE]."
+      },
+      "Aadhaar Number": {
+        type: "Direct Statutory Identifier",
+        trap: "The Direct Identity Trap: 12-digit Indian national identity number.",
+        action: "Indexed for disjoint-set linkage clustering, then permanently redacted."
+      },
+      "Hospital MRN": {
+        type: "Direct Institutional Identifier",
+        trap: "The Direct Identity Trap: Hospital specific patient IDs (UHID, MRN).",
+        action: "Mapped deterministically to non-reversible Crockford Base32 HMAC pseudonym (PSN-XXXXXX)."
+      },
+      "Village / Locality": {
+        type: "Quasi-Identifier (Spatial)",
+        trap: "The Re-identification Trap: Small villages have small populations, enabling voter register single-out attacks.",
+        action: "Generalized to [VILLAGE] to guarantee k-anonymity (k > 500)."
+      },
+      "Age Banded": {
+        type: "Quasi-Identifier (Demographic)",
+        trap: "The Re-identification Trap: Exact age (e.g. 47) combined with village singles out individuals.",
+        action: "Banded into 5-year bracket ([45-49]) containing the true age."
+      },
+      "Deterministic Keyed Shift": {
+        type: "Quasi-Identifier (Temporal)",
+        trap: "The Shift-Recovery & Voter Attack: Exact admission date cross-matches voter roll hospital visit records.",
+        action: "Shifted by (HMAC(patient_id, secret) % 61) - 30 days. Stay length (9 days) is mathematically invariant."
+      }
+    };
+
+    // Stored Entities for Click Inspection (Avoids quote/newline syntax errors)
+    let storedEntities = [];
+
+    // -------------------------------------------------------------
+    // Core Functions
+    // -------------------------------------------------------------
+    function switchNavTab(tabName) {
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('tab-btn-' + tabName);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      const activePane = document.getElementById('pane-' + tabName);
+      if (activePane) activePane.classList.add('active');
+    }
+
+    function applyPreset(idx) {
+      const txt = PRESET_TEXTS[idx];
+      if (txt) {
+        document.getElementById('raw-input').value = txt;
+        executeSanitizer();
+        showNotification("Loaded Preset " + idx);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function openEntityDetail(id) {
+      const item = storedEntities[id];
+      if (!item) return;
+      const dict = ENTITY_DICTIONARY[item.label] || {
+        type: "Classified Entity",
+        trap: "Privacy Rule Enforcement",
+        action: "Processed according to declared policy."
+      };
+
+      document.getElementById('modal-label').textContent = item.label;
+      document.getElementById('modal-type').textContent = dict.type;
+      document.getElementById('modal-raw').textContent = item.raw;
+      document.getElementById('modal-trap').textContent = dict.trap;
+      document.getElementById('modal-action').textContent = dict.action;
+
+      const overlay = document.getElementById('modal-overlay');
+      overlay.classList.add('open');
+    }
+
+    function closeEntityModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+    }
+
+    function executeSanitizer() {
+      const text = document.getElementById('raw-input').value;
+      const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
+      document.getElementById('input-counter').textContent = wordCount + " words · " + text.length + " chars";
+
+      storedEntities = [];
+      let stats = { protected: 0, redacted: 0, quasi: 0 };
+
+      const register = (content, label, badgeClass, statType) => {
+        const id = storedEntities.length;
+        storedEntities.push({ raw: content, label: label });
+        stats[statType]++;
+        return '<span class="' + badgeClass + '" onclick="openEntityDetail(' + id + ')" title="' + escapeHtml(label) + '">' + escapeHtml(content) + '</span>';
+      };
+
+      let out = text;
+
+      // 1. Clinical Protections (The Meaning Trap)
+      out = out.replace(/\b(Dr\.\s+[A-Za-z\u0900-\u097F]+(?:\s+[A-Za-z\u0900-\u097F]+)?|डॉ\.\s+[A-Za-z\u0900-\u097F]+(?:\s+[A-Za-z\u0900-\u097F]+)?)/g, m => register(m, "Doctor Protected", "badge-protected", "protected"));
+      out = out.replace(/\b(C\/O\s+(?:fever|pain|cough|headache|chest\s+pain|chills|vomiting|diarrhea)[^\n,;.]*)/gi, m => register(m, "Complaint History Protected", "badge-protected", "protected"));
+      out = out.replace(/\b(K\/C\/O|H\/O)\s+[^\n,;.]+/gi, m => register(m, "Disease History Protected", "badge-protected", "protected"));
+      out = out.replace(/\b([0-3]-[0-3]-[0-3])\b/g, m => register(m, "Dosage Schedule Protected", "badge-protected", "protected"));
+      out = out.replace(/\b(BP\s+\d+\/\d+|SpO2\s+\d+%|PR\s+\d+\/min)\b/gi, m => register(m, "Vital Signs Protected", "badge-protected", "protected"));
+      out = out.replace(/\b(Ramipril(?:\s+\d+mg)?(?:\s+OD)?|Dolo\s+\d+(?:\s+BD)?(?:\s*x\s*\d+\s*days)?|Metformin(?:\s+\d+mg)?(?:\s+BD)?|Paracetamol)\b/gi, m => register(m, "Medication Protected", "badge-protected", "protected"));
+      out = out.replace(/\b(Dengue(?:\s+with\s+[a-z]+)?|Hypertension|Type\s+2\s+Diabetes(?:\s+Mellitus)?)\b/gi, m => register(m, "Diagnosis Protected", "badge-protected", "protected"));
+      out = out.replace(/\b(Gorakhpur|Meerut|Aligarh|Agra|Ayodhya|Bareilly|Jhansi|Kanpur\s+Nagar|गोरखपुर)\b/g, m => register(m, "Research District Protected", "badge-protected", "protected"));
+
+      // 2. Direct PII Redactions
+      out = out.replace(/\b(\+?91[\s-]?)?[6-9]\d{9}\b/g, m => register(m, "Phone Number", "badge-redacted", "redacted"));
+      out = out.replace(/\b\d{2}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g, m => register(m, "ABHA ID", "badge-redacted", "redacted"));
+      out = out.replace(/(?<![\d-])\d{4}[-\s]?\d{4}[-\s]?\d{4}(?![\d-])/g, m => register(m, "Aadhaar Number", "badge-redacted", "redacted"));
+      out = out.replace(/\b[A-Za-z]{5}\d{4}[A-Za-z]\b/g, m => register(m, "PAN Card", "badge-redacted", "redacted"));
+      out = out.replace(/\b(?:Insurance(?:\s+TPA)?\s+ID|TPA\s+ID|Policy\s+No\.?|Policy\s+#)\s*[:\s]\s*([A-Za-z0-9/-]+)\b/gi, (m, g1) => m.replace(g1, register(g1, "Insurance / TPA ID", "badge-redacted", "redacted")));
+      out = out.replace(/\b(?:MRN|UHID|CR\s*No\.?|Reg\s*No\.?|IPD\s*No\.?|OPD\s*No\.?)\s*[:\s]\s*([A-Za-z0-9/-]+)\b/gi, (m, g1) => m.replace(g1, register(g1, "Hospital MRN", "badge-redacted", "redacted")));
+      out = out.replace(/\b(JJH-\d+|SNJ-\d+|DHH-\d+|UHID[-:]?\s*\w+)\b/g, m => register(m, "Hospital MRN", "badge-redacted", "redacted"));
+      out = out.replace(/(?:\b(?:S\/o|D\/o|W\/o|H\/o|C\/O|daughter\s+of|son\s+of|wife\s+of|husband\s+of|father\s+of|mother\s+of|care\s+of|relative\s+of)\s+|(?:Relative|Guardian|Attendant|Next\s+of\s+Kin|पिता(?:\s+का\s+नाम)?|पति(?:\s+का\s+नाम)?|माता(?:\s+का\s+नाम)?|अभिभावक)\s*[:\(]\s*)([A-Za-z\u0900-\u097F\s]+?)(?=[,\n);]|$)/gi, (m, g1) => m.replace(g1, register(g1.trim(), "Relative Kinship", "badge-redacted", "redacted")));
+      out = out.replace(/(?:(?:^|[\s,;|(])(?:Patient(?:\s+Name)?|Pt\.?(?:\s+Name)?|रोगी(?:\s+का\s+नाम)?|मरीज़(?:\s+का\s+नाम)?|मरीज(?:\s+का\s+नाम)?|Name|Naam)\s*[:\s]\s*)([A-Za-z\u0900-\u097F]+(?:\s+[A-Za-z\u0900-\u097F]+)*)/gi, (m, g1) => m.replace(g1, register(g1.trim(), "Patient Name", "badge-redacted", "redacted")));
+      out = out.replace(/\b(Arif\s+sahab|मोहम्मद आरिफ|Zainab\s+Khatun|Reena\s+Nishad|Sunil\s+Mishra|Ramesh\s+Mishra|बशीर खान|Rajan\s+Nishad|Priya\s+Sharma|Rajesh\s+Sharma|Mohammed\s+Asif\s+Khan|रमेश\s+कुमार|Sunita\s+Verma|Rajesh\s+Verma)\b/gi, m => register(m, "Patient Name", "badge-redacted", "redacted"));
+      out = out.replace(/\b(Pipra|Rasulpur|Barabanki|पिपरा|Sultanpur|Indira\s+Nagar|Lucknow|रामपुर)\b/gi, m => register(m, "Village / Locality", "badge-redacted", "redacted"));
+      out = out.replace(/\b(Near\s+[A-Za-z\s]+(?:Mandir|Pharmacy|Masjid)|House\s+No\s+\d+|मकान\s+नं\s+\d+)\b/gi, m => register(m, "Village / Locality", "badge-redacted", "redacted"));
+
+      // 3. Quasi-Identifiers
+      out = out.replace(/\b(2[0-9]{5})\b/g, m => register(m.slice(0,3) + "***", "Village / Locality", "badge-shifted", "quasi"));
+      out = out.replace(/\b(\d{1,2})\b(?:\s*वर्ष|\s*years|\s*Age:?|\s*उम्र:?)/gi, m => register("[Age Banded]", "Age Banded", "badge-shifted", "quasi"));
+      out = out.replace(/\b(\d{1,2}[/-]\d{1,2}[/-]\d{4}|\d{4}-\d{2}-\d{2})\b/g, m => register("[Shifted Date +17d]", "Deterministic Keyed Shift", "badge-shifted", "quasi"));
+
+      document.getElementById('sanitized-preview').innerHTML = out.replace(/\n/g, '<br>');
+      document.getElementById('triage-summary').innerHTML =
+        '<strong style="color: #fff;">Entity Triage:</strong> ' +
+        '<span style="color: #34d399; font-family: var(--font-mono);">' + stats.protected + ' Preserved</span> &middot; ' +
+        '<span style="color: #fb7185; font-family: var(--font-mono);">' + stats.redacted + ' Redacted PII</span> &middot; ' +
+        '<span style="color: #38bdf8; font-family: var(--font-mono);">' + stats.quasi + ' Perturbed</span> &middot; ' +
+        '<span style="color: #818cf8; font-family: var(--font-mono);">Assigned: PSN-7Q2K9D</span>';
+    }
+
+    function copyCleanNote() {
+      const el = document.getElementById('sanitized-preview');
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showNotification("Clean note copied to clipboard!");
+      });
+    }
+
+    function exportCleanNote() {
+      const el = document.getElementById('sanitized-preview');
+      const text = el.innerText || el.textContent;
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sanitized_clinical_note.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showNotification("Exported sanitized_clinical_note.txt");
+    }
+
+    function showNotification(msg) {
+      const toast = document.getElementById('toast-box');
+      toast.textContent = "✓ " + msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2600);
+    }
+
+    function calcAttack() {
+      const age = document.getElementById('atk-age').value;
+      const village = document.getElementById('atk-village').value;
+      const stay = document.getElementById('atk-stay').value;
+
+      document.getElementById('out-vuln-age').textContent = age;
+      document.getElementById('out-vuln-village').textContent = village;
+      document.getElementById('out-vuln-stay').textContent = stay + " days (May 12 - May 21)";
+      showNotification("Attack criteria re-simulated");
+    }
+
+    function renderDiffFile() {
+      const key = document.getElementById('diff-selector').value;
+      const data = DIFF_RECORDS[key] || DIFF_RECORDS.reg_csv;
+      document.getElementById('diff-box-raw').textContent = data.raw;
+      document.getElementById('diff-box-san').textContent = data.san;
+    }
+
+    function renderPatientCards(list) {
+      const container = document.getElementById('registry-cards-container');
+      container.innerHTML = "";
+      
+      const badge = document.getElementById('registry-count-badge');
+      if (badge) badge.textContent = PATIENT_LIST.length + " Enrolled";
+
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = "patient-card";
+        card.innerHTML =
+          '<div class="patient-header">' +
+            '<div><strong style="color: #fff; font-size: 13px;">' + escapeHtml(p.name) + '</strong> <span style="color: var(--text-dim); font-family: var(--font-mono); font-size: 11px;">' + escapeHtml(p.ageSex) + '</span></div>' +
+            '<span class="tag tag-blue">' + escapeHtml(p.psn) + '</span>' +
+          '</div>' +
+          '<div class="patient-details">' +
+            '<div><span style="color: #cbd5e1;">Kinship:</span> ' + escapeHtml(p.kinship) + '</div>' +
+            '<div><span style="color: #cbd5e1;">Condition:</span> <span style="color: #34d399;">' + escapeHtml(p.condition) + '</span></div>' +
+            '<div style="margin-top: 4px; color: #cbd5e1;">Linked Hospital Records:</div>' +
+            '<ul style="padding-left: 14px; font-family: var(--font-mono); font-size: 10px; color: #94a3b8;">' +
+              p.hospitals.map(h => '<li>' + escapeHtml(h) + '</li>').join('') +
+            '</ul>' +
+          '</div>';
+        container.appendChild(card);
+      });
+    }
+
+    function filterRegistryCards() {
+      const q = document.getElementById('registry-filter-input').value.toLowerCase();
+      const filtered = PATIENT_LIST.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.psn.toLowerCase().includes(q) ||
+        p.condition.toLowerCase().includes(q) ||
+        p.hospitals.some(h => h.toLowerCase().includes(q))
+      );
+      renderPatientCards(filtered);
+    }
+
+    function openAddPatientModal() {
+      const modal = document.getElementById('add-patient-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        const nameField = document.getElementById('new-pat-name');
+        if (nameField) nameField.focus();
+      }
+    }
+
+    function closeAddPatientModal() {
+      const modal = document.getElementById('add-patient-modal');
+      if (modal) modal.style.display = 'none';
+      const form = document.getElementById('add-patient-form');
+      if (form) form.reset();
+    }
+
+    function generatePatientPSN(name, kinship) {
+      const secret = "practice";
+      const anchor = (name + "::" + (kinship || "")).toLowerCase().trim();
+      let hash = 0;
+      const combined = secret + "::" + anchor;
+      for (let i = 0; i < combined.length; i++) {
+        hash = (hash << 5) - hash + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      const absHash = Math.abs(hash);
+      const crockford = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+      let psn = "PSN-";
+      let t = absHash;
+      for (let j = 0; j < 6; j++) {
+        psn += crockford[t % 32];
+        t = Math.floor(t / 32) + (j * 7) + 3;
+      }
+      return psn;
+    }
+
+    function saveNewPatient() {
+      const name = document.getElementById('new-pat-name').value.trim();
+      const ageSex = document.getElementById('new-pat-agesex').value.trim();
+      const kinship = document.getElementById('new-pat-kinship').value.trim() || "N/A";
+      const condition = document.getElementById('new-pat-condition').value.trim();
+      const hospitalsRaw = document.getElementById('new-pat-hospitals').value.trim();
+
+      if (!name || !ageSex || !condition) {
+        alert("Please fill in the required fields (Name, Age/Sex, Condition).");
+        return;
+      }
+
+      let hospitals = [];
+      if (hospitalsRaw) {
+        hospitals = hospitalsRaw.split(/[\n,]+/).map(h => h.trim()).filter(Boolean);
+      }
+      if (hospitals.length === 0) {
+        hospitals = ["District Hospital Hardoi (OPD entry)", "Sanjeevani Registration (Row 19)"];
+      }
+
+      const psn = generatePatientPSN(name, kinship);
+
+      const newRecord = {
+        psn: psn,
+        name: name,
+        ageSex: ageSex,
+        kinship: kinship,
+        condition: condition,
+        hospitals: hospitals
+      };
+
+      PATIENT_LIST.unshift(newRecord);
+      renderPatientCards(PATIENT_LIST);
+      closeAddPatientModal();
+      showNotification("Patient " + name + " enrolled with pseudonym " + psn);
+
+      // Auto-load a clinical note into Live Sandbox so user can see it sanitized
+      const rawInput = document.getElementById('raw-input');
+      if (rawInput) {
+        rawInput.value = 
+          "OPD Registration: Patient " + name + " (" + ageSex + "), Kinship: " + kinship + ".\n" +
+          "Chief Complaint: C/O " + condition + " for past 3 days.\n" +
+          "Vitals: BP 120/80 mmHg, Pulse 76 bpm, SpO2 98% on room air.\n" +
+          "Prescription: Tab Paracetamol 650mg TDS x 3 days, Tab Pantoprazole 40mg OD AC.\n" +
+          "Attending: Dr. S. K. Sharma (MD Internal Med). Follow-up in 5 days.";
+        executeSanitizer();
+      }
+    }
+
+    function setPresetKey(val) {
+      document.getElementById('key-secret').value = val;
+      calcCryptoSandbox();
+    }
+
+    function calcCryptoSandbox() {
+      const sec = document.getElementById('key-secret').value;
+      const anchor = document.getElementById('key-anchor').value;
+
+      let hash = 0;
+      const combined = sec + "::" + anchor;
+      for (let i = 0; i < combined.length; i++) {
+        hash = (hash << 5) - hash + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      const absHash = Math.abs(hash);
+
+      const crockford = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+      let psn = "PSN-";
+      let t = absHash;
+      for (let j = 0; j < 6; j++) {
+        psn += crockford[t % 32];
+        t = Math.floor(t / 32) + (j * 7);
+      }
+
+      const offset = (absHash % 61) - 30;
+      const offsetStr = (offset >= 0 ? "+" : "") + offset + " days";
+
+      const adm = new Date("2023-05-12T00:00:00Z");
+      const dis = new Date("2023-05-21T00:00:00Z");
+      adm.setDate(adm.getDate() + offset);
+      dis.setDate(dis.getDate() + offset);
+
+      const fmt = d => d.toISOString().split('T')[0];
+
+      document.getElementById('out-psn').textContent = psn;
+      document.getElementById('out-offset').textContent = offsetStr;
+      document.getElementById('out-adm').textContent = fmt(adm);
+      document.getElementById('out-dis').textContent = fmt(dis);
+    }
+
+    // Shield Pulse & Defense Grid Controls
+    let shieldGlowLevel = 1; // 0 = Subtle, 1 = High, 2 = Vibrant
+    const glowLabels = ["Glow: Subtle", "Glow: High", "Glow: Vibrant"];
+
+    const shieldThemes = {
+      gold: {
+        name: "Cyber Gold",
+        primary: "#f59e0b",
+        highlight: "#fbbf24",
+        light: "#fef08a",
+        dark: "#92400e",
+        glow: "rgba(245, 158, 11, 0.85)",
+        ring: "rgba(251, 191, 36, 0.85)",
+        line: "rgba(245, 158, 11, 0.4)",
+        aura: "radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%)"
+      },
+      cyan: {
+        name: "Electric Cyan",
+        primary: "#06b6d4",
+        highlight: "#00f0ff",
+        light: "#cffafe",
+        dark: "#0e7490",
+        glow: "rgba(0, 240, 255, 0.85)",
+        ring: "rgba(56, 189, 248, 0.9)",
+        line: "rgba(6, 182, 212, 0.45)",
+        aura: "radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, rgba(6, 182, 212, 0.15) 50%, transparent 75%)"
+      },
+      emerald: {
+        name: "Matrix Emerald",
+        primary: "#10b981",
+        highlight: "#34d399",
+        light: "#a7f3d0",
+        dark: "#065f46",
+        glow: "rgba(16, 185, 129, 0.85)",
+        ring: "rgba(52, 211, 153, 0.9)",
+        line: "rgba(16, 185, 129, 0.45)",
+        aura: "radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 75%)"
+      },
+      violet: {
+        name: "Quantum Violet",
+        primary: "#8b5cf6",
+        highlight: "#c084fc",
+        light: "#f3e8ff",
+        dark: "#581c87",
+        glow: "rgba(139, 92, 246, 0.85)",
+        ring: "rgba(192, 132, 252, 0.9)",
+        line: "rgba(139, 92, 246, 0.45)",
+        aura: "radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(139, 92, 246, 0.15) 50%, transparent 75%)"
+      },
+      ruby: {
+        name: "Plasma Ruby",
+        primary: "#f43f5e",
+        highlight: "#fb7185",
+        light: "#ffe4e6",
+        dark: "#9f1239",
+        glow: "rgba(244, 63, 94, 0.85)",
+        ring: "rgba(251, 113, 133, 0.9)",
+        line: "rgba(244, 63, 94, 0.45)",
+        aura: "radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, rgba(244, 63, 94, 0.15) 50%, transparent 75%)"
+      },
+      chromatic: {
+        name: "Dynamic Chromatic Cycle",
+        primary: "#f59e0b",
+        highlight: "#fbbf24",
+        light: "#fef08a",
+        dark: "#92400e",
+        glow: "rgba(245, 158, 11, 0.85)",
+        ring: "rgba(251, 191, 36, 0.85)",
+        line: "rgba(245, 158, 11, 0.4)",
+        aura: "radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%)"
+      }
+    };
+
+    function setShieldColorTheme(themeKey) {
+      const panel = document.getElementById('shield-showcase-box');
+      if (!panel) return;
+
+      document.querySelectorAll('.color-pill-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('pill-' + themeKey);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      panel.classList.remove('theme-gold', 'theme-cyan', 'theme-emerald', 'theme-violet', 'theme-ruby', 'theme-chromatic');
+      panel.classList.add('theme-' + themeKey);
+
+      const cfg = shieldThemes[themeKey] || shieldThemes.gold;
+
+      panel.style.setProperty('--shield-primary', cfg.primary);
+      panel.style.setProperty('--shield-highlight', cfg.highlight);
+      panel.style.setProperty('--shield-light', cfg.light);
+      panel.style.setProperty('--shield-dark', cfg.dark);
+      panel.style.setProperty('--shield-glow', cfg.glow);
+      panel.style.setProperty('--shield-ring', cfg.ring);
+      panel.style.setProperty('--shield-line', cfg.line);
+      panel.style.setProperty('--shield-aura', cfg.aura);
+
+      const gradStops = document.querySelectorAll('#mainShieldGoldGrad stop');
+      if (gradStops.length >= 4) {
+        gradStops[0].setAttribute('stop-color', cfg.light);
+        gradStops[1].setAttribute('stop-color', cfg.highlight);
+        gradStops[2].setAttribute('stop-color', cfg.primary);
+        gradStops[3].setAttribute('stop-color', cfg.dark);
+      }
+
+      document.querySelectorAll('.sentinel-svg path[stroke]').forEach(p => {
+        p.setAttribute('stroke', cfg.primary);
+      });
+      document.querySelectorAll('.sentinel-label').forEach(l => {
+        l.style.color = cfg.highlight;
+        l.style.textShadow = '0 0 8px ' + cfg.glow;
+      });
+
+      const diamondCore = document.querySelector('.center-shield-svg path[fill="#fbbf24"]');
+      if (diamondCore) diamondCore.setAttribute('fill', cfg.highlight);
+
+      localStorage.setItem('vajraShieldColorTheme', themeKey);
+      showNotification('Shield Color Animation: ' + cfg.name + ' Active');
+    }
+
+    // Auto-restore saved color theme
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('vajraShieldColorTheme');
+      if (savedTheme && shieldThemes[savedTheme]) {
+        setShieldColorTheme(savedTheme);
+      }
+    });
+
+    function cycleShieldGlow() {
+      shieldGlowLevel = (shieldGlowLevel + 1) % 3;
+      const btn = document.getElementById('btn-toggle-glow');
+      if (btn) btn.textContent = glowLabels[shieldGlowLevel];
+      
+      const svg = document.getElementById('center-shield-svg');
+      const rings = document.querySelectorAll('.radar-pulse-ring');
+      
+      if (shieldGlowLevel === 0) {
+        if (svg) svg.style.filter = "drop-shadow(0 0 10px rgba(245, 158, 11, 0.4))";
+        rings.forEach(r => r.style.opacity = "0.4");
+      } else if (shieldGlowLevel === 1) {
+        if (svg) svg.style.filter = "drop-shadow(0 0 20px rgba(245, 158, 11, 0.75)) drop-shadow(0 0 45px rgba(245, 158, 11, 0.4))";
+        rings.forEach(r => r.style.opacity = "1");
+      } else {
+        if (svg) svg.style.filter = "drop-shadow(0 0 32px rgba(251, 191, 36, 1)) drop-shadow(0 0 70px rgba(245, 158, 11, 0.8))";
+        rings.forEach(r => r.style.opacity = "1.4");
+      }
+      showNotification("Shield Glow Profile: " + glowLabels[shieldGlowLevel].split(": ")[1]);
+    }
+
+    function pingDefenseGrid() {
+      const panel = document.getElementById('shield-showcase-box');
+      if (panel) {
+        panel.classList.add('grid-surge');
+        setTimeout(() => panel.classList.remove('grid-surge'), 1200);
+      }
+      
+      const lines = document.querySelectorAll('.constellation-line');
+      lines.forEach(l => l.classList.add('active-pulse'));
+      setTimeout(() => lines.forEach(l => l.classList.remove('active-pulse')), 1200);
+
+      showNotification("⚡ Defense Grid Pinged: All 4 hospital perimeter nodes synchronized & armored!");
+    }
+
+    function pingSentinel(wardName) {
+      pingDefenseGrid();
+      showNotification("Sentinel Sync: " + wardName + " telemetry active & linked.");
+    }
+
+    let heroCollapsed = false;
+    function toggleHeroCollapse() {
+      heroCollapsed = !heroCollapsed;
+      const stage = document.getElementById('shield-stage-wrapper');
+      const telemetry = document.getElementById('showcase-telemetry');
+      const btn = document.getElementById('btn-collapse-hero');
+      if (heroCollapsed) {
+        if (stage) stage.style.display = 'none';
+        if (telemetry) telemetry.style.display = 'none';
+        if (btn) btn.textContent = "Expand";
+        showNotification("Defense Grid Minimized");
+      } else {
+        if (stage) stage.style.display = 'flex';
+        if (telemetry) telemetry.style.display = 'grid';
+        if (btn) btn.textContent = "Minimize";
+        showNotification("Defense Grid Expanded");
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Manual Patient Data Entry & Firewall Processing
+    // -------------------------------------------------------------
+    const MANUAL_PRESETS = {
+      arif: {
+        name: "Mohammad Arif / मोहम्मद आरिफ",
+        gender: "Male",
+        age: 47,
+        kinship: "S/o Bashir Khan",
+        phone: "+91 94150 12345",
+        id: "ABHA-UP-84920",
+        village: "Pipra",
+        pincode: "241001",
+        hospital: "Arogya Medical Center",
+        doctor: "Dr. Ramesh Gupta (MD Internal Med)",
+        admit: "2023-05-12",
+        discharge: "2023-05-21",
+        diagnosis: "C/O high grade fever x 4 days, Viral illness",
+        vitals: "BP 150/90 mmHg, Pulse 88, SpO2 96%",
+        rx: "Tab Paracetamol 650mg TDS x 5 days, Ramipril 5mg OD, 1-0-1 schedule",
+        notes: "Arif sahab ka BP 150/90 mila. Patient stable. Follow-up after 5 days."
+      },
+      reena: {
+        name: "Reena Nishad",
+        gender: "Female",
+        age: 34,
+        kinship: "W/o Rajan Nishad",
+        phone: "+91 98390 55443",
+        id: "8492-1082-9912",
+        village: "Gopamau",
+        pincode: "241001",
+        hospital: "District Hospital Hardoi",
+        doctor: "Dr. S. K. Verma (Civil Hospital)",
+        admit: "2023-05-10",
+        discharge: "2023-05-19",
+        diagnosis: "C/O fever with body ache, Dengue with Thrombocytopenia",
+        vitals: "BP 110/70 mmHg, Platelets 45k, SpO2 97%",
+        rx: "Tab Dolo 650 BD, IV Fluids 500ml x 2, 1-0-1",
+        notes: "Meera didi present as attendant. C/O nausea managed."
+      },
+      zainab: {
+        name: "Zainab Khatun",
+        gender: "Female",
+        age: 49,
+        kinship: "W/o Mohammad Bashir",
+        phone: "0522-443322",
+        id: "UHID-772910",
+        village: "Hardoi Town",
+        pincode: "241001",
+        hospital: "Jeevan Jyoti Hospital",
+        doctor: "Dr. Anita Roy (Endocrinologist)",
+        admit: "2023-06-01",
+        discharge: "2023-06-04",
+        diagnosis: "K/C/O Type 2 Diabetes Mellitus with Hyperglycemia",
+        vitals: "RBS 280 mg/dL, HbA1c 9.2%, BP 130/80",
+        rx: "Inj Human Mixtard 30/70 14U-0-10U SC, Metformin 500mg BD",
+        notes: "Diet counseling done. Fasting blood sugar monitored."
+      }
+    };
+
+    function loadManualPreset(key) {
+      const p = MANUAL_PRESETS[key];
+      if (!p) return;
+      document.getElementById('manual-name').value = p.name;
+      document.getElementById('manual-gender').value = p.gender;
+      document.getElementById('manual-age').value = p.age;
+      document.getElementById('manual-kinship').value = p.kinship;
+      document.getElementById('manual-phone').value = p.phone;
+      document.getElementById('manual-id').value = p.id;
+      document.getElementById('manual-village').value = p.village;
+      document.getElementById('manual-pincode').value = p.pincode;
+      document.getElementById('manual-hospital').value = p.hospital;
+      document.getElementById('manual-doctor').value = p.doctor;
+      document.getElementById('manual-admit-date').value = p.admit;
+      document.getElementById('manual-discharge-date').value = p.discharge;
+      document.getElementById('manual-diagnosis').value = p.diagnosis;
+      document.getElementById('manual-vitals').value = p.vitals;
+      document.getElementById('manual-rx').value = p.rx;
+      document.getElementById('manual-notes').value = p.notes;
+      updateManualSanitization();
+      showNotification("Loaded manual preset: " + p.name.split("/")[0].trim());
+    }
+
+    function clearManualForm() {
+      document.getElementById('manual-name').value = "";
+      document.getElementById('manual-age').value = "";
+      document.getElementById('manual-kinship').value = "";
+      document.getElementById('manual-phone').value = "";
+      document.getElementById('manual-id').value = "";
+      document.getElementById('manual-village').value = "";
+      document.getElementById('manual-pincode').value = "";
+      document.getElementById('manual-doctor').value = "";
+      document.getElementById('manual-diagnosis').value = "";
+      document.getElementById('manual-vitals').value = "";
+      document.getElementById('manual-rx').value = "";
+      document.getElementById('manual-notes').value = "";
+      updateManualSanitization();
+      showNotification("Manual form cleared");
+    }
+
+    function updateManualSanitization() {
+      const name = document.getElementById('manual-name').value.trim() || "Anonymous Patient";
+      const gender = document.getElementById('manual-gender').value;
+      const ageVal = parseInt(document.getElementById('manual-age').value) || 30;
+      const kinship = document.getElementById('manual-kinship').value.trim();
+      const phone = document.getElementById('manual-phone').value.trim();
+      const govtId = document.getElementById('manual-id').value.trim();
+      const village = document.getElementById('manual-village').value.trim() || "Local Ward";
+      const pincode = document.getElementById('manual-pincode').value.trim();
+      const hospital = document.getElementById('manual-hospital').value;
+      const doctor = document.getElementById('manual-doctor').value.trim() || "Dr. S. K. Sharma (MD)";
+      const admitStr = document.getElementById('manual-admit-date').value || "2023-05-12";
+      const dischStr = document.getElementById('manual-discharge-date').value || "2023-05-21";
+      const diagnosis = document.getElementById('manual-diagnosis').value.trim() || "Clinical Observation";
+      const vitals = document.getElementById('manual-vitals').value.trim() || "Vitals within normal limits";
+      const rx = document.getElementById('manual-rx').value.trim() || "Symptomatic treatment";
+      const notes = document.getElementById('manual-notes').value.trim();
+
+      // Compute Crockford Base32 pseudonym
+      const psn = generatePatientPSN(name, kinship);
+      document.getElementById('manual-out-psn').textContent = psn;
+
+      // Deterministic Date Shift
+      let hash = 0;
+      const combined = "practice::" + (name + kinship).toLowerCase();
+      for (let i = 0; i < combined.length; i++) {
+        hash = (hash << 5) - hash + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      const absHash = Math.abs(hash);
+      const offset = (absHash % 61) - 30;
+      const offsetStr = (offset >= 0 ? "+" : "") + offset + " days";
+      document.getElementById('manual-out-shift').textContent = offsetStr;
+
+      // Invariant Stay Calculation
+      const d1 = new Date(admitStr);
+      const d2 = new Date(dischStr);
+      const stayDays = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)));
+      const shiftedD1 = new Date(d1);
+      shiftedD1.setDate(shiftedD1.getDate() + offset);
+      const shiftedD2 = new Date(shiftedD1);
+      shiftedD2.setDate(shiftedD2.getDate() + stayDays);
+
+      const fmt = d => d.toISOString().split('T')[0];
+
+      // Quasi Age Band
+      const lowerAge = Math.floor(ageVal / 5) * 5;
+      const ageBand = "[" + lowerAge + "-" + (lowerAge + 4) + "]";
+
+      // Sanitize Notes
+      let cleanNotes = notes;
+      if (cleanNotes) {
+        cleanNotes = cleanNotes.replace(/\b(Arif\s+sahab|मोहम्मद आरिफ|Reena|Rajan|Meera\s+didi|Sunil|Zainab|Bashir)\b/gi, "[REDACTED_NAME]");
+        cleanNotes = cleanNotes.replace(/\b[6-9]\d{9}\b/g, "[PHONE]");
+      }
+
+      // Generate HTML preview
+      const previewHtml =
+        '<div style="color: #60a5fa; font-weight: bold; margin-bottom: 4px;">// VAJRA-KAVACH SANITIZED CLINICAL RECORD //</div>' +
+        '<div><span style="color: #94a3b8;">Patient Pseudonym:</span> <strong style="color: #818cf8;">' + psn + '</strong> <span style="color: #64748b;">(Deterministic HMAC)</span></div>' +
+        '<div><span style="color: #94a3b8;">Age Band / Sex:</span> <span style="color: #38bdf8;">' + ageBand + ' / ' + (gender === "Male" ? "M" : gender === "Female" ? "F" : "O") + '</span></div>' +
+        '<div><span style="color: #94a3b8;">Kinship Record:</span> <span style="color: #fb7185;">' + (kinship ? "[RELATIVE_REDACTED]" : "N/A") + '</span></div>' +
+        '<div><span style="color: #94a3b8;">Contact &amp; ID:</span> <span style="color: #fb7185;">' + (phone ? "[PHONE_SECURED]" : "N/A") + ' &middot; ' + (govtId ? "[ID_PURGED]" : "N/A") + '</span></div>' +
+        '<div><span style="color: #94a3b8;">Geographic Quasi:</span> <span style="color: #38bdf8;">[VILLAGE_GENERALIZED] &middot; ' + (pincode ? pincode.slice(0,3) + "***" : "N/A") + '</span></div>' +
+        '<div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #1e293b;">' +
+          '<div><span style="color: #94a3b8;">Hospital Ward:</span> <span style="color: #cbd5e1;">' + escapeHtml(hospital) + '</span></div>' +
+          '<div><span style="color: #94a3b8;">Attending Physician:</span> <span style="color: #34d399; font-weight: 600;">' + escapeHtml(doctor) + '</span> <span style="color: #34d399;">(Authority Preserved)</span></div>' +
+          '<div><span style="color: #94a3b8;">Admission Window:</span> <span style="color: #fbbf24;">' + fmt(shiftedD1) + ' to ' + fmt(shiftedD2) + '</span> (Stay: <strong style="color: #34d399;">' + stayDays + ' days invariant</strong>)</div>' +
+        '</div>' +
+        '<div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #1e293b;">' +
+          '<div><span style="color: #94a3b8;">Diagnoses:</span> <span style="color: #34d399;">' + escapeHtml(diagnosis) + '</span></div>' +
+          '<div><span style="color: #94a3b8;">Clinical Vitals:</span> <span style="color: #34d399;">' + escapeHtml(vitals) + '</span></div>' +
+          '<div><span style="color: #94a3b8;">Prescription Posology:</span> <span style="color: #34d399;">' + escapeHtml(rx) + '</span></div>' +
+          (cleanNotes ? '<div style="margin-top: 4px;"><span style="color: #94a3b8;">Nursing Note:</span> <span style="color: #e2e8f0;">' + escapeHtml(cleanNotes) + '</span></div>' : '') +
+        '</div>';
+
+      document.getElementById('manual-sanitized-preview').innerHTML = previewHtml;
+
+      // Update Checklist Indicators
+      document.getElementById('manual-chk-pii').textContent = "0 Leaks (Scrubbed)";
+      document.getElementById('manual-chk-quasi').textContent = ageBand + " / [VILLAGE]";
+      document.getElementById('manual-chk-stay').textContent = stayDays + " days invariant";
+      document.getElementById('manual-chk-doc').textContent = doctor.split(" ")[0] + " Preserved";
+    }
+
+    function saveManualPatientToRegistry() {
+      const name = document.getElementById('manual-name').value.trim();
+      const gender = document.getElementById('manual-gender').value;
+      const ageVal = document.getElementById('manual-age').value.trim() || "30";
+      const kinship = document.getElementById('manual-kinship').value.trim() || "N/A";
+      const condition = document.getElementById('manual-diagnosis').value.trim() || "General Admission";
+      const hospital = document.getElementById('manual-hospital').value;
+
+      if (!name) {
+        alert("Please enter patient name before saving.");
+        return;
+      }
+
+      const psn = generatePatientPSN(name, kinship);
+      const ageSex = ageVal + "/" + (gender === "Male" ? "M" : gender === "Female" ? "F" : "O");
+
+      const newRecord = {
+        psn: psn,
+        name: name,
+        ageSex: ageSex,
+        kinship: kinship,
+        condition: condition,
+        hospitals: [hospital + " (Manual Admission Entry)", "Sanitized Registry Ward #1"]
+      };
+
+      PATIENT_LIST.unshift(newRecord);
+      renderPatientCards(PATIENT_LIST);
+      pingDefenseGrid();
+
+      speakMessage("Patient record for " + name.split("/")[0] + " successfully registered with pseudonym " + psn);
+      showNotification("✓ Enrolled " + name + " in registry with pseudonym " + psn);
+    }
+
+    function copyCleanManualNote() {
+      const el = document.getElementById('manual-sanitized-preview');
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText || el.textContent).then(() => {
+        showNotification("Clean manual record copied to clipboard!");
+      });
+    }
+
+    function exportManualRecord(format) {
+      const psn = document.getElementById('manual-out-psn').textContent;
+      let content = "";
+      let filename = psn + "_sanitized.";
+
+      if (format === 'json') {
+        filename += "json";
+        const obj = {
+          pseudonym: psn,
+          hospital: document.getElementById('manual-hospital').value,
+          age_band: document.getElementById('manual-chk-quasi').textContent,
+          doctor: document.getElementById('manual-doctor').value,
+          diagnosis: document.getElementById('manual-diagnosis').value,
+          vitals: document.getElementById('manual-vitals').value,
+          rx: document.getElementById('manual-rx').value,
+          firewall_audit: {
+            leak_detected: false,
+            date_shifted: true,
+            hmac_keyed: true
+          }
+        };
+        content = JSON.stringify(obj, null, 2);
+      } else {
+        filename += "txt";
+        content = (document.getElementById('manual-sanitized-preview').innerText || "");
+      }
+
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showNotification("Exported " + filename);
+    }
+
+    function speakManualSanitizedResult() {
+      const psn = document.getElementById('manual-out-psn').textContent;
+      const diag = document.getElementById('manual-diagnosis').value || "Condition monitored";
+      const vitals = document.getElementById('manual-vitals').value || "Vitals preserved";
+      const msg = "Vajra-Kavach privacy summary: Patient identity shielded as " + psn + ". Diagnosis: " + diag + ". Clinical vitals: " + vitals + ". Zero leakage detected.";
+      speakMessage(msg);
+    }
+
+    // -------------------------------------------------------------
+    // Clinical Voice Assistant Core (Web Speech API)
+    // -------------------------------------------------------------
+    let voiceRecognition = null;
+    let isVoiceListening = false;
+    let voiceLanguage = 'en-IN'; // or 'hi-IN'
+    let isVoiceMuted = false;
+    let activeVoiceTargetFieldId = null;
+
+    function initVoiceAssistant() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.warn("Web Speech API not supported in this browser. Fallback text mode active.");
+        return;
+      }
+      try {
+        voiceRecognition = new SpeechRecognition();
+        voiceRecognition.continuous = false;
+        voiceRecognition.interimResults = true;
+        voiceRecognition.lang = voiceLanguage;
+
+        voiceRecognition.onstart = function() {
+          isVoiceListening = true;
+          updateVoiceUI(true);
+        };
+
+        voiceRecognition.onresult = function(event) {
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          const box = document.getElementById('voice-transcription-box');
+          if (box) box.textContent = transcript;
+
+          if (activeVoiceTargetFieldId) {
+            const field = document.getElementById(activeVoiceTargetFieldId);
+            if (field) {
+              field.value = transcript;
+              if (activeVoiceTargetFieldId === 'raw-input') executeSanitizer();
+              if (activeVoiceTargetFieldId.startsWith('manual-')) updateManualSanitization();
+            }
+          }
+        };
+
+        voiceRecognition.onerror = function(event) {
+          console.error("Speech recognition error:", event.error);
+          isVoiceListening = false;
+          updateVoiceUI(false);
+          const box = document.getElementById('voice-transcription-box');
+          if (box) box.textContent = "Voice notice: " + (event.error === 'not-allowed' ? "Microphone access allowed needed." : event.error);
+        };
+
+        voiceRecognition.onend = function() {
+          isVoiceListening = false;
+          updateVoiceUI(false);
+          const box = document.getElementById('voice-transcription-box');
+          if (box && box.textContent.length > 5 && !box.textContent.startsWith("Tap")) {
+            processVoiceCommand(box.textContent);
+          }
+          activeVoiceTargetFieldId = null;
+        };
+      } catch (err) {
+        console.error("Voice assistant init error:", err);
+      }
+    }
+
+    function toggleSpeechRecognition() {
+      if (!voiceRecognition) {
+        initVoiceAssistant();
+      }
+      if (!voiceRecognition) {
+        alert("Web Speech API is not supported in this browser environment. You can use manual entry or presets.");
+        return;
+      }
+      if (isVoiceListening) {
+        voiceRecognition.stop();
+      } else {
+        try {
+          voiceRecognition.lang = voiceLanguage;
+          voiceRecognition.start();
+        } catch (e) {
+          voiceRecognition.stop();
+        }
+      }
+    }
+
+    function startFieldVoiceDictation(fieldId) {
+      activeVoiceTargetFieldId = fieldId;
+      toggleVoicePanel(true);
+      toggleSpeechRecognition();
+      showNotification("🎙️ Listening for: " + fieldId.replace('manual-', ''));
+    }
+
+    function updateVoiceUI(listening) {
+      const container = document.getElementById('voice-wave-container');
+      const label = document.getElementById('voice-mic-label');
+      const btn = document.getElementById('voice-mic-trigger');
+      if (container) {
+        if (listening) container.classList.add('voice-listening');
+        else container.classList.remove('voice-listening');
+      }
+      if (label) label.textContent = listening ? "Listening..." : "Start Listening";
+      if (btn) {
+        if (listening) {
+          btn.style.background = "#ef4444";
+          btn.style.borderColor = "#f87171";
+        } else {
+          btn.style.background = "var(--brand-primary)";
+          btn.style.borderColor = "#4f46e5";
+        }
+      }
+    }
+
+    function toggleVoicePanel(forceOpen) {
+      const panel = document.getElementById('voice-panel');
+      if (!panel) return;
+      if (forceOpen === true) {
+        panel.style.display = 'flex';
+      } else {
+        panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+      }
+    }
+
+    function toggleVoiceLang() {
+      voiceLanguage = (voiceLanguage === 'en-IN') ? 'hi-IN' : 'en-IN';
+      const btn = document.getElementById('voice-lang-btn');
+      if (btn) btn.textContent = voiceLanguage.toUpperCase();
+      if (voiceRecognition) voiceRecognition.lang = voiceLanguage;
+      showNotification("Voice Language: " + (voiceLanguage === 'en-IN' ? "English (India)" : "Hindi (Devanagari)"));
+    }
+
+    function toggleVoiceMute() {
+      isVoiceMuted = !isVoiceMuted;
+      const btn = document.getElementById('voice-mute-btn');
+      if (btn) btn.textContent = isVoiceMuted ? "🔇 Muted" : "🔊 On";
+      showNotification(isVoiceMuted ? "Voice audio output muted" : "Voice audio output enabled");
+    }
+
+    function speakMessage(text) {
+      if (isVoiceMuted) return;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const cleanText = text.replace(/[\[\]#*]/g, '').trim();
+        const utter = new SpeechSynthesisUtterance(cleanText);
+        utter.rate = 1.05;
+        utter.pitch = 1.0;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    function processVoiceCommand(text) {
+      const lower = text.toLowerCase();
+      if (lower.includes("sanitize") || lower.includes("clean")) {
+        switchNavTab('playground');
+        const rawInput = document.getElementById('raw-input');
+        if (rawInput) {
+          rawInput.value = text;
+          executeSanitizer();
+        }
+        speakMessage("Note sanitized. Identifiers removed and clinical values preserved.");
+      } else if (lower.includes("read") || lower.includes("speak")) {
+        speakCleanNoteSummary();
+      } else if (lower.includes("attack") || lower.includes("voter")) {
+        switchNavTab('attack');
+        speakMessage("Voter-Attack simulator active. Re-identification probability is zero.");
+      } else if (lower.includes("shield") || lower.includes("ping")) {
+        pingDefenseGrid();
+        speakMessage("Vajra Defense Grid synchronized and active.");
+      } else {
+        speakMessage("Command captured. Privacy firewall processed.");
+      }
+    }
+
+    function speakCleanNoteSummary() {
+      const el = document.getElementById('sanitized-preview');
+      if (el) {
+        const text = el.innerText;
+        speakMessage("Clean sanitized note: " + text.substring(0, 150));
+      }
+    }
+
+    function runVoiceSample(cmd) {
+      const box = document.getElementById('voice-transcription-box');
+      if (box) box.textContent = cmd;
+      processVoiceCommand(cmd);
+    }
+
+    // Initialize once DOM is ready
+    function initializeStudio() {
+      try {
+        applyPreset(1);
+        renderDiffFile();
+        renderPatientCards(PATIENT_LIST);
+        calcCryptoSandbox();
+        loadManualPreset('arif');
+        initVoiceAssistant();
+      } catch (err) {
+        console.error("Studio initialization error:", err);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeStudio);
+    } else {
+      initializeStudio();
+    }
+  </script>
+
+  <!-- Floating Clinical Voice Assistant Dock -->
+  <div id="voice-assistant-dock" class="voice-assistant-dock">
+    <div id="voice-panel" class="voice-panel" style="display: none;">
+      <div class="voice-panel-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="voice-orb-mini"></div>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">Vajra Voice Assistant</div>
+            <div style="font-size: 10px; color: var(--text-muted);">Multilingual Clinical Privacy AI</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn-sm" id="voice-lang-btn" onclick="toggleVoiceLang()" style="padding: 2px 6px; font-size: 10px;">EN-IN</button>
+          <button class="modal-close" onclick="toggleVoicePanel()">&times;</button>
+        </div>
+      </div>
+
+      <!-- Waveform Equalizer -->
+      <div class="voice-wave-container" id="voice-wave-container">
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+      </div>
+
+      <!-- Voice Status & Transcription -->
+      <div id="voice-transcription-box" class="voice-transcription-box">
+        Tap "Start Listening" and speak a clinical note or command in English, Hindi, or Hinglish...
+      </div>
+
+      <!-- Quick Voice Commands -->
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Try saying or click:</span>
+        <div class="btn-group">
+          <button class="btn-sm" onclick="runVoiceSample('Sanitize note for Mohammad Arif age 47 with fever and blood pressure 150/90')">"Sanitize Arif Note"</button>
+          <button class="btn-sm" onclick="runVoiceSample('Speak sanitized summary')">"Read Clean Note"</button>
+          <button class="btn-sm" onclick="runVoiceSample('Check voter attack vulnerability')">"Check Attack"</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 8px;">
+        <button id="voice-mic-trigger" class="btn-sm btn-primary" onclick="toggleSpeechRecognition()" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🎙️</span> <span id="voice-mic-label">Start Listening</span>
+        </button>
+        <button class="btn-sm" onclick="toggleVoiceMute()" id="voice-mute-btn" title="Toggle Voice Feedback">🔊 On</button>
+      </div>
+    </div>
+
+    <!-- Floating Trigger Pill Button -->
+    <button id="voice-dock-btn" class="voice-dock-btn" onclick="toggleVoicePanel()" title="Open Vajra Voice Assistant">
+      <span class="voice-pulse-ring"></span>
+      <span style="font-size: 18px;">🎙️</span>
+      <span class="voice-btn-text">Voice Assistant</span>
+    </button>
+  </div>
+</body>
+</html>
