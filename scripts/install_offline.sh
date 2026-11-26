@@ -8,7 +8,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 WHEELHOUSE_DIR="${PROJECT_ROOT}/wheelhouse"
-REQUIREMENTS_FILE="${PROJECT_ROOT}/requirements.txt"
+if [ -f "${PROJECT_ROOT}/requirements-offline.txt" ]; then
+  REQUIREMENTS_FILE="${PROJECT_ROOT}/requirements-offline.txt"
+else
+  REQUIREMENTS_FILE="${PROJECT_ROOT}/requirements.txt"
+fi
 
 echo "======================================================================"
 echo "🛡️  Vajra-Kavach: Installing From Local Wheelhouse (100% Offline)"

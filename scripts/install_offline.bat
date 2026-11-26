@@ -8,7 +8,11 @@ setlocal enabledelayedexpansion
 set "SCRIPT_DIR=%~dp0"
 set "PROJECT_ROOT=%SCRIPT_DIR%.."
 set "WHEELHOUSE_DIR=%PROJECT_ROOT%\wheelhouse"
-set "REQUIREMENTS_FILE=%PROJECT_ROOT%\requirements.txt"
+if exist "%PROJECT_ROOT%\requirements-offline.txt" (
+    set "REQUIREMENTS_FILE=%PROJECT_ROOT%\requirements-offline.txt"
+) else (
+    set "REQUIREMENTS_FILE=%PROJECT_ROOT%\requirements.txt"
+)
 
 echo ======================================================================
 echo [Vajra-Kavach] Installing From Local Wheelhouse (100% Offline Windows)
