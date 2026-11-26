@@ -1,0 +1,26 @@
+SANJEEVANI MULTISPECIALITY HOSPITAL, LUCKNOW
+DISCHARGE SUMMARY
+
+Patient Name: PSN-1JMRK1        Age/Sex: 44 Yrs/F
+MRN: PSN-1JMRK1        MRN: PSN-1JMRK1
+[RELATIVE]: [HOUSE], [LOCALITY], [LOCALITY], [VILLAGE], Tehsil Lalganj, Distt. Rae Bareli - 229***
+Mobile: [PHONE]
+ABHA No: [ABHA]
+Consultant: Dr. Vandana Kulshrestha (MD Medicine)
+Ward/Bed: [LOCALITY] (Medicine) / Bed 20
+Date of Admission: 21/01/2026
+Date of Discharge: 30/01/2026
+
+Diagnosis: Dengue, unspecified (A97.9); Type 2 diabetes mellitus without complications (E11.9); Addison's disease (E27.1); 
+Presenting complaints: C/O fever for 9 days, generalised weakness.
+History: K/C/O DM2 x 6 yrs. No significant past history.
+Course in hospital: Patient PSN-1JMRK1. BP 109/76 mmHg, Pulse 117/min, Temp 100.6 F, SpO2 92%. Haemoglobin 9.8 g/dL. HbA1c 7.7 %. Random Blood Sugar 305 mg/dL. Treated conservatively. PSN-1JMRK1 ki condition ab stable hai.
+
+Medications on discharge:
+ 1. Tab Paracetamol 650 mg 1-1-1 x 30 days
+ 2. Tab Metformin 500 mg 1-0-1 x 15 days
+ 3. Tab Glimepiride 1 mg 1-0-0 x 15 days
+ 4. Tab Pantoprazole 40 mg 1-0-0 x 30 days
+
+Advice: Low salt, diabetic diet. Review in OPD after 2 weeks PSN-1JMRK1 Dr. Vandana Kulshrestha.
+[RELATIVE], Mob. [PHONE]

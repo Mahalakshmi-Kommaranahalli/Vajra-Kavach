@@ -1,0 +1,40 @@
+{
+  "facility": {
+    "name": "District Hospital Hardoi",
+    "type": "District Hospital",
+    "state": "UP"
+  },
+  "exported_at": "2026-11-20T08:15:00+05:30",
+  "schema": "dhh.registration.v3",
+  "patients": [
+    {
+      "uhid": "PSN-8NP3PV",
+      "name": {
+        "first": "PSN-8NP3PV",
+        "last": "PSN-8NP3PV",
+        "local": "PSN-8NP3PV"
+      },
+      "gender": "female",
+      "dob": "1972-07-28",
+      "age": "50-54",
+      "guardian": "[RELATIVE]",
+      "contact": {
+        "mobile": "[PHONE]",
+        "email": null
+      },
+      "address": {
+        "line": "[HOUSE], [LOCALITY], [LOCALITY], [LANDMARK], Tehsil Bilgram, Distt. Hardoi",
+        "village": "[VILLAGE]",
+        "tehsil": "Bilgram",
+        "district": "Hardoi",
+        "pin": "241***"
+      },
+      "ids": {
+        "aadhar_no": 0,
+        "abha": null,
+        "abha_address": null
+      },
+      "registered_on": "2024-07-15"
+    }
+  ]
+}

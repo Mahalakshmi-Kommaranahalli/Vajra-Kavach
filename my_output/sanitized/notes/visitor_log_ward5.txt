@@ -1,0 +1,3 @@
+VISITOR LOG
+18:40 - [CANARY] (attendant, bed 12), mob [PHONE]
+19:10 - Dr. Ramesh Srivastava took evening round.

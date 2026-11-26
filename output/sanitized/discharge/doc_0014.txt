@@ -1,0 +1,28 @@
+SANJEEVANI MULTISPECIALITY HOSPITAL, LUCKNOW
+DISCHARGE SUMMARY
+
+Patient Name: PSN-J6AX33        Age/Sex: 48 Yrs/F
+MRN: PSN-J6AX33        MRN: PSN-J6AX33
+[RELATIVE]: [HOUSE], [VILLAGE], Tehsil Malihabad, Distt. Lucknow - 226***
+Mobile: [PHONE]
+Consultant: Dr. Ramesh Srivastava (MD Medicine)
+Ward/Bed: [LOCALITY] (Medicine) / Bed 23
+Date of Admission: 02/02/2026
+Date of Discharge: 11/02/2026
+DOB: 26/08/1977
+
+Diagnosis: Essential (primary) hypertension (I10); Type 2 diabetes mellitus without complications (E11.9); 
+Presenting complaints: C/O fever for 3 days, generalised weakness.
+History: K/C/O DM2 x 6 yrs. No significant past history.
+Course in hospital: Patient PSN-J6AX33. BP 161/93 mmHg, Pulse 82/min, Temp 98.9 F, SpO2 92%. Haemoglobin 7.6 g/dL. HbA1c 9.9 %. Random Blood Sugar 284 mg/dL. Treated conservatively. [RELATIVE] ki condition ab stable hai.
+
+Medications on discharge:
+ 1. Tab Amlodipine 5 mg 0-0-1 x 30 days
+ 2. Tab Telmisartan 40 mg 1-0-0 x 15 days
+ 3. Tab Ramipril 5 mg 0-0-1 x 30 days
+ 4. Tab Metformin 500 mg 1-0-1 x 30 days
+ 5. Tab Glimepiride 1 mg 1-0-0 x 30 days
+ 6. Tab Pantoprazole 40 mg 1-0-0 x 15 days
+
+Advice: Low salt, diabetic diet. Review in OPD after 2 weeks PSN-J6AX33 Dr. Ramesh Srivastava.
+[RELATIVE], Mob. [PHONE]

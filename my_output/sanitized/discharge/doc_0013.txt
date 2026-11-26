@@ -1,0 +1,23 @@
+JEEVAN JYOTI CHARITABLE HOSPITAL, BARABANKI
+DISCHARGE SUMMARY
+
+Patient Name: PSN-MNJC6A        Age/Sex: 53 Yrs/F
+UHID: PSN-MNJC6A        IPD No: PSN-MNJC6A
+[RELATIVE]: [HOUSE], [LOCALITY], [LOCALITY], [VILLAGE], Tehsil Nawabganj, Distt. Barabanki - 225***
+Mobile: [PHONE]
+Consultant: Dr. Ramesh Srivastava (MD Medicine)
+Ward/Bed: [LOCALITY] (Medicine) / Bed 10
+Date of Admission: 29-09-2025
+Date of Discharge: 11-10-2025
+DOB: 02-11-1971
+
+Diagnosis: Urinary tract infection, site not specified (N39.0); 
+Presenting complaints: C/O fever for 8 days, generalised weakness.
+History: No K/C/O DM/HTN. No significant past history.
+Course in hospital: Patient admitted with above complaints. BP 135/67 mmHg, Pulse 105/min, Temp 97.9 F, SpO2 95%. Haemoglobin 11.0 g/dL. Random Blood Sugar 231 mg/dL. Serum Creatinine 1.5 mg/dL. Treated conservatively. PSN-MNJC6A ki condition ab stable hai.
+
+Medications on discharge:
+ 1. Cap Doxycycline 100 mg 1-0-1 x 30 days
+
+Advice: Low salt, diabetic diet. Review in OPD after 2 weeks with Dr. Ramesh Srivastava.
+[RELATIVE], Mob. [PHONE]

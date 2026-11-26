@@ -1,0 +1,28 @@
+District Hospital Hardoi, Hardoi
+डिस्चार्ज सारांश
+
+PSN-8NP3PV का नाम: PSN-8NP3PV    आयु: 54 वर्ष / महिला
+[RELATIVE].: PSN-8NP3PV    आईपीडी सं.: PSN-8NP3PV
+पता: [HOUSE], [LOCALITY]ी, [VILLAGE], तहसील बिलग्राम, जिला हरदोई - 241***
+मोबाइल: [PHONE]
+भर्ती की तारीख: 26.10.2026
+छुट्टी की तारीख: 30.10.2026
+
+निदान: निमोनिया (J18.9); मलेरिया (B54); 
+PSN-8NP3PV को 8 दिन से बुखार था। BP 133/69, Pulse 79/min।
+
+Medications on discharge:
+ 1. Tab Azithromycin 500 mg 1-0-0 x 30 days
+ 2. Tab Paracetamol 650 mg 1-1-1 x 15 days
+ 3. Tab Artesunate 100 mg 1-0-1 x 15 days
+ 4. Tab Pantoprazole 40 mg 1-0-0 x 15 days
+ 5. Tab Ramipril 5 mg 0-0-1 x 15 days
+
+Address (attendant): [RELATIVE], [LOCALITY]
+OPD: C/O fever for 8 days
+Ward: 4 (Medicine)
+Medicine: Ramipril 5 mg
+Dr. Ramesh Srivastava reviewed the patient.
+
+Advice: Low salt, diabetic diet. Review in OPD after 2 weeks with Dr. Ramesh Srivastava.
+[RELATIVE], Mob. [PHONE]

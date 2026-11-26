@@ -1,0 +1,10 @@
+bill_no,uhid,patient_name,pmjay_id,payer_pan,policy_no,package_code,procedure,admission_date,discharge_date,amount_inr,status
+BL/26/000239,PSN-RQ43EW,PSN-RQ43EW,[INSURANCE]-[PHONE],[PAN],,MG006A,Caesarean section,10/06/2026,16/06/2026,14000,pending
+BL/26/000240,PSN-59FJAB,PSN-59FJAB,[INSURANCE],[PAN],,SG039B,Laparoscopic cholecystectomy,05/05/2026,10/05/2026,78500,pending
+BL/26/000241,PSN-2KY8ME,PSN-2KY8ME,[INSURANCE],[PAN],,SE001A,Cataract surgery (phacoemulsification),24/01/2026,26/01/2026,101***,approved
+BL/26/000242,PSN-MNJC6A,PSN-MNJC6A,[INSURANCE],[PAN],,SE001A,Cataract surgery (phacoemulsification),29/09/2025,11/10/2025,118***,approved
+BL/26/000243,PSN-XAMPWN,PSN-XAMPWN,[INSURANCE],[PAN],,SG001A,Appendicectomy,11/12/2025,19/12/2025,6000,pending
+BL/26/000244,PSN-ZSDFGJ,PSN-ZSDFGJ,[INSURANCE],[PAN],,SG001A,Appendicectomy,22/08/2026,31/08/2026,54500,pending
+BL/26/000245,PSN-TE2NW9,PSN-TE2NW9,[INSURANCE]-[PHONE],[PAN],,SE001A,Cataract surgery (phacoemulsification),20/03/2027,24/03/2027,64500,approved
+BL/26/000246,PSN-6C963B,PSN-6C963B,,[PAN],[INSURANCE],SG039B,Laparoscopic cholecystectomy,03/06/2026,13/06/2026,14500,approved
+BL/26/000247,PSN-2D6AYK,PSN-2D6AYK,[INSURANCE],[PAN],,SG071A,Whipple procedure (pancreaticoduodenectomy),02/10/2026,06/10/2026,82000,pending

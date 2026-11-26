@@ -1,0 +1,119 @@
+{
+  "_export_meta": {
+    "system": "eHospital OPD module",
+    "hospital": "Jeevan Jyoti Charitable Hospital",
+    "exported_by": "opd.records.clerk",
+    "generated_at": "2026-04-28T18:00:00+05:30",
+    "source_path": "D:\\HIS\\exports\\opd\\anonymous_export\\visits_2026_04.json"
+  },
+  "visits": [
+    {
+      "visit_id": "OPD/26/04/00109",
+      "patient_ref": "PSN-MNJC6A",
+      "visit_date": "17-10-2025",
+      "department": "Medicine",
+      "doctor": "Dr. Vandana Kulshrestha",
+      "complaints": "C/O pain abdomen x 6 days",
+      "history": "K/C/O HTN on treatment",
+      "vitals": {
+        "bp": "134/84",
+        "pulse": 96,
+        "temp_f": 98.9,
+        "spo2": 90,
+        "weight_kg": 10
+      },
+      "diagnosis": [
+        {
+          "code": "N39.0",
+          "display": "Urinary tract infection, site not specified"
+        }
+      ],
+      "rx": [
+        {
+          "drug": "Doxycycline",
+          "strength": "100 mg",
+          "frequency": "1-0-1",
+          "duration": "30 days"
+        }
+      ],
+      "notes": "[RELATIVE] ka BP 134/84, bukhar utar gaya hai. Review after 2 weeks.",
+      "patient": {
+        "name": "PSN-MNJC6A",
+        "age_sex": "53/F",
+        "mobile": "[PHONE]"
+      }
+    },
+    {
+      "visit_id": "OPD/26/04/00110",
+      "patient_ref": "PSN-MNJC6A",
+      "visit_date": "31-10-2025",
+      "department": "Medicine",
+      "doctor": "Dr. Vandana Kulshrestha",
+      "complaints": "C/O pain abdomen x 5 days",
+      "history": "H/O snake bite 3 yrs back",
+      "vitals": {
+        "bp": "120/78",
+        "pulse": 110,
+        "temp_f": 98.9,
+        "spo2": 94,
+        "weight_kg": 90
+      },
+      "diagnosis": [
+        {
+          "code": "N39.0",
+          "display": "Urinary tract infection, site not specified"
+        }
+      ],
+      "rx": [
+        {
+          "drug": "Doxycycline",
+          "strength": "100 mg",
+          "frequency": "1-0-1",
+          "duration": "7 days"
+        }
+      ],
+      "notes": "PSN-MNJC6A ka BP 120/78, BP abhi bhi high hai. Review after 2 weeks.",
+      "patient": {
+        "name": "PSN-MNJC6A",
+        "age_sex": "53/F",
+        "mobile": "[PHONE]"
+      }
+    },
+    {
+      "visit_id": "OPD/26/04/00111",
+      "patient_ref": "PSN-7DP05D",
+      "visit_date": "15-03-2026",
+      "department": "Medicine",
+      "doctor": "Dr. Vandana Kulshrestha",
+      "complaints": "C/O loose stools x 6 days",
+      "history": "H/O TB 5 yrs back, completed ATT",
+      "vitals": {
+        "bp": "129/85",
+        "pulse": 67,
+        "temp_f": 102.4,
+        "spo2": 90,
+        "weight_kg": 29
+      },
+      "diagnosis": [
+        {
+          "code": "A97.9",
+          "display": "Dengue, unspecified"
+        }
+      ],
+      "rx": [
+        {
+          "drug": "Paracetamol",
+          "strength": "650 mg",
+          "frequency": "1-1-1",
+          "duration": "14 days"
+        }
+      ],
+      "notes": "PSN-7DP05D ka BP 129/85, sugar control nahi hai. Review after 2 weeks.",
+      "patient": {
+        "name": "PSN-7DP05D",
+        "age_sex": "60/M",
+        "mobile": "[PHONE]"
+      }
+    }
+  ]
+}

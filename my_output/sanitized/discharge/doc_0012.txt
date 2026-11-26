@@ -1,0 +1,23 @@
+SANJEEVANI MULTISPECIALITY HOSPITAL, LUCKNOW
+DISCHARGE SUMMARY
+
+Patient Name: PSN-WM35V8        Age/Sex: 52 Yrs/F
+UHID: PSN-WM35V8        IPD No: PSN-WM35V8
+[RELATIVE]: [HOUSE], [LANDMARK], [VILLAGE], Tehsil Dalmau, Distt. Rae Bareli - 229***
+Mobile: [PHONE]
+Consultant: Dr. Vandana Kulshrestha (MD Medicine)
+Ward/Bed: [LOCALITY] (Medicine) / Bed 29
+Date of Admission: 07/03/2026
+Date of Discharge: 19/03/2026
+DOB: 27/11/1973
+
+Diagnosis: Urinary tract infection, site not specified (N39.0); 
+Presenting complaints: C/O fever for 6 days, generalised weakness.
+History: No K/C/O DM/HTN. No significant past history.
+Course in hospital: Patient admitted with above complaints. BP 128/85 mmHg, Pulse 64/min, Temp 99.0 F, SpO2 97%. Haemoglobin 8.2 g/dL. Random Blood Sugar 216 mg/dL. Serum Creatinine 3.2 mg/dL. Treated conservatively. PSN-WM35V8 ki condition ab stable hai.
+
+Medications on discharge:
+ 1. Cap Doxycycline 100 mg 1-0-1 x 15 days
+
+Advice: Low salt, diabetic diet. Review in OPD after 2 weeks with Dr. Vandana Kulshrestha.
+[RELATIVE], Mob. [PHONE]

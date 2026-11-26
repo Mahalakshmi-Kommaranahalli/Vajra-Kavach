@@ -1,0 +1,10 @@
+Sanjeevani Multispeciality Hospital - OPD Prescription
+Name: PSN-CQM0W0   Age: 91/M   MRN: PSN-CQM0W0
+Date: 18/12/2025
+Mob: [PHONE]
+C/O: fever x 9 days, body ache
+K/C/O: J45.9
+Rx
+1. Inh Salbutamol inhaler 100 mcg 2 puffs x 5 days
+Adv: Low salt diet. Review after 2 wks.
+Dr. Harjeet Bedi (MD Pulmonary Medicine)

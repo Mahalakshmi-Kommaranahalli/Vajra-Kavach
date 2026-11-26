@@ -1,0 +1,4 @@
+bill_no,uhid,patient_name,pmjay_id,payer_pan,policy_no,package_code,procedure,admission_date,discharge_date,amount_inr,status
+BL/26/000235,PSN-1GYCDX,PSN-1GYCDX,,[PAN],[INSURANCE],SG050A,Inguinal hernia repair,23/12/2025,28/12/2025,91000,settled
+BL/26/000236,PSN-QTD9GQ,PSN-QTD9GQ,[INSURANCE],[PAN],,MG064A,Haemodialysis session,16/09/2026,28/09/2026,15000,pending
+BL/26/000237,PSN-YM0ACV,PSN-YM0ACV,[INSURANCE],[PAN],,SG039B,Laparoscopic cholecystectomy,16/05/2026,26/05/2026,79500,approved

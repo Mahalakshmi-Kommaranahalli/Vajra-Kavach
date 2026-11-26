@@ -1,0 +1,24 @@
+AROGYA SEVA SADAN, SITAPUR
+DISCHARGE SUMMARY
+
+Patient Name: PSN-GK4MDX        Age/Sex: 46 Yrs/M
+UHID: PSN-GK4MDX        IPD No: PSN-GK4MDX
+[RELATIVE]: [HOUSE], [LOCALITY], [LOCALITY], [LANDMARK], [VILLAGE], Tehsil Misrikh, Distt. Sitapur - 261***
+Mobile: [PHONE]
+ABHA No: 91-[AADHAAR]
+Consultant: Dr. Imtiaz Ahmed (MS Surgery)
+Ward/Bed: [LOCALITY] (Surgery) / Bed 28
+Date of Admission: 31/05/2026
+Date of Discharge: 29/10/2026
+
+Diagnosis: Anaemia, unspecified (D64.9); 
+Presenting complaints: C/O fever for 3 days, generalised weakness.
+History: No K/C/O DM/HTN. No significant past history.
+Course in hospital: Patient admitted with above complaints. BP 127/66 mmHg, Pulse 104/min, Temp 97.8 F, SpO2 89%. Haemoglobin 9.9 g/dL. Random Blood Sugar 258 mg/dL. Serum Creatinine 2.4 mg/dL. Treated conservatively. PSN-GK4MDX ki condition ab stable hai.
+Procedure: Cataract surgery (phacoemulsification) done on day 2.
+
+Medications on discharge:
+ 1. Tab Ferrous sulphate + Folic acid 100 mg + 0.5 mg 0-1-0 x 30 days
+
+Advice: Low salt, diabetic diet. Review in OPD after 2 weeks with Dr. Imtiaz Ahmed.
+[RELATIVE], Mob. [PHONE]
