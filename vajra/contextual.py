@@ -30,9 +30,8 @@ RE_DOCTOR = re.compile(
 
 # Medical complaints (C/O ... or Hindi/Hinglish symptom durations)
 RE_COMPLAINT = re.compile(
-    r"(?i)\bC/O\s+(?:fever|pain|cough|headache|weakness|breathlessness|vomiting|loose stools|"
-    r"pet mein dard|kamzori|chakkar|giddiness|generalised weakness|[^\n,;]+?(?:days|weeks|wks|months|दिन|हफ़्ते))\b|"
-    r"\b\d+\s+दिन\s+से\s+(?:बुखार|पेट\s+दर्द)\b|\b\d+\s+हफ़्ते\s+से\s+खांसी\b|"
+    r"(?i)\bC/O\s+(?:(?:severe|mild|moderate|acute|chronic|high|grade|low)\s+)*(?:fever|pain|cough|headache|weakness|breathlessness|vomiting|loose\s+stools|photophobia|nausea|chest\s+pain|giddiness|malaise|swelling|burning|chills|cold|body\s+ache|pet\s+mein\s+dard|kamzori|chakkar|generalised\s+weakness|[^\n,;]+?(?:days|weeks|wks|months|दिन|हफ़्ते))\b|"
+    r"\bC/O\s+[^\n;.]+(?=\.|\n|Diagnosis|Rx|HR|BP|Pulse|Adv|$|\b[A-Z][a-z]+:)|\b\d+\s+दिन\s+से\s+(?:बुखार|पेट\s+दर्द)\b|\b\d+\s+हफ़्ते\s+से\s+खांसी\b|"
     r"\bpet\s+mein\s+dard\s+\d+\s+din\s+se\b|\bkamzori\s+\d+\s+hafte\s+se\b|\bchakkar\s+aana\s+\d+\s+din\s+se\b"
 )
 

@@ -64,8 +64,9 @@ RE_SAMPLE_RECEIVED = re.compile(
 # Relative indicators
 RE_RELATIVE = re.compile(
     r"(?i)(?:"
-    r"\b(?:S/o|D/o|W/o|H/o|C/O|daughter\s+of|son\s+of|wife\s+of|husband\s+of|father\s+of|mother\s+of|care\s+of|guardian\s+of|relative\s+of)\s+([A-Za-z\u0900-\u097f]+(?:\s+[A-Za-z\u0900-\u097f]+)*)"
-    r"|\b(?:Relative(?:\s*/\s*Guardian)?|Guardian|Attendant|Next\s+of\s+Kin|Pita/Pati\s+ka\s+Naam|पिता(?:\s+का\s+नाम)?|पति(?:\s+का\s+नाम)?|माता(?:\s+का\s+नाम)?|अभिभावक)\s*[:\(]\s*(?:(?:S/o|D/o|W/o|H/o|C/O)\s+)?([A-Za-z\u0900-\u097f]+(?:\s+[A-Za-z\u0900-\u097f]+)*)"
+    r"\b(?:S/o|D/o|W/o|H/o|daughter\s+of|son\s+of|wife\s+of|husband\s+of|father\s+of|mother\s+of|care\s+of|guardian\s+of|relative\s+of)\s+([A-Za-z\u0900-\u097f]+(?:\s+[A-Za-z\u0900-\u097f]+)*)"
+    r"|\b(?:Father(?:\x27s\s+Name)?|Mother(?:\x27s\s+Name)?|Parent(?:\x27s\s+Name)?|Spouse(?:\x27s\s+Name)?|Husband(?:\x27s\s+Name)?|Wife(?:\x27s\s+Name)?|Relative(?:\s*/\s*Guardian)?|Guardian|Attendant|Next\s+of\s+Kin|Pita/Pati\s+ka\s+Naam|पिता(?:\s+का\s+नाम)?|पति(?:\s+का\s+नाम)?|माता(?:\s+का\s+नाम)?|अभिभावक)\s*[:\(]\s*(?:(?:S/o|D/o|W/o|H/o|C/O)\s+)?([A-Za-z\u0900-\u097f]+(?:\s+[A-Za-z\u0900-\u097f]+)*)"
+    r"|\bC/O\s+([A-Z\u0900-\u097f][a-z\u0900-\u097f]+(?:\s+[A-Z\u0900-\u097f][a-z\u0900-\u097f]+)*)"
     r"|(?:के\s+पुत्र|की\s+पुत्री|की\s+पत्नी|के\s+पति|के\s+पिता|की\s+माता)\s+([A-Za-z\u0900-\u097f]+(?:\s+[A-Za-z\u0900-\u097f]+)*)"
     r")",
     re.UNICODE
@@ -117,6 +118,10 @@ RE_HOUSE = re.compile(
 RE_LOCALITY = re.compile(
     r"\b(?:Ward\s+\d+|वार्ड\s+\d+|Mohalla\s+[A-Za-z\u0900-\u097f\s]+|मोहल्ला\s+[A-Za-z\u0900-\u097f\s]+)\b",
     re.IGNORECASE
+)
+
+RE_AREA_LABEL = re.compile(
+    r"(?i)\b(Area|Address|Locality|Colony|Sector|Street|Road|पता|निवासी|स्थान)\s*[:\s]\s*([^\n,;]+?)(?=[,\n;]|PIN|\d{6}|$)"
 )
 
 RE_LANDMARK = re.compile(
@@ -296,16 +301,28 @@ def sanitize_text(
     masked_text = RE_SAMPLE_RECEIVED.sub(repl_sample, masked_text)
 
     # Step 8: Standalone Relatives
+    CLINICAL_SYMPTOM_WORDS = {
+        "headache", "fever", "pain", "cough", "vomiting", "nausea",
+        "photophobia", "weakness", "diarrhea", "cold", "chest", "breathlessness"
+    }
+
     def repl_rel(m):
         nonlocal count
-        count += 1
+        raw_val = None
         for g in m.groups():
             if g:
-                raw_rel = g.strip()
-                clean = re.sub(r"(?i)\b(?:late|shri|smt|mr\.?|mrs\.?|ms\.?|श्री|श्रीमती)\s+", "", raw_rel).strip()
-                if clean:
-                    doc_relative_names.add(clean)
-                doc_relative_names.add(raw_rel)
+                raw_val = g.strip()
+                break
+        if not raw_val:
+            return m.group(0)
+        # Avoid misclassifying clinical complaints like "C/o severe headache"
+        if set(raw_val.lower().split()).intersection(CLINICAL_SYMPTOM_WORDS):
+            return m.group(0)
+        count += 1
+        clean = re.sub(r"(?i)\b(?:late|shri|smt|mr\.?|mrs\.?|ms\.?|श्री|श्रीमती)\s+", "", raw_val).strip()
+        if clean:
+            doc_relative_names.add(clean)
+        doc_relative_names.add(raw_val)
         return "[RELATIVE]"
     masked_text = RE_RELATIVE.sub(repl_rel, masked_text)
 
@@ -372,6 +389,16 @@ def sanitize_text(
     count += n
     masked_text, n = RE_LANDMARK.subn("[LANDMARK]", masked_text)
     count += n
+
+    def repl_area(m):
+        nonlocal count
+        lbl = m.group(1)
+        val = m.group(2).strip()
+        if val in ("[LOCALITY]", "[HOUSE]", "[VILLAGE]", "[LANDMARK]") or not val:
+            return m.group(0)
+        count += 1
+        return f"{lbl}: [LOCALITY]"
+    masked_text = RE_AREA_LABEL.sub(repl_area, masked_text)
     
     def repl_v_label(m):
         nonlocal count

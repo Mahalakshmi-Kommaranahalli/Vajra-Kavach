@@ -19,41 +19,32 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 # Import Vajra core modules
+import uuid
+import hashlib
 try:
     from vajra.detectors import sanitize_text
-    from vajra.pseudonyms import derive_pseudonym, generate_record_id
-    from vajra.storage import get_storage_engine
-    from vajra.airgap import is_airgap_active
+    from vajra.crypto import pseudonym as derive_pseudonym
 except ImportError:
-    # Graceful fallbacks if running in standalone cloud sandbox
-    def sanitize_text(text, patient_pid="PSN-DEMO"):
-        import re
-        patterns = [
-            (r"\b\d{4}\s\d{4}\s\d{4}\b", "[AADHAAR]"),
-            (r"\b\d{2}-\d{4}-\d{4}-\d{4}\b", "[ABHA_NUMBER]"),
-            (r"\b[A-Z]{5}[0-9]{4}[A-Z]\b", "[PAN]"),
-            (r"\b(?:\+91[\-\s]?)?[6-9]\d{9}\b", "[PHONE]"),
-            (r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]"),
-        ]
-        redacted = text
-        count = 0
-        for pat, tag in patterns:
-            redacted, n = re.subn(pat, tag, redacted)
-            count += n
-        return redacted, count
+    # If path issue in standalone script
+    sys.path.insert(0, str(ROOT_DIR))
+    from vajra.detectors import sanitize_text
+    from vajra.crypto import pseudonym as derive_pseudonym
 
-    def derive_pseudonym(key_id, salt="demo"):
-        import hashlib
-        return "PSN-" + hashlib.sha256((key_id + salt).encode()).hexdigest()[:6].upper()
+def generate_record_id():
+    return f"rec_{uuid.uuid4().hex[:12]}"
 
-    def generate_record_id():
-        import uuid
-        return f"rec_{uuid.uuid4().hex[:12]}"
-
-    def is_airgap_active():
+def is_airgap_active():
+    try:
+        from vajra.airgap import is_offline_mode
+        return is_offline_mode()
+    except Exception:
         return True
 
-    def get_storage_engine():
+def get_storage_engine():
+    try:
+        from vajra.storage import get_storage
+        return get_storage()
+    except Exception:
         return None
 
 # Page Configuration
