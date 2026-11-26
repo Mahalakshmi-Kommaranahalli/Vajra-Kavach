@@ -248,6 +248,72 @@ st.markdown(f"""
         font-weight: 600;
         font-size: 0.8rem;
     }}
+
+    /* Form Labels (Raw Clinical Input, Patient Full Name, etc.) */
+    .stApp label,
+    .stApp label p,
+    .stApp label span,
+    .stMarkdown label,
+    div[data-testid="stWidgetLabel"] p,
+    div[data-testid="stWidgetLabel"] label {{
+        color: #f8fafc !important;
+        font-weight: 700 !important;
+        font-size: 14.5px !important;
+        letter-spacing: 0.02em !important;
+    }}
+
+    /* All Text Input & Text Area Boxes - Deep Black Font Color & Clear White Background */
+    .stTextArea textarea,
+    .stTextInput input,
+    textarea,
+    input[type="text"],
+    div[data-baseweb="textarea"] textarea,
+    div[data-baseweb="input"] input {{
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        background-color: #ffffff !important;
+        caret-color: #000000 !important;
+        font-weight: 600 !important;
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+        border-radius: 8px !important;
+        border: 1.5px solid #94a3b8 !important;
+    }}
+
+    /* Input Focus State */
+    .stTextArea textarea:focus,
+    .stTextInput input:focus,
+    div[data-baseweb="textarea"] textarea:focus,
+    div[data-baseweb="input"] input:focus {{
+        border-color: #0284c7 !important;
+        box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.3) !important;
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+    }}
+
+    /* Placeholder text styling */
+    .stTextArea textarea::placeholder,
+    .stTextInput input::placeholder,
+    textarea::placeholder,
+    input::placeholder {{
+        color: #64748b !important;
+        -webkit-text-fill-color: #64748b !important;
+        font-weight: 400 !important;
+        opacity: 1 !important;
+    }}
+
+    /* Selectbox Styling */
+    div[data-baseweb="select"] > div {{
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1.5px solid #94a3b8 !important;
+        border-radius: 8px !important;
+    }}
+    div[data-baseweb="select"] * {{
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+        font-weight: 600 !important;
+    }}
 </style>
 
 <div class="shield-container">
