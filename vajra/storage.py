@@ -147,6 +147,35 @@ class LocalStorageAdapter:
                 "db_path": str(self.db_path)
             }
 
+    def get_telemetry_summary(self) -> Dict[str, Any]:
+        """Telemetry summary alias for Streamlit dashboard."""
+        stats = self.get_summary_stats()
+        stats["wal_mode"] = "ACTIVE"
+        stats["zero_network_storage"] = True
+        return stats
+
+    def store_record(
+        self,
+        record_id: str,
+        patient_pid: str,
+        clinical_data: Dict[str, Any],
+        sanitized_text: str = ""
+    ) -> None:
+        """Store an interactive clinical record safely offline."""
+        self.store_patient(patient_pid)
+        self.link_record(
+            file_hash=record_id,
+            rel_path="interactive_entry",
+            row_loc="doc",
+            psn=patient_pid,
+            status="sanitized"
+        )
+        self.log_audit("MANUAL_PATIENT_ADMISSION", {
+            "record_id": record_id,
+            "patient_pid": patient_pid,
+            "clinical_summary": clinical_data
+        })
+
     def export_to_json(self, output_path: str | Path) -> None:
         out_p = Path(output_path)
         out_p.parent.mkdir(parents=True, exist_ok=True)

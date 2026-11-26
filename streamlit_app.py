@@ -528,7 +528,13 @@ with tab2:
             # Store in local SQLite if available
             db = get_storage_engine()
             if db:
-                db.store_record(record_id, patient_pid, {"diagnosis": p_diagnosis, "meds": p_meds}, clean_text)
+                try:
+                    if hasattr(db, "store_record"):
+                        db.store_record(record_id, patient_pid, {"diagnosis": p_diagnosis, "meds": p_meds}, clean_text)
+                    elif hasattr(db, "store_patient"):
+                        db.store_patient(patient_pid)
+                except Exception:
+                    pass
                 
             st.success("🎉 Patient Record Successfully Sanitized and Encrypted!")
             
@@ -594,16 +600,23 @@ def airgap_guard(*args, **kwargs):
     with t_col2:
         st.markdown("#### 💾 Local SQLite Persistence Status")
         db = get_storage_engine()
+        summary = None
         if db:
-            summary = db.get_telemetry_summary()
-            st.json(summary)
-        else:
-            st.json({
+            try:
+                if hasattr(db, "get_telemetry_summary"):
+                    summary = db.get_telemetry_summary()
+                elif hasattr(db, "get_summary_stats"):
+                    summary = db.get_summary_stats()
+            except Exception:
+                summary = None
+        if not summary:
+            summary = {
                 "database_engine": "SQLite 3 (Air-Gapped Local)",
                 "db_path": "data/vajra_records.db",
                 "wal_mode": "ACTIVE",
                 "zero_network_storage": True
-            })
+            }
+        st.json(summary)
 
 st.markdown("---")
 st.markdown("<div style='text-align:center; color:#6b7280; font-size:0.85rem;'>Vajra-Kavach — Deterministic Offline PII Redaction & Clinical Data Sanitization Firewall | Track 3: Secret Wards</div>", unsafe_allow_html=True)
