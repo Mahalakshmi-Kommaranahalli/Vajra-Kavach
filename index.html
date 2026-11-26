@@ -282,6 +282,144 @@
       50% { r: 5.5; opacity: 1; filter: drop-shadow(0 0 8px #fbbf24); }
     }
 
+    /* Shield Color Theme Variables & Chromatic Cycle */
+    :root {
+      --shield-primary: #f59e0b;
+      --shield-highlight: #fbbf24;
+      --shield-light: #fef08a;
+      --shield-dark: #92400e;
+      --shield-glow: rgba(245, 158, 11, 0.8);
+      --shield-ring: rgba(251, 191, 36, 0.85);
+      --shield-line: rgba(245, 158, 11, 0.4);
+      --shield-aura: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-gold {
+      --shield-primary: #f59e0b;
+      --shield-highlight: #fbbf24;
+      --shield-light: #fef08a;
+      --shield-dark: #92400e;
+      --shield-glow: rgba(245, 158, 11, 0.85);
+      --shield-ring: rgba(251, 191, 36, 0.85);
+      --shield-line: rgba(245, 158, 11, 0.4);
+      --shield-aura: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-cyan {
+      --shield-primary: #06b6d4;
+      --shield-highlight: #00f0ff;
+      --shield-light: #cffafe;
+      --shield-dark: #0e7490;
+      --shield-glow: rgba(0, 240, 255, 0.85);
+      --shield-ring: rgba(56, 189, 248, 0.9);
+      --shield-line: rgba(6, 182, 212, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, rgba(6, 182, 212, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-emerald {
+      --shield-primary: #10b981;
+      --shield-highlight: #34d399;
+      --shield-light: #a7f3d0;
+      --shield-dark: #065f46;
+      --shield-glow: rgba(16, 185, 129, 0.85);
+      --shield-ring: rgba(52, 211, 153, 0.9);
+      --shield-line: rgba(16, 185, 129, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-violet {
+      --shield-primary: #8b5cf6;
+      --shield-highlight: #c084fc;
+      --shield-light: #f3e8ff;
+      --shield-dark: #581c87;
+      --shield-glow: rgba(139, 92, 246, 0.85);
+      --shield-ring: rgba(192, 132, 252, 0.9);
+      --shield-line: rgba(139, 92, 246, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(139, 92, 246, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-ruby {
+      --shield-primary: #f43f5e;
+      --shield-highlight: #fb7185;
+      --shield-light: #ffe4e6;
+      --shield-dark: #9f1239;
+      --shield-glow: rgba(244, 63, 94, 0.85);
+      --shield-ring: rgba(251, 113, 133, 0.9);
+      --shield-line: rgba(244, 63, 94, 0.45);
+      --shield-aura: radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, rgba(244, 63, 94, 0.15) 50%, transparent 75%);
+    }
+
+    .shield-showcase-panel.theme-chromatic {
+      animation: chromaticColorCycle 8s linear infinite !important;
+    }
+
+    @keyframes chromaticColorCycle {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .color-palette-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: rgba(11, 17, 28, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      width: fit-content;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 5;
+    }
+    .palette-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+    .color-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .color-pill-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .color-pill-btn.active {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--shield-highlight);
+      box-shadow: 0 0 10px var(--shield-glow);
+      color: #ffffff;
+    }
+    .color-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .chromatic-dot {
+      background: linear-gradient(135deg, #f59e0b, #00f0ff, #10b981, #a855f7, #f43f5e);
+      animation: spinChromaticDot 3s linear infinite;
+    }
+    @keyframes spinChromaticDot {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     /* Concentric Radar Pulse Rings */
     .radar-pulse-ring {
       position: absolute;
@@ -311,24 +449,24 @@
       0% {
         transform: translate(-50%, -50%) scale(0.65);
         opacity: 0.95;
-        border: 2px solid rgba(254, 240, 138, 0.9);
-        box-shadow: 0 0 18px rgba(245, 158, 11, 0.7), inset 0 0 12px rgba(245, 158, 11, 0.45);
+        border: 2px solid var(--shield-light);
+        box-shadow: 0 0 18px var(--shield-glow), inset 0 0 12px var(--shield-ring);
       }
       40% {
         opacity: 0.75;
-        border: 1.8px solid rgba(245, 158, 11, 0.7);
-        box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(245, 158, 11, 0.25);
+        border: 1.8px solid var(--shield-ring);
+        box-shadow: 0 0 30px var(--shield-glow), inset 0 0 20px var(--shield-glow);
       }
       80% {
         opacity: 0.25;
-        border: 1px solid rgba(217, 119, 6, 0.3);
-        box-shadow: 0 0 50px rgba(245, 158, 11, 0.2);
+        border: 1px solid var(--shield-primary);
+        box-shadow: 0 0 50px var(--shield-glow);
       }
       100% {
         transform: translate(-50%, -50%) scale(2.6);
         opacity: 0;
-        border: 0.5px solid rgba(217, 119, 6, 0);
-        box-shadow: 0 0 70px rgba(245, 158, 11, 0);
+        border: 0.5px solid transparent;
+        box-shadow: 0 0 70px transparent;
       }
     }
 
@@ -350,7 +488,7 @@
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(245, 158, 11, 0.1) 50%, transparent 75%);
+      background: var(--shield-aura);
       filter: blur(14px);
       pointer-events: none;
       animation: auraBreathe 3.6s ease-in-out infinite;
@@ -1284,6 +1422,29 @@
           <button class="btn-sm" id="btn-toggle-glow" onclick="cycleShieldGlow()">Glow: High</button>
           <button class="btn-sm" id="btn-collapse-hero" onclick="toggleHeroCollapse()" title="Toggle Compact View">Minimize</button>
         </div>
+      </div>
+
+      <!-- Interactive Shield Color & Animation Theme Bar -->
+      <div class="color-palette-bar">
+        <span class="palette-title">🎨 SHIELD COLOR:</span>
+        <button class="color-pill-btn active" id="pill-gold" onclick="setShieldColorTheme('gold')" title="Cyber Gold (Vajra Core)">
+          <span class="color-dot" style="background: #f59e0b; box-shadow: 0 0 8px #f59e0b;"></span> Gold
+        </button>
+        <button class="color-pill-btn" id="pill-cyan" onclick="setShieldColorTheme('cyan')" title="Electric Cyan (Cyber SOC)">
+          <span class="color-dot" style="background: #00f0ff; box-shadow: 0 0 8px #00f0ff;"></span> Cyan
+        </button>
+        <button class="color-pill-btn" id="pill-emerald" onclick="setShieldColorTheme('emerald')" title="Matrix Emerald (Air-Gap Active)">
+          <span class="color-dot" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></span> Emerald
+        </button>
+        <button class="color-pill-btn" id="pill-violet" onclick="setShieldColorTheme('violet')" title="Quantum Violet (Cryptographic)">
+          <span class="color-dot" style="background: #a855f7; box-shadow: 0 0 8px #a855f7;"></span> Violet
+        </button>
+        <button class="color-pill-btn" id="pill-ruby" onclick="setShieldColorTheme('ruby')" title="Plasma Ruby (Defense Alert)">
+          <span class="color-dot" style="background: #f43f5e; box-shadow: 0 0 8px #f43f5e;"></span> Ruby
+        </button>
+        <button class="color-pill-btn" id="pill-chromatic" onclick="setShieldColorTheme('chromatic')" title="Dynamic Color Changing Animation">
+          <span class="color-dot chromatic-dot"></span> 🌈 Dynamic Cycle
+        </button>
       </div>
 
       <!-- Main Stage with Shield Pulse, Radar Waves & Constellation Mesh -->
@@ -2515,6 +2676,128 @@
     // Shield Pulse & Defense Grid Controls
     let shieldGlowLevel = 1; // 0 = Subtle, 1 = High, 2 = Vibrant
     const glowLabels = ["Glow: Subtle", "Glow: High", "Glow: Vibrant"];
+
+    const shieldThemes = {
+      gold: {
+        name: "Cyber Gold",
+        primary: "#f59e0b",
+        highlight: "#fbbf24",
+        light: "#fef08a",
+        dark: "#92400e",
+        glow: "rgba(245, 158, 11, 0.85)",
+        ring: "rgba(251, 191, 36, 0.85)",
+        line: "rgba(245, 158, 11, 0.4)",
+        aura: "radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%)"
+      },
+      cyan: {
+        name: "Electric Cyan",
+        primary: "#06b6d4",
+        highlight: "#00f0ff",
+        light: "#cffafe",
+        dark: "#0e7490",
+        glow: "rgba(0, 240, 255, 0.85)",
+        ring: "rgba(56, 189, 248, 0.9)",
+        line: "rgba(6, 182, 212, 0.45)",
+        aura: "radial-gradient(circle, rgba(0, 240, 255, 0.45) 0%, rgba(6, 182, 212, 0.15) 50%, transparent 75%)"
+      },
+      emerald: {
+        name: "Matrix Emerald",
+        primary: "#10b981",
+        highlight: "#34d399",
+        light: "#a7f3d0",
+        dark: "#065f46",
+        glow: "rgba(16, 185, 129, 0.85)",
+        ring: "rgba(52, 211, 153, 0.9)",
+        line: "rgba(16, 185, 129, 0.45)",
+        aura: "radial-gradient(circle, rgba(16, 185, 129, 0.45) 0%, rgba(16, 185, 129, 0.15) 50%, transparent 75%)"
+      },
+      violet: {
+        name: "Quantum Violet",
+        primary: "#8b5cf6",
+        highlight: "#c084fc",
+        light: "#f3e8ff",
+        dark: "#581c87",
+        glow: "rgba(139, 92, 246, 0.85)",
+        ring: "rgba(192, 132, 252, 0.9)",
+        line: "rgba(139, 92, 246, 0.45)",
+        aura: "radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(139, 92, 246, 0.15) 50%, transparent 75%)"
+      },
+      ruby: {
+        name: "Plasma Ruby",
+        primary: "#f43f5e",
+        highlight: "#fb7185",
+        light: "#ffe4e6",
+        dark: "#9f1239",
+        glow: "rgba(244, 63, 94, 0.85)",
+        ring: "rgba(251, 113, 133, 0.9)",
+        line: "rgba(244, 63, 94, 0.45)",
+        aura: "radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, rgba(244, 63, 94, 0.15) 50%, transparent 75%)"
+      },
+      chromatic: {
+        name: "Dynamic Chromatic Cycle",
+        primary: "#f59e0b",
+        highlight: "#fbbf24",
+        light: "#fef08a",
+        dark: "#92400e",
+        glow: "rgba(245, 158, 11, 0.85)",
+        ring: "rgba(251, 191, 36, 0.85)",
+        line: "rgba(245, 158, 11, 0.4)",
+        aura: "radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0.12) 50%, transparent 75%)"
+      }
+    };
+
+    function setShieldColorTheme(themeKey) {
+      const panel = document.getElementById('shield-showcase-box');
+      if (!panel) return;
+
+      document.querySelectorAll('.color-pill-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('pill-' + themeKey);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      panel.classList.remove('theme-gold', 'theme-cyan', 'theme-emerald', 'theme-violet', 'theme-ruby', 'theme-chromatic');
+      panel.classList.add('theme-' + themeKey);
+
+      const cfg = shieldThemes[themeKey] || shieldThemes.gold;
+
+      panel.style.setProperty('--shield-primary', cfg.primary);
+      panel.style.setProperty('--shield-highlight', cfg.highlight);
+      panel.style.setProperty('--shield-light', cfg.light);
+      panel.style.setProperty('--shield-dark', cfg.dark);
+      panel.style.setProperty('--shield-glow', cfg.glow);
+      panel.style.setProperty('--shield-ring', cfg.ring);
+      panel.style.setProperty('--shield-line', cfg.line);
+      panel.style.setProperty('--shield-aura', cfg.aura);
+
+      const gradStops = document.querySelectorAll('#mainShieldGoldGrad stop');
+      if (gradStops.length >= 4) {
+        gradStops[0].setAttribute('stop-color', cfg.light);
+        gradStops[1].setAttribute('stop-color', cfg.highlight);
+        gradStops[2].setAttribute('stop-color', cfg.primary);
+        gradStops[3].setAttribute('stop-color', cfg.dark);
+      }
+
+      document.querySelectorAll('.sentinel-svg path[stroke]').forEach(p => {
+        p.setAttribute('stroke', cfg.primary);
+      });
+      document.querySelectorAll('.sentinel-label').forEach(l => {
+        l.style.color = cfg.highlight;
+        l.style.textShadow = '0 0 8px ' + cfg.glow;
+      });
+
+      const diamondCore = document.querySelector('.center-shield-svg path[fill="#fbbf24"]');
+      if (diamondCore) diamondCore.setAttribute('fill', cfg.highlight);
+
+      localStorage.setItem('vajraShieldColorTheme', themeKey);
+      showNotification('Shield Color Animation: ' + cfg.name + ' Active');
+    }
+
+    // Auto-restore saved color theme
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('vajraShieldColorTheme');
+      if (savedTheme && shieldThemes[savedTheme]) {
+        setShieldColorTheme(savedTheme);
+      }
+    });
 
     function cycleShieldGlow() {
       shieldGlowLevel = (shieldGlowLevel + 1) % 3;
