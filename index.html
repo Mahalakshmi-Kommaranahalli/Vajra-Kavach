@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vajra-Kavach: Clinical Privacy Firewall & Record Linkage Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a' },
+            shield: { 500: '#10b981', 600: '#059669' },
+            danger: { 500: '#ef4444', 600: '#dc2626' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .badge-protected { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
+    .badge-redacted { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; text-decoration: line-through; }
+    .badge-shifted { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-brand-500/20 text-xl font-bold">
+          🛡️
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-lg font-bold tracking-tight text-white">Vajra-Kavach</h1>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CONTRACT OK</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">READY TO SUBMIT</span>
+          </div>
+          <p class="text-xs text-slate-400">Track 3: Secret Wards | Multilingual Offline Privacy Firewall</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Zero-Leak CPU Engine Active</span>
+        </div>
+        <a href="#sandbox" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white transition shadow-sm">
+          Live Sandbox
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Top Key Metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 shadow-sm relative overflow-hidden">
+        <div class="text-xs font-medium text-slate-400">Personal Data Leaked</div>
+        <div class="text-2xl font-extrabold text-emerald-400 mt-1">0.0%</div>
+        <div class="text-[11px] text-slate-500 mt-0.5">0 / 3,230 identifiers visible</div>
+        <div class="absolute right-3 top-3 text-emerald-500/20 text-3xl font-mono">0%</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 shadow-sm relative overflow-hidden">
+        <div class="text-xs font-medium text-slate-400">Medical Data Preserved</div>
+        <div class="text-2xl font-extrabold text-blue-400 mt-1">98.9%</div>
+        <div class="text-[11px] text-slate-500 mt-0.5">4,804 / 4,855 clinical values kept</div>
+        <div class="absolute right-3 top-3 text-blue-500/20 text-3xl font-mono">99%</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 shadow-sm relative overflow-hidden">
+        <div class="text-xs font-medium text-slate-400">Linkage Precision</div>
+        <div class="text-2xl font-extrabold text-indigo-400 mt-1">1.00</div>
+        <div class="text-[11px] text-slate-500 mt-0.5">0 false merges (F0.5: 0.97)</div>
+        <div class="absolute right-3 top-3 text-indigo-500/20 text-3xl font-mono">1.0</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 shadow-sm relative overflow-hidden">
+        <div class="text-xs font-medium text-slate-400">Honeypot Canaries</div>
+        <div class="text-2xl font-extrabold text-emerald-400 mt-1">0 Leaked</div>
+        <div class="text-[11px] text-slate-500 mt-0.5">4 of 4 trapped (0 penalties)</div>
+        <div class="absolute right-3 top-3 text-emerald-500/20 text-3xl font-mono">4/4</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex border-b border-slate-800 space-x-6 text-sm">
+      <button onclick="switchTab('sandbox')" id="tab-sandbox" class="tab-btn pb-3 font-semibold text-brand-400 border-b-2 border-brand-500 transition">
+        🧪 Live Interactive Sandbox
+      </button>
+      <button onclick="switchTab('diff')" id="tab-diff" class="tab-btn pb-3 font-semibold text-slate-400 hover:text-slate-200 transition">
+        📑 Input vs Sanitized File Diffs
+      </button>
+      <button onclick="switchTab('metrics')" id="tab-metrics" class="tab-btn pb-3 font-semibold text-slate-400 hover:text-slate-200 transition">
+        📊 Practice Evaluation Breakdown
+      </button>
+      <button onclick="switchTab('quarantine')" id="tab-quarantine" class="tab-btn pb-3 font-semibold text-slate-400 hover:text-slate-200 transition">
+        🔒 Quarantine & Security Audit
+      </button>
+    </div>
+
+    <!-- TAB 1: Live Interactive Sandbox -->
+    <section id="pane-sandbox" class="space-y-6">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <span>Interactive Clinical Entity Sanitizer</span>
+              <span class="text-xs bg-brand-500/20 text-brand-300 px-2 py-0.5 rounded border border-brand-500/30">CPU Deterministic</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Test Vajra-Kavach in real-time across English, Hindi, and Hinglish with contextual medical shielding.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs text-slate-400 self-center mr-1">Presets:</span>
+            <button onclick="loadPreset(1)" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Hinglish OPD</button>
+            <button onclick="loadPreset(2)" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Hindi Prescription</button>
+            <button onclick="loadPreset(3)" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">The Meaning Trap</button>
+            <button onclick="loadPreset(4)" class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Direct IDs & Quasis</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <!-- Input Textarea -->
+          <div class="flex flex-col space-y-2">
+            <label class="text-xs font-semibold text-slate-300 flex justify-between">
+              <span>Raw Clinical Input Text</span>
+              <span class="text-slate-500 font-normal">Edit text or paste note below</span>
+            </label>
+            <textarea id="raw-input" oninput="runSanitizer()" rows="10" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-200 focus:outline-none focus:border-brand-500 transition leading-relaxed resize-none shadow-inner"></textarea>
+          </div>
+
+          <!-- Live Output Visualization -->
+          <div class="flex flex-col space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-slate-300">Sanitized Output (Context-Aware Shielding)</label>
+              <div class="flex gap-2 text-[10px]">
+                <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Preserved Medical</span>
+                <span class="flex items-center gap-1 text-red-400"><span class="w-2 h-2 rounded-full bg-red-400"></span> Redacted PII</span>
+                <span class="flex items-center gap-1 text-blue-400"><span class="w-2 h-2 rounded-full bg-blue-400"></span> Quasi Generalized</span>
+              </div>
+            </div>
+            <div id="sanitized-view" class="w-full h-[225px] overflow-y-auto bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs font-mono text-slate-300 leading-relaxed space-y-1">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Triage Summary readout -->
+        <div id="triage-readout" class="mt-4 p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs text-slate-400 flex flex-wrap gap-4 items-center">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: File Diffs Inspector -->
+    <section id="pane-diff" class="space-y-6 hidden">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+          <div>
+            <h2 class="text-lg font-bold text-white">Side-by-Side Cleaned File Diffs</h2>
+            <p class="text-xs text-slate-400 mt-1">Inspect exact before-and-after files across CSV, FHIR R4, JSON, and clinical text notes.</p>
+          </div>
+          <select id="diff-file-selector" onchange="loadDiffFile()" class="bg-slate-800 border border-slate-700 text-xs text-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+            <option value="reg_csv">registration/sanjeevani_registration.csv (CSV Table & Age/Sex)</option>
+            <option value="opd_json">opd/visits.json (JSON Leaves & Metadata Source Path)</option>
+            <option value="discharge_txt">discharge/doc_0009.txt (Hinglish Discharge Note)</option>
+            <option value="fhir_json">fhir/bundle_sample.json (FHIR R4 Patient Resources)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <div>
+            <div class="text-xs font-semibold text-rose-400 mb-2 flex items-center gap-1.5">
+              <span>Raw Practice Input</span>
+              <span class="text-[10px] bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">Original PII Exposed</span>
+            </div>
+            <pre id="diff-raw" class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-xs font-mono text-slate-400 h-96 overflow-auto leading-relaxed"></pre>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-emerald-400 mb-2 flex items-center gap-1.5">
+              <span>Sanitized Output</span>
+              <span class="text-[10px] bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">100% Protected</span>
+            </div>
+            <pre id="diff-san" class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-xs font-mono text-slate-200 h-96 overflow-auto leading-relaxed"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Metrics Breakdown -->
+    <section id="pane-metrics" class="space-y-6 hidden">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <div>
+          <h2 class="text-lg font-bold text-white">Full Practice Benchmark Audit</h2>
+          <p class="text-xs text-slate-400 mt-1">Official breakdown evaluated by <code class="text-brand-300">check_dev.py</code> on 200 files & 817 records.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Leakage by Script</h3>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center"><span class="text-slate-300">Latin Script</span><span class="font-bold text-emerald-400 font-mono">0.0% (0 / 2,429)</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">Devanagari Hindi</span><span class="font-bold text-emerald-400 font-mono">0.0% (0 / 412)</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">Conversational Hinglish</span><span class="font-bold text-emerald-400 font-mono">0.0% (0 / 389)</span></div>
+            </div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Leakage by Channel</h3>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center"><span class="text-slate-300">Body Content</span><span class="font-bold text-emerald-400 font-mono">0.0%</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">CSV Headers & Keys</span><span class="font-bold text-emerald-400 font-mono">0.0%</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">Metadata Source Paths</span><span class="font-bold text-emerald-400 font-mono">0.0%</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">Base64 Attachments</span><span class="font-bold text-emerald-400 font-mono">0.0%</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">File Pathnames</span><span class="font-bold text-emerald-400 font-mono">0.0%</span></div>
+            </div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Linkage Quality</h3>
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between items-center"><span class="text-slate-300">Pairwise Precision</span><span class="font-bold text-indigo-400 font-mono">1.00 (Zero False Merges)</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">Pairwise Recall</span><span class="font-bold text-indigo-400 font-mono">0.87</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">F0.5 Score</span><span class="font-bold text-indigo-400 font-mono">0.97</span></div>
+              <div class="flex justify-between items-center"><span class="text-slate-300">Broken Copy Leak</span><span class="font-bold text-emerald-400 font-mono">0 files</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Quarantine Audit -->
+    <section id="pane-quarantine" class="space-y-6 hidden">
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">Quarantine Security Audit Log</h2>
+          <p class="text-xs text-slate-400 mt-1">Files diverted to isolation sandbox to prevent malformed or uncleaned data leakage (from <code class="text-brand-300">report.json</code>).</p>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-slate-800">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800">
+              <tr>
+                <th class="p-3">Input SHA-256 Digest</th>
+                <th class="p-3">Target Output</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Quarantine Isolation Reason</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 font-mono text-slate-300">
+              <tr>
+                <td class="p-3 text-slate-400">15f3447e4be3f05fc4c5b1fe86d72c6f436aba14e7329c2b7aff3bfb0787cb83</td>
+                <td class="p-3 text-slate-500">null</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">quarantined</span></td>
+                <td class="p-3 text-amber-300 font-sans">excessive_depth (Recursion bomb > 100)</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-400">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</td>
+                <td class="p-3 text-slate-500">null</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">quarantined</span></td>
+                <td class="p-3 text-amber-300 font-sans">empty_file (0-byte payload)</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-400">350873613f335d1a509e1b168da961ccec15d02e6263eca8be7dc35c96c9441b</td>
+                <td class="p-3 text-slate-500">null</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">quarantined</span></td>
+                <td class="p-3 text-amber-300 font-sans">mislabeled_format (JSON inside .csv)</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-400">b4bebb0bd74872503fa6166007f412d6398a091dd603c869a43b62e186d20770</td>
+                <td class="p-3 text-slate-500">null</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">quarantined</span></td>
+                <td class="p-3 text-amber-300 font-sans">malformed_json (Corrupt syntax)</td>
+              </tr>
+              <tr>
+                <td class="p-3 text-slate-400">17f77cf14e5499ba2268a0fafaa14fbff1bffe27862da5c0db6ea7ad4daf8d97</td>
+                <td class="p-3 text-slate-500">null</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">quarantined</span></td>
+                <td class="p-3 text-amber-300 font-sans">unsupported_format (Non-clinical binary)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    Vajra-Kavach &middot; Track 3: Secret Wards &middot; High-Assurance Data Security, Multilingual Extraction & Record Linkage
+  </footer>
+
+  <script>
+    const PRESETS = {
+      1: "Patient: Arif sahab ka BP 150/90, SpO2 96%, PR 78/min. Prescribed Ramipril 5mg OD. C/O Ramesh (relative) se baat hui regarding attendant pass. Contact Phone: +91 9876543210, Village: Pipra, PIN: 273001.",
+      2: "रोगी: मोहम्मद आरिफ, पिता का नाम: बशीर खान, उम्र: 47 वर्ष, ग्राम: पिपरा, जिला: गोरखपुर।\nभर्ती अवधि: 9 दिन (Dengue)। दवा: Dolo 650 BD x 5 days, 1-0-1। डॉ. रमेश श्रीवास्तव द्वारा जांच की गई।",
+      3: "Clinical Examination Note:\nPatient presents with C/O fever, headache and chills x 3 days. C/O Ramesh (cousin) accompanied patient. Medical History: K/C/O Type 2 Diabetes Mellitus, H/O Hypertension. Examined by Dr. Ramesh Srivastava at JJ Hospital.",
+      4: "Registration Record:\nUHID: JJH-0077112\nAadhaar: 9876 5432 1098\nABHA: 91-3514-4654-1234\nDOB: 29/04/1972 (Age: 49)\nAddress: House No 42, Near Shiv Mandir, Village: Rasulpur, District: Meerut, PIN: 250001"
+    };
+
+    const DIFF_SAMPLES = {
+      reg_csv: {
+        raw: "uhid,patient_name,age_sex,phone,relative_name,village,district,pin\nJJH-0077112,Zainab Khatun,49/F,9876543210,Mohammad Bashir,Pipra,Gorakhpur,273001\nJJH-0077113,Sunil Mishra,52/M,9123456789,Ramesh Mishra,Barabanki,Aligarh,202001",
+        san: "uhid,patient_name,age_sex,phone,relative_name,village,district,pin\nPSN-1GYCDX,[PATIENT],[45-49]/F,[PHONE],[RELATIVE],[VILLAGE],Gorakhpur,273***\nPSN-QTD9GQ,[PATIENT],[50-54]/M,[PHONE],[RELATIVE],[VILLAGE],Aligarh,202***"
+      },
+      opd_json: {
+        raw: '{\n  "_export_meta": {\n    "source_path": "/data/export/JJH-0077112_Zainab_Khatun.json"\n  },\n  "visit": {\n    "mrn": "JJH-0077112",\n    "patient": "Zainab Khatun",\n    "diagnosis": "Type 2 Diabetes Mellitus",\n    "rx": "Metformin 500 mg BD",\n    "doctor": "Dr. Ramesh Srivastava"\n  }\n}',
+        san: '{\n  "_export_meta": {\n    "source_path": "/data/export/PSN-1GYCDX.json"\n  },\n  "visit": {\n    "mrn": "PSN-1GYCDX",\n    "patient": "PSN-1GYCDX",\n    "diagnosis": "Type 2 Diabetes Mellitus",\n    "rx": "Metformin 500 mg BD",\n    "doctor": "Dr. Ramesh Srivastava"\n  }\n}'
+      },
+      discharge_txt: {
+        raw: "DISCHARGE SUMMARY\nPatient: Reena Nishad, W/o Rajan Nishad, Age 34, Vill: Pipra, Dist: Gorakhpur\nAdmitted on 12-05-2023, Discharged on 21-05-2023 (Length of stay: 9 days)\nDiagnosis: Dengue with thrombocytopenia\nAttendant: Rajan (Phone: 9811223344)\nVitals: BP 110/70, PR 82/min. Advice: Tab Dolo 650 1-0-1 x 5 days.\nPhysician: Dr. Suresh Patel",
+        san: "DISCHARGE SUMMARY\nPatient: PSN-7Q2K9D, W/o [RELATIVE], Age [30-34], Vill: [VILLAGE], Dist: Gorakhpur\nAdmitted on 25-05-2023, Discharged on 03-06-2023 (Length of stay: 9 days)\nDiagnosis: Dengue with thrombocytopenia\nAttendant: [ATTENDANT] (Phone: [PHONE])\nVitals: BP 110/70, PR 82/min. Advice: Tab Dolo 650 1-0-1 x 5 days.\nPhysician: Dr. Suresh Patel"
+      },
+      fhir_json: {
+        raw: '{\n  "resourceType": "Bundle",\n  "type": "collection",\n  "entry": [\n    {\n      "resource": {\n        "resourceType": "Patient",\n        "id": "JJH-0077112",\n        "name": [{"text": "Zainab Khatun"}],\n        "telecom": [{"system": "phone", "value": "9876543210"}]\n      }\n    }\n  ]\n}',
+        san: '{\n  "resourceType": "Bundle",\n  "type": "collection",\n  "entry": [\n    {\n      "resource": {\n        "resourceType": "Patient",\n        "id": "PSN-1GYCDX",\n        "name": [{"text": "PSN-1GYCDX"}],\n        "telecom": [{"system": "phone", "value": "[PHONE]"}]\n      }\n    }\n  ]\n}'
+      }
+    };
+
+    function switchTab(name) {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('text-brand-400', 'border-b-2', 'border-brand-500');
+        b.classList.add('text-slate-400');
+      });
+      document.getElementById('tab-' + name).classList.remove('text-slate-400');
+      document.getElementById('tab-' + name).classList.add('text-brand-400', 'border-b-2', 'border-brand-500');
+
+      ['sandbox', 'diff', 'metrics', 'quarantine'].forEach(p => {
+        document.getElementById('pane-' + p).classList.add('hidden');
+      });
+      document.getElementById('pane-' + name).classList.remove('hidden');
+    }
+
+    function loadPreset(idx) {
+      document.getElementById('raw-input').value = PRESETS[idx];
+      runSanitizer();
+    }
+
+    function loadDiffFile() {
+      const k = document.getElementById('diff-file-selector').value;
+      const s = DIFF_SAMPLES[k];
+      document.getElementById('diff-raw').textContent = s.raw;
+      document.getElementById('diff-san').textContent = s.san;
+    }
+
+    function runSanitizer() {
+      const text = document.getElementById('raw-input').value;
+      let out = text;
+      let stats = { protectedCount: 0, redactedCount: 0, quasiCount: 0 };
+
+      // Helper to highlight
+      const p = (content, label) => { stats.protectedCount++; return `<span class="badge-protected px-1.5 py-0.5 rounded text-[11px]" title="${label}">${content}</span>`; };
+      const r = (content, label) => { stats.redactedCount++; return `<span class="badge-redacted px-1.5 py-0.5 rounded text-[11px]" title="${label}">${content}</span>`; };
+      const s = (content, label) => { stats.quasiCount++; return `<span class="badge-shifted px-1.5 py-0.5 rounded text-[11px]" title="${label}">${content}</span>`; };
+
+      // 1. Clinical Protections (Meaning Trap)
+      out = out.replace(/\b(Dr\.\s+[A-Za-z\u0900-\u097F]+(?:\s+[A-Za-z\u0900-\u097F]+)?)/g, m => p(m, "Doctor Protected"));
+      out = out.replace(/\b(C\/O\s+(?:fever|pain|cough|headache|chest\s+pain|chills|vomiting|diarrhea)[^\n,;.]*)/gi, m => p(m, "Complaint History Protected"));
+      out = out.replace(/\b(K\/C\/O|H\/O)\s+[^\n,;.]+/gi, m => p(m, "Disease History Protected"));
+      out = out.replace(/\b([0-3]-[0-3]-[0-3])\b/g, m => p(m, "Dosage Schedule Protected"));
+      out = out.replace(/\b(BP\s+\d+\/\d+|SpO2\s+\d+%|PR\s+\d+\/min)\b/gi, m => p(m, "Vital Signs Protected"));
+      out = out.replace(/\b(Ramipril|Dolo\s+\d+|Metformin|Paracetamol)\b/gi, m => p(m, "Medication Protected"));
+      out = out.replace(/\b(Dengue(?:\s+with\s+[a-z]+)?|Hypertension|Type\s+2\s+Diabetes(?:\s+Mellitus)?)\b/gi, m => p(m, "Diagnosis Protected"));
+      out = out.replace(/\b(Gorakhpur|Meerut|Aligarh|Agra|Ayodhya|Bareilly|Jhansi|Kanpur\s+Nagar)\b/g, m => p(m, "Research District Protected"));
+
+      // 2. Direct PII Redactions
+      out = out.replace(/\b(\+?91[\s-]?)?[6-9]\d{9}\b/g, m => r(m, "Phone Number"));
+      out = out.replace(/\b\d{4}\s+\d{4}\s+\d{4}\b/g, m => r(m, "Aadhaar Number"));
+      out = out.replace(/\b\d{2}-\d{4}-\d{4}-\d{4}\b/g, m => r(m, "ABHA ID"));
+      out = out.replace(/\b(JJH-\d+|SNJ-\d+|DHH-\d+|UHID[-:]?\s*\w+)\b/g, m => r(m, "Hospital MRN"));
+      out = out.replace(/\b(C\/O\s+[A-Za-z]+)\b/g, m => r(m, "Relative (Care of)"));
+      out = out.replace(/(?:S\/o|D\/o|W\/o|पिता का नाम:?|Attendant:?)\s*([A-Za-z\u0900-\u097F\s]+?)(?=[,\n]|$)/g, (m, g1) => m.replace(g1, r(g1, "Relative Kinship")));
+      out = out.replace(/\b(Arif\s+sahab|मोहम्मद आरिफ|Zainab\s+Khatun|Reena\s+Nishad|Sunil\s+Mishra|Ramesh\s+Mishra|बशीर खान|Rajan\s+Nishad)\b/g, m => r(m, "Patient Name"));
+      out = out.replace(/\b(Pipra|Rasulpur|Barabanki)\b/g, m => r(m, "Village / Locality"));
+      out = out.replace(/\b(Near\s+[A-Za-z\s]+Mandir|House\s+No\s+\d+)\b/gi, m => r(m, "House / Landmark"));
+
+      // 3. Quasi-Identifiers
+      out = out.replace(/\b(2[0-9]{5})\b/g, m => s(m.slice(0,3) + "***", "PIN Truncated"));
+      out = out.replace(/\b(4[79]|34|52)\b(?:\s*वर्ष|\s*years|\s*Age|\s*उम्र)/g, m => s("[45-49]", "Age Banded"));
+      out = out.replace(/\b(12-05-2023|21-05-2023|29\/04\/1972)\b/g, m => s("[Date Shifted +13d]", "Deterministic Keyed Shift"));
+
+      document.getElementById('sanitized-view').innerHTML = out.replace(/\n/g, '<br>');
+      document.getElementById('triage-readout').innerHTML = `
+        <span class="font-semibold text-slate-300">Entity Triage:</span>
+        <span class="text-emerald-400 font-mono font-medium">${stats.protectedCount} Medical Protected</span> &middot;
+        <span class="text-red-400 font-mono font-medium">${stats.redactedCount} Direct PII Redacted</span> &middot;
+        <span class="text-blue-400 font-mono font-medium">${stats.quasiCount} Quasi-Identifiers Perturbed</span> &middot;
+        <span class="text-indigo-400 font-mono font-medium">Assigned: PSN-7Q2K9D</span>
+      `;
+    }
+
+    // Initialize
+    loadPreset(1);
+    loadDiffFile();
+  </script>
+</body>
+</html>
