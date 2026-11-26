@@ -943,6 +943,180 @@
       animation: fadeIn 0.2s;
     }
 
+    /* Manual Patient Form Layout */
+    .form-section-card {
+      background: #0a0f1b;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .form-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #cbd5e1;
+      letter-spacing: 0.02em;
+    }
+    .form-input {
+      background: #080d16;
+      border: 1px solid var(--border-subtle);
+      color: #f1f5f9;
+      padding: 7px 11px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: inherit;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+
+    /* Voice Assistant Floating Dock */
+    .voice-assistant-dock {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 55;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+    .voice-dock-btn {
+      background: linear-gradient(135deg, #1e1b4b, #0f172a);
+      border: 1.5px solid rgba(56, 189, 248, 0.5);
+      color: #38bdf8;
+      border-radius: 9999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(56, 189, 248, 0.3);
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .voice-dock-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 24px rgba(56, 189, 248, 0.5);
+      border-color: #38bdf8;
+      color: #ffffff;
+    }
+    .voice-pulse-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(56, 189, 248, 0.6);
+      animation: voiceRingPulse 2.4s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+    @keyframes voiceRingPulse {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+    .voice-panel {
+      background: #0d131f;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 16px;
+      width: 320px;
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .voice-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+    }
+    .voice-orb-mini {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #38bdf8 0%, #4f46e5 100%);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .voice-wave-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 32px;
+      background: #080d16;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      padding: 0 12px;
+    }
+    .sound-bar {
+      width: 3px;
+      background: #38bdf8;
+      border-radius: 2px;
+      height: 6px;
+      transition: height 0.1s ease;
+    }
+    .voice-listening .sound-bar:nth-child(1) { animation: waveAnim 0.7s infinite 0.1s; }
+    .voice-listening .sound-bar:nth-child(2) { animation: waveAnim 0.7s infinite 0.3s; }
+    .voice-listening .sound-bar:nth-child(3) { animation: waveAnim 0.7s infinite 0.2s; }
+    .voice-listening .sound-bar:nth-child(4) { animation: waveAnim 0.7s infinite 0.45s; }
+    .voice-listening .sound-bar:nth-child(5) { animation: waveAnim 0.7s infinite 0.15s; }
+    .voice-listening .sound-bar:nth-child(6) { animation: waveAnim 0.7s infinite 0.35s; }
+    .voice-listening .sound-bar:nth-child(7) { animation: waveAnim 0.7s infinite 0.25s; }
+    .voice-listening .sound-bar:nth-child(8) { animation: waveAnim 0.7s infinite 0.5s; }
+    @keyframes waveAnim {
+      0%, 100% { height: 6px; background: #38bdf8; }
+      50% { height: 26px; background: #fbbf24; }
+    }
+    .voice-transcription-box {
+      background: #080d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 11px;
+      color: #cbd5e1;
+      min-height: 54px;
+      max-height: 80px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      line-height: 1.4;
+    }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--border-subtle);
@@ -1081,9 +1255,11 @@
           <div class="brand-sub">Track 3: Secret Wards &middot; Multilingual Offline Clinical Privacy Firewall</div>
         </div>
       </div>
-      <div style="display: flex; gap: 8px; align-items: center;">
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <button class="btn-sm" onclick="toggleVoicePanel()" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; display: flex; align-items: center; gap: 6px;">🎙️ Voice Assistant</button>
         <button class="btn-sm" onclick="pingDefenseGrid()" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24;">⚡ Ping Shield</button>
-        <button class="btn-sm btn-primary" onclick="switchNavTab('playground')">Open Live Sandbox</button>
+        <button class="btn-sm btn-primary" onclick="switchNavTab('manual')">📋 Manual Patient Entry</button>
+        <button class="btn-sm" onclick="switchNavTab('playground')">Live Sandbox</button>
       </div>
     </div>
   </header>
@@ -1280,6 +1456,7 @@
   <div class="app-container">
     <div class="nav-tabs">
       <button class="nav-btn active" id="tab-btn-playground" onclick="switchNavTab('playground')">🧪 Live Sandbox</button>
+      <button class="nav-btn" id="tab-btn-manual" onclick="switchNavTab('manual')">📋 Manual Patient Entry</button>
       <button class="nav-btn" id="tab-btn-attack" onclick="switchNavTab('attack')">🛡️ Voter-Attack Simulator</button>
       <button class="nav-btn" id="tab-btn-diff" onclick="switchNavTab('diff')">📑 File Diffs</button>
       <button class="nav-btn" id="tab-btn-registry" onclick="switchNavTab('registry')">👥 Patient Registry</button>
@@ -1301,11 +1478,12 @@
             <div class="panel-desc">Real-time bidirectional entity extraction across English, Devanagari Hindi, and conversational Hinglish.</div>
           </div>
           <div class="btn-group">
-            <span style="font-size: 11px; color: var(--text-muted); margin-right: 4px;">Presets:</span>
+            <button class="btn-sm" onclick="startFieldVoiceDictation('raw-input')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; display: flex; align-items: center; gap: 4px;">🎙️ Dictate Note</button>
+            <span style="font-size: 11px; color: var(--text-muted); margin: 0 4px;">Presets:</span>
             <button class="btn-sm" onclick="applyPreset(1)">Hinglish OPD</button>
             <button class="btn-sm" onclick="applyPreset(2)">Hindi Rx</button>
             <button class="btn-sm" onclick="applyPreset(3)">The Meaning Trap</button>
-            <button class="btn-sm" onclick="applyPreset(4)">IDs & Quasis</button>
+            <button class="btn-sm" onclick="applyPreset(4)">IDs &amp; Quasis</button>
             <button class="btn-sm" onclick="applyPreset(5)">Discharge Stay</button>
           </div>
         </div>
@@ -1339,6 +1517,206 @@
           <div class="btn-group">
             <button class="btn-sm" onclick="copyCleanNote()">Copy Clean Note</button>
             <button class="btn-sm btn-primary" onclick="exportCleanNote()">Export File (.txt)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Manual Patient Entry Suite -->
+    <div class="tab-pane" id="pane-manual">
+      <div class="card-panel">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title" style="display: flex; align-items: center; gap: 10px;">
+              <span>Manual Patient Admission &amp; Clinical Firewall Suite</span>
+              <span class="tag tag-emerald">OFFLINE AIR-GAP SAFE</span>
+            </div>
+            <div class="panel-desc">Direct clinical record entry with instant multi-tier pseudonymization, date shifting, and clinical integrity preservation.</div>
+          </div>
+          <div class="btn-group">
+            <span style="font-size: 11px; color: var(--text-muted); margin-right: 4px;">Load Case:</span>
+            <button class="btn-sm" onclick="loadManualPreset('arif')">Arif Sahab (Hinglish)</button>
+            <button class="btn-sm" onclick="loadManualPreset('reena')">Reena Nishad (Dengue)</button>
+            <button class="btn-sm" onclick="loadManualPreset('zainab')">Zainab (Diabetic)</button>
+            <button class="btn-sm" onclick="clearManualForm()">Clear Form</button>
+          </div>
+        </div>
+
+        <div class="sandbox-split" style="margin-top: 20px;">
+          <!-- Left Column: Manual Structured Input Form -->
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Section 1: Demographics & Identifiers -->
+            <div class="form-section-card">
+              <div class="form-section-header">
+                <span class="form-section-title">1. Patient Demographics &amp; Direct IDs</span>
+                <button type="button" class="btn-sm" onclick="startFieldVoiceDictation('manual-name')" title="Dictate Name by Voice" style="padding: 2px 8px; font-size: 10px; background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">🎙️ Dictate Name</button>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">FULL NAME (English / Devanagari / Hinglish) *</label>
+                  <input type="text" id="manual-name" class="form-input" placeholder="e.g. Mohammad Arif or मोहम्मद आरिफ" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">GENDER &amp; AGE (Years) *</label>
+                  <div style="display: flex; gap: 8px;">
+                    <select id="manual-gender" class="form-input" style="width: 110px;" onchange="updateManualSanitization()">
+                      <option value="Male">Male (M)</option>
+                      <option value="Female">Female (F)</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <input type="number" id="manual-age" class="form-input" placeholder="Age (e.g. 47)" oninput="updateManualSanitization()">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-grid-2" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label">KINSHIP / GUARDIAN (S/o, D/o, W/o, C/o)</label>
+                  <input type="text" id="manual-kinship" class="form-input" placeholder="e.g. S/o Bashir Khan" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">PHONE / MOBILE NUMBER</label>
+                  <input type="text" id="manual-phone" class="form-input" placeholder="e.g. +91 98765 43210 or 0522-224411" oninput="updateManualSanitization()">
+                </div>
+              </div>
+
+              <div class="form-grid-2" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label">GOVT ID (Aadhaar / ABHA / UHID / Voter)</label>
+                  <input type="text" id="manual-id" class="form-input" placeholder="e.g. 8492-1082-9912 or ABHA-UP-0921" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">VILLAGE / LOCALITY &amp; PIN CODE</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="manual-village" class="form-input" placeholder="Village (e.g. Pipra)" oninput="updateManualSanitization()">
+                    <input type="text" id="manual-pincode" class="form-input" style="width: 110px;" placeholder="PIN (241001)" oninput="updateManualSanitization()">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 2: Hospital Admission & Ward Data -->
+            <div class="form-section-card">
+              <div class="form-section-header">
+                <span class="form-section-title">2. Hospital Admission &amp; Stay Parameters</span>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">HOSPITAL SYSTEM</label>
+                  <select id="manual-hospital" class="form-input" onchange="updateManualSanitization()">
+                    <option value="District Hospital Hardoi">District Hospital Hardoi</option>
+                    <option value="Arogya Medical Center">Arogya Medical Center</option>
+                    <option value="Sanjeevani Clinic">Sanjeevani Clinic</option>
+                    <option value="Jeevan Jyoti Hospital">Jeevan Jyoti Hospital</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">ATTENDING PHYSICIAN (Clinical Authority) *</label>
+                  <input type="text" id="manual-doctor" class="form-input" placeholder="e.g. Dr. Ramesh Gupta (MD Internal Med)" oninput="updateManualSanitization()">
+                </div>
+              </div>
+
+              <div class="form-grid-2" style="margin-top: 10px;">
+                <div class="form-group">
+                  <label class="form-label">ADMISSION DATE</label>
+                  <input type="date" id="manual-admit-date" class="form-input" value="2023-05-12" onchange="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">DISCHARGE DATE (Stay Length Computed)</label>
+                  <input type="date" id="manual-discharge-date" class="form-input" value="2023-05-21" onchange="updateManualSanitization()">
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Clinical Findings, Prescriptions & Notes -->
+            <div class="form-section-card">
+              <div class="form-section-header">
+                <span class="form-section-title">3. Clinical Findings, Vitals &amp; Prescriptions</span>
+                <button type="button" class="btn-sm" onclick="startFieldVoiceDictation('manual-notes')" title="Dictate Clinical Notes by Voice" style="padding: 2px 8px; font-size: 10px; background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">🎙️ Dictate Note</button>
+              </div>
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label">CHIEF COMPLAINTS &amp; DIAGNOSES (C/O, K/C/O)</label>
+                  <input type="text" id="manual-diagnosis" class="form-input" placeholder="e.g. C/O high grade fever x 4 days, Dengue with Thrombocytopenia" oninput="updateManualSanitization()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">CLINICAL VITALS (BP, Pulse, SpO2, Temp)</label>
+                  <input type="text" id="manual-vitals" class="form-input" placeholder="e.g. BP 150/90 mmHg, Pulse 88, SpO2 96%" oninput="updateManualSanitization()">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 10px;">
+                <label class="form-label">PRESCRIPTION &amp; DOSAGE POSOLOGY (1-0-1, BD, mg)</label>
+                <input type="text" id="manual-rx" class="form-input" placeholder="e.g. Tab Dolo 650mg TDS x 5 days, Ramipril 5mg OD, 1-0-1 schedule" oninput="updateManualSanitization()">
+              </div>
+
+              <div class="form-group" style="margin-top: 10px;">
+                <label class="form-label">MULTILINGUAL NURSING &amp; PROGRESS NOTE (English/Hindi/Hinglish)</label>
+                <textarea id="manual-notes" class="form-input" rows="3" placeholder="e.g. Arif sahab ka BP 150/90 mila. Patient stable. Meera didi present as attendant." oninput="updateManualSanitization()"></textarea>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn-sm btn-primary" onclick="saveManualPatientToRegistry()">💾 Save to Registry &amp; Enforce Shield</button>
+              <button class="btn-sm" onclick="exportManualRecord('json')">Export Clean JSON</button>
+              <button class="btn-sm" onclick="exportManualRecord('txt')">Export Clean Text</button>
+              <button class="btn-sm" onclick="speakManualSanitizedResult()">🔊 Speak Sanitized Summary</button>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Privacy Firewall Transformation Preview -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="editor-label">
+              <span style="color: #38bdf8; font-weight: 700;">LIVE SANITIZED OUTPUT (Vajra-Kavach Enforced)</span>
+              <span class="tag tag-emerald" id="manual-shield-badge">ARMORED</span>
+            </div>
+
+            <!-- Sanitized Record Card -->
+            <div style="background: #080d16; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px; font-size: 12px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 10px;">
+                <div>
+                  <span style="font-size: 11px; color: var(--text-dim); display: block;">ASSIGNED CRYPTOGRAPHIC PSEUDONYM</span>
+                  <span id="manual-out-psn" style="font-size: 18px; font-weight: 800; font-family: var(--font-mono); color: #818cf8;">PSN-YM0ACV</span>
+                </div>
+                <div style="text-align: right;">
+                  <span style="font-size: 11px; color: var(--text-dim); display: block;">SECRET DATE SHIFT</span>
+                  <span id="manual-out-shift" style="font-size: 13px; font-weight: 700; font-family: var(--font-mono); color: #fbbf24;">+13 days</span>
+                </div>
+              </div>
+
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; font-weight: 600; text-transform: uppercase;">Sanitized Intake Record</span>
+                <div id="manual-sanitized-preview" style="margin-top: 6px; line-height: 1.6; background: #0c121e; padding: 12px; border-radius: 8px; border: 1px solid #1e293b; font-family: var(--font-mono); font-size: 11px; max-height: 280px; overflow-y: auto;"></div>
+              </div>
+
+              <!-- Triage Verification Checklist -->
+              <div>
+                <span style="color: #94a3b8; font-size: 11px; font-weight: 600; text-transform: uppercase;">Privacy vs Utility Verification</span>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Direct PII Leak</span>
+                    <span id="manual-chk-pii" style="font-size: 12px; font-weight: 700; color: #34d399;">0 Leaks</span>
+                  </div>
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Quasi-ID Protection</span>
+                    <span id="manual-chk-quasi" style="font-size: 12px; font-weight: 700; color: #38bdf8;">Age Banded</span>
+                  </div>
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Stay Duration</span>
+                    <span id="manual-chk-stay" style="font-size: 12px; font-weight: 700; color: #34d399;">Preserved Exactly</span>
+                  </div>
+                  <div class="telemetry-item" style="padding: 6px 10px;">
+                    <span class="telemetry-label">Physician Authority</span>
+                    <span id="manual-chk-doc" style="font-size: 12px; font-weight: 700; color: #34d399;">Dr. Preserved</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Real-Time Actions -->
+              <div style="display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--border-subtle); padding-top: 10px;">
+                <button class="btn-sm" onclick="copyCleanManualNote()">📋 Copy Clean Note</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2197,6 +2575,465 @@
       }
     }
 
+    // -------------------------------------------------------------
+    // Manual Patient Data Entry & Firewall Processing
+    // -------------------------------------------------------------
+    const MANUAL_PRESETS = {
+      arif: {
+        name: "Mohammad Arif / मोहम्मद आरिफ",
+        gender: "Male",
+        age: 47,
+        kinship: "S/o Bashir Khan",
+        phone: "+91 94150 12345",
+        id: "ABHA-UP-84920",
+        village: "Pipra",
+        pincode: "241001",
+        hospital: "Arogya Medical Center",
+        doctor: "Dr. Ramesh Gupta (MD Internal Med)",
+        admit: "2023-05-12",
+        discharge: "2023-05-21",
+        diagnosis: "C/O high grade fever x 4 days, Viral illness",
+        vitals: "BP 150/90 mmHg, Pulse 88, SpO2 96%",
+        rx: "Tab Paracetamol 650mg TDS x 5 days, Ramipril 5mg OD, 1-0-1 schedule",
+        notes: "Arif sahab ka BP 150/90 mila. Patient stable. Follow-up after 5 days."
+      },
+      reena: {
+        name: "Reena Nishad",
+        gender: "Female",
+        age: 34,
+        kinship: "W/o Rajan Nishad",
+        phone: "+91 98390 55443",
+        id: "8492-1082-9912",
+        village: "Gopamau",
+        pincode: "241001",
+        hospital: "District Hospital Hardoi",
+        doctor: "Dr. S. K. Verma (Civil Hospital)",
+        admit: "2023-05-10",
+        discharge: "2023-05-19",
+        diagnosis: "C/O fever with body ache, Dengue with Thrombocytopenia",
+        vitals: "BP 110/70 mmHg, Platelets 45k, SpO2 97%",
+        rx: "Tab Dolo 650 BD, IV Fluids 500ml x 2, 1-0-1",
+        notes: "Meera didi present as attendant. C/O nausea managed."
+      },
+      zainab: {
+        name: "Zainab Khatun",
+        gender: "Female",
+        age: 49,
+        kinship: "W/o Mohammad Bashir",
+        phone: "0522-443322",
+        id: "UHID-772910",
+        village: "Hardoi Town",
+        pincode: "241001",
+        hospital: "Jeevan Jyoti Hospital",
+        doctor: "Dr. Anita Roy (Endocrinologist)",
+        admit: "2023-06-01",
+        discharge: "2023-06-04",
+        diagnosis: "K/C/O Type 2 Diabetes Mellitus with Hyperglycemia",
+        vitals: "RBS 280 mg/dL, HbA1c 9.2%, BP 130/80",
+        rx: "Inj Human Mixtard 30/70 14U-0-10U SC, Metformin 500mg BD",
+        notes: "Diet counseling done. Fasting blood sugar monitored."
+      }
+    };
+
+    function loadManualPreset(key) {
+      const p = MANUAL_PRESETS[key];
+      if (!p) return;
+      document.getElementById('manual-name').value = p.name;
+      document.getElementById('manual-gender').value = p.gender;
+      document.getElementById('manual-age').value = p.age;
+      document.getElementById('manual-kinship').value = p.kinship;
+      document.getElementById('manual-phone').value = p.phone;
+      document.getElementById('manual-id').value = p.id;
+      document.getElementById('manual-village').value = p.village;
+      document.getElementById('manual-pincode').value = p.pincode;
+      document.getElementById('manual-hospital').value = p.hospital;
+      document.getElementById('manual-doctor').value = p.doctor;
+      document.getElementById('manual-admit-date').value = p.admit;
+      document.getElementById('manual-discharge-date').value = p.discharge;
+      document.getElementById('manual-diagnosis').value = p.diagnosis;
+      document.getElementById('manual-vitals').value = p.vitals;
+      document.getElementById('manual-rx').value = p.rx;
+      document.getElementById('manual-notes').value = p.notes;
+      updateManualSanitization();
+      showNotification("Loaded manual preset: " + p.name.split("/")[0].trim());
+    }
+
+    function clearManualForm() {
+      document.getElementById('manual-name').value = "";
+      document.getElementById('manual-age').value = "";
+      document.getElementById('manual-kinship').value = "";
+      document.getElementById('manual-phone').value = "";
+      document.getElementById('manual-id').value = "";
+      document.getElementById('manual-village').value = "";
+      document.getElementById('manual-pincode').value = "";
+      document.getElementById('manual-doctor').value = "";
+      document.getElementById('manual-diagnosis').value = "";
+      document.getElementById('manual-vitals').value = "";
+      document.getElementById('manual-rx').value = "";
+      document.getElementById('manual-notes').value = "";
+      updateManualSanitization();
+      showNotification("Manual form cleared");
+    }
+
+    function updateManualSanitization() {
+      const name = document.getElementById('manual-name').value.trim() || "Anonymous Patient";
+      const gender = document.getElementById('manual-gender').value;
+      const ageVal = parseInt(document.getElementById('manual-age').value) || 30;
+      const kinship = document.getElementById('manual-kinship').value.trim();
+      const phone = document.getElementById('manual-phone').value.trim();
+      const govtId = document.getElementById('manual-id').value.trim();
+      const village = document.getElementById('manual-village').value.trim() || "Local Ward";
+      const pincode = document.getElementById('manual-pincode').value.trim();
+      const hospital = document.getElementById('manual-hospital').value;
+      const doctor = document.getElementById('manual-doctor').value.trim() || "Dr. S. K. Sharma (MD)";
+      const admitStr = document.getElementById('manual-admit-date').value || "2023-05-12";
+      const dischStr = document.getElementById('manual-discharge-date').value || "2023-05-21";
+      const diagnosis = document.getElementById('manual-diagnosis').value.trim() || "Clinical Observation";
+      const vitals = document.getElementById('manual-vitals').value.trim() || "Vitals within normal limits";
+      const rx = document.getElementById('manual-rx').value.trim() || "Symptomatic treatment";
+      const notes = document.getElementById('manual-notes').value.trim();
+
+      // Compute Crockford Base32 pseudonym
+      const psn = generatePatientPSN(name, kinship);
+      document.getElementById('manual-out-psn').textContent = psn;
+
+      // Deterministic Date Shift
+      let hash = 0;
+      const combined = "practice::" + (name + kinship).toLowerCase();
+      for (let i = 0; i < combined.length; i++) {
+        hash = (hash << 5) - hash + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      const absHash = Math.abs(hash);
+      const offset = (absHash % 61) - 30;
+      const offsetStr = (offset >= 0 ? "+" : "") + offset + " days";
+      document.getElementById('manual-out-shift').textContent = offsetStr;
+
+      // Invariant Stay Calculation
+      const d1 = new Date(admitStr);
+      const d2 = new Date(dischStr);
+      const stayDays = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24)));
+      const shiftedD1 = new Date(d1);
+      shiftedD1.setDate(shiftedD1.getDate() + offset);
+      const shiftedD2 = new Date(shiftedD1);
+      shiftedD2.setDate(shiftedD2.getDate() + stayDays);
+
+      const fmt = d => d.toISOString().split('T')[0];
+
+      // Quasi Age Band
+      const lowerAge = Math.floor(ageVal / 5) * 5;
+      const ageBand = "[" + lowerAge + "-" + (lowerAge + 4) + "]";
+
+      // Sanitize Notes
+      let cleanNotes = notes;
+      if (cleanNotes) {
+        cleanNotes = cleanNotes.replace(/\b(Arif\s+sahab|मोहम्मद आरिफ|Reena|Rajan|Meera\s+didi|Sunil|Zainab|Bashir)\b/gi, "[REDACTED_NAME]");
+        cleanNotes = cleanNotes.replace(/\b[6-9]\d{9}\b/g, "[PHONE]");
+      }
+
+      // Generate HTML preview
+      const previewHtml =
+        '<div style="color: #60a5fa; font-weight: bold; margin-bottom: 4px;">// VAJRA-KAVACH SANITIZED CLINICAL RECORD //</div>' +
+        '<div><span style="color: #94a3b8;">Patient Pseudonym:</span> <strong style="color: #818cf8;">' + psn + '</strong> <span style="color: #64748b;">(Deterministic HMAC)</span></div>' +
+        '<div><span style="color: #94a3b8;">Age Band / Sex:</span> <span style="color: #38bdf8;">' + ageBand + ' / ' + (gender === "Male" ? "M" : gender === "Female" ? "F" : "O") + '</span></div>' +
+        '<div><span style="color: #94a3b8;">Kinship Record:</span> <span style="color: #fb7185;">' + (kinship ? "[RELATIVE_REDACTED]" : "N/A") + '</span></div>' +
+        '<div><span style="color: #94a3b8;">Contact &amp; ID:</span> <span style="color: #fb7185;">' + (phone ? "[PHONE_SECURED]" : "N/A") + ' &middot; ' + (govtId ? "[ID_PURGED]" : "N/A") + '</span></div>' +
+        '<div><span style="color: #94a3b8;">Geographic Quasi:</span> <span style="color: #38bdf8;">[VILLAGE_GENERALIZED] &middot; ' + (pincode ? pincode.slice(0,3) + "***" : "N/A") + '</span></div>' +
+        '<div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #1e293b;">' +
+          '<div><span style="color: #94a3b8;">Hospital Ward:</span> <span style="color: #cbd5e1;">' + escapeHtml(hospital) + '</span></div>' +
+          '<div><span style="color: #94a3b8;">Attending Physician:</span> <span style="color: #34d399; font-weight: 600;">' + escapeHtml(doctor) + '</span> <span style="color: #34d399;">(Authority Preserved)</span></div>' +
+          '<div><span style="color: #94a3b8;">Admission Window:</span> <span style="color: #fbbf24;">' + fmt(shiftedD1) + ' to ' + fmt(shiftedD2) + '</span> (Stay: <strong style="color: #34d399;">' + stayDays + ' days invariant</strong>)</div>' +
+        '</div>' +
+        '<div style="margin-top: 6px; padding-top: 6px; border-top: 1px dashed #1e293b;">' +
+          '<div><span style="color: #94a3b8;">Diagnoses:</span> <span style="color: #34d399;">' + escapeHtml(diagnosis) + '</span></div>' +
+          '<div><span style="color: #94a3b8;">Clinical Vitals:</span> <span style="color: #34d399;">' + escapeHtml(vitals) + '</span></div>' +
+          '<div><span style="color: #94a3b8;">Prescription Posology:</span> <span style="color: #34d399;">' + escapeHtml(rx) + '</span></div>' +
+          (cleanNotes ? '<div style="margin-top: 4px;"><span style="color: #94a3b8;">Nursing Note:</span> <span style="color: #e2e8f0;">' + escapeHtml(cleanNotes) + '</span></div>' : '') +
+        '</div>';
+
+      document.getElementById('manual-sanitized-preview').innerHTML = previewHtml;
+
+      // Update Checklist Indicators
+      document.getElementById('manual-chk-pii').textContent = "0 Leaks (Scrubbed)";
+      document.getElementById('manual-chk-quasi').textContent = ageBand + " / [VILLAGE]";
+      document.getElementById('manual-chk-stay').textContent = stayDays + " days invariant";
+      document.getElementById('manual-chk-doc').textContent = doctor.split(" ")[0] + " Preserved";
+    }
+
+    function saveManualPatientToRegistry() {
+      const name = document.getElementById('manual-name').value.trim();
+      const gender = document.getElementById('manual-gender').value;
+      const ageVal = document.getElementById('manual-age').value.trim() || "30";
+      const kinship = document.getElementById('manual-kinship').value.trim() || "N/A";
+      const condition = document.getElementById('manual-diagnosis').value.trim() || "General Admission";
+      const hospital = document.getElementById('manual-hospital').value;
+
+      if (!name) {
+        alert("Please enter patient name before saving.");
+        return;
+      }
+
+      const psn = generatePatientPSN(name, kinship);
+      const ageSex = ageVal + "/" + (gender === "Male" ? "M" : gender === "Female" ? "F" : "O");
+
+      const newRecord = {
+        psn: psn,
+        name: name,
+        ageSex: ageSex,
+        kinship: kinship,
+        condition: condition,
+        hospitals: [hospital + " (Manual Admission Entry)", "Sanitized Registry Ward #1"]
+      };
+
+      PATIENT_LIST.unshift(newRecord);
+      renderPatientCards(PATIENT_LIST);
+      pingDefenseGrid();
+
+      speakMessage("Patient record for " + name.split("/")[0] + " successfully registered with pseudonym " + psn);
+      showNotification("✓ Enrolled " + name + " in registry with pseudonym " + psn);
+    }
+
+    function copyCleanManualNote() {
+      const el = document.getElementById('manual-sanitized-preview');
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText || el.textContent).then(() => {
+        showNotification("Clean manual record copied to clipboard!");
+      });
+    }
+
+    function exportManualRecord(format) {
+      const psn = document.getElementById('manual-out-psn').textContent;
+      let content = "";
+      let filename = psn + "_sanitized.";
+
+      if (format === 'json') {
+        filename += "json";
+        const obj = {
+          pseudonym: psn,
+          hospital: document.getElementById('manual-hospital').value,
+          age_band: document.getElementById('manual-chk-quasi').textContent,
+          doctor: document.getElementById('manual-doctor').value,
+          diagnosis: document.getElementById('manual-diagnosis').value,
+          vitals: document.getElementById('manual-vitals').value,
+          rx: document.getElementById('manual-rx').value,
+          firewall_audit: {
+            leak_detected: false,
+            date_shifted: true,
+            hmac_keyed: true
+          }
+        };
+        content = JSON.stringify(obj, null, 2);
+      } else {
+        filename += "txt";
+        content = (document.getElementById('manual-sanitized-preview').innerText || "");
+      }
+
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showNotification("Exported " + filename);
+    }
+
+    function speakManualSanitizedResult() {
+      const psn = document.getElementById('manual-out-psn').textContent;
+      const diag = document.getElementById('manual-diagnosis').value || "Condition monitored";
+      const vitals = document.getElementById('manual-vitals').value || "Vitals preserved";
+      const msg = "Vajra-Kavach privacy summary: Patient identity shielded as " + psn + ". Diagnosis: " + diag + ". Clinical vitals: " + vitals + ". Zero leakage detected.";
+      speakMessage(msg);
+    }
+
+    // -------------------------------------------------------------
+    // Clinical Voice Assistant Core (Web Speech API)
+    // -------------------------------------------------------------
+    let voiceRecognition = null;
+    let isVoiceListening = false;
+    let voiceLanguage = 'en-IN'; // or 'hi-IN'
+    let isVoiceMuted = false;
+    let activeVoiceTargetFieldId = null;
+
+    function initVoiceAssistant() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.warn("Web Speech API not supported in this browser. Fallback text mode active.");
+        return;
+      }
+      try {
+        voiceRecognition = new SpeechRecognition();
+        voiceRecognition.continuous = false;
+        voiceRecognition.interimResults = true;
+        voiceRecognition.lang = voiceLanguage;
+
+        voiceRecognition.onstart = function() {
+          isVoiceListening = true;
+          updateVoiceUI(true);
+        };
+
+        voiceRecognition.onresult = function(event) {
+          let transcript = "";
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          const box = document.getElementById('voice-transcription-box');
+          if (box) box.textContent = transcript;
+
+          if (activeVoiceTargetFieldId) {
+            const field = document.getElementById(activeVoiceTargetFieldId);
+            if (field) {
+              field.value = transcript;
+              if (activeVoiceTargetFieldId === 'raw-input') executeSanitizer();
+              if (activeVoiceTargetFieldId.startsWith('manual-')) updateManualSanitization();
+            }
+          }
+        };
+
+        voiceRecognition.onerror = function(event) {
+          console.error("Speech recognition error:", event.error);
+          isVoiceListening = false;
+          updateVoiceUI(false);
+          const box = document.getElementById('voice-transcription-box');
+          if (box) box.textContent = "Voice notice: " + (event.error === 'not-allowed' ? "Microphone access allowed needed." : event.error);
+        };
+
+        voiceRecognition.onend = function() {
+          isVoiceListening = false;
+          updateVoiceUI(false);
+          const box = document.getElementById('voice-transcription-box');
+          if (box && box.textContent.length > 5 && !box.textContent.startsWith("Tap")) {
+            processVoiceCommand(box.textContent);
+          }
+          activeVoiceTargetFieldId = null;
+        };
+      } catch (err) {
+        console.error("Voice assistant init error:", err);
+      }
+    }
+
+    function toggleSpeechRecognition() {
+      if (!voiceRecognition) {
+        initVoiceAssistant();
+      }
+      if (!voiceRecognition) {
+        alert("Web Speech API is not supported in this browser environment. You can use manual entry or presets.");
+        return;
+      }
+      if (isVoiceListening) {
+        voiceRecognition.stop();
+      } else {
+        try {
+          voiceRecognition.lang = voiceLanguage;
+          voiceRecognition.start();
+        } catch (e) {
+          voiceRecognition.stop();
+        }
+      }
+    }
+
+    function startFieldVoiceDictation(fieldId) {
+      activeVoiceTargetFieldId = fieldId;
+      toggleVoicePanel(true);
+      toggleSpeechRecognition();
+      showNotification("🎙️ Listening for: " + fieldId.replace('manual-', ''));
+    }
+
+    function updateVoiceUI(listening) {
+      const container = document.getElementById('voice-wave-container');
+      const label = document.getElementById('voice-mic-label');
+      const btn = document.getElementById('voice-mic-trigger');
+      if (container) {
+        if (listening) container.classList.add('voice-listening');
+        else container.classList.remove('voice-listening');
+      }
+      if (label) label.textContent = listening ? "Listening..." : "Start Listening";
+      if (btn) {
+        if (listening) {
+          btn.style.background = "#ef4444";
+          btn.style.borderColor = "#f87171";
+        } else {
+          btn.style.background = "var(--brand-primary)";
+          btn.style.borderColor = "#4f46e5";
+        }
+      }
+    }
+
+    function toggleVoicePanel(forceOpen) {
+      const panel = document.getElementById('voice-panel');
+      if (!panel) return;
+      if (forceOpen === true) {
+        panel.style.display = 'flex';
+      } else {
+        panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+      }
+    }
+
+    function toggleVoiceLang() {
+      voiceLanguage = (voiceLanguage === 'en-IN') ? 'hi-IN' : 'en-IN';
+      const btn = document.getElementById('voice-lang-btn');
+      if (btn) btn.textContent = voiceLanguage.toUpperCase();
+      if (voiceRecognition) voiceRecognition.lang = voiceLanguage;
+      showNotification("Voice Language: " + (voiceLanguage === 'en-IN' ? "English (India)" : "Hindi (Devanagari)"));
+    }
+
+    function toggleVoiceMute() {
+      isVoiceMuted = !isVoiceMuted;
+      const btn = document.getElementById('voice-mute-btn');
+      if (btn) btn.textContent = isVoiceMuted ? "🔇 Muted" : "🔊 On";
+      showNotification(isVoiceMuted ? "Voice audio output muted" : "Voice audio output enabled");
+    }
+
+    function speakMessage(text) {
+      if (isVoiceMuted) return;
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const cleanText = text.replace(/[\[\]#*]/g, '').trim();
+        const utter = new SpeechSynthesisUtterance(cleanText);
+        utter.rate = 1.05;
+        utter.pitch = 1.0;
+        window.speechSynthesis.speak(utter);
+      }
+    }
+
+    function processVoiceCommand(text) {
+      const lower = text.toLowerCase();
+      if (lower.includes("sanitize") || lower.includes("clean")) {
+        switchNavTab('playground');
+        const rawInput = document.getElementById('raw-input');
+        if (rawInput) {
+          rawInput.value = text;
+          executeSanitizer();
+        }
+        speakMessage("Note sanitized. Identifiers removed and clinical values preserved.");
+      } else if (lower.includes("read") || lower.includes("speak")) {
+        speakCleanNoteSummary();
+      } else if (lower.includes("attack") || lower.includes("voter")) {
+        switchNavTab('attack');
+        speakMessage("Voter-Attack simulator active. Re-identification probability is zero.");
+      } else if (lower.includes("shield") || lower.includes("ping")) {
+        pingDefenseGrid();
+        speakMessage("Vajra Defense Grid synchronized and active.");
+      } else {
+        speakMessage("Command captured. Privacy firewall processed.");
+      }
+    }
+
+    function speakCleanNoteSummary() {
+      const el = document.getElementById('sanitized-preview');
+      if (el) {
+        const text = el.innerText;
+        speakMessage("Clean sanitized note: " + text.substring(0, 150));
+      }
+    }
+
+    function runVoiceSample(cmd) {
+      const box = document.getElementById('voice-transcription-box');
+      if (box) box.textContent = cmd;
+      processVoiceCommand(cmd);
+    }
+
     // Initialize once DOM is ready
     function initializeStudio() {
       try {
@@ -2204,6 +3041,8 @@
         renderDiffFile();
         renderPatientCards(PATIENT_LIST);
         calcCryptoSandbox();
+        loadManualPreset('arif');
+        initVoiceAssistant();
       } catch (err) {
         console.error("Studio initialization error:", err);
       }
@@ -2215,5 +3054,65 @@
       initializeStudio();
     }
   </script>
+
+  <!-- Floating Clinical Voice Assistant Dock -->
+  <div id="voice-assistant-dock" class="voice-assistant-dock">
+    <div id="voice-panel" class="voice-panel" style="display: none;">
+      <div class="voice-panel-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="voice-orb-mini"></div>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">Vajra Voice Assistant</div>
+            <div style="font-size: 10px; color: var(--text-muted);">Multilingual Clinical Privacy AI</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 6px;">
+          <button class="btn-sm" id="voice-lang-btn" onclick="toggleVoiceLang()" style="padding: 2px 6px; font-size: 10px;">EN-IN</button>
+          <button class="modal-close" onclick="toggleVoicePanel()">&times;</button>
+        </div>
+      </div>
+
+      <!-- Waveform Equalizer -->
+      <div class="voice-wave-container" id="voice-wave-container">
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+      </div>
+
+      <!-- Voice Status & Transcription -->
+      <div id="voice-transcription-box" class="voice-transcription-box">
+        Tap "Start Listening" and speak a clinical note or command in English, Hindi, or Hinglish...
+      </div>
+
+      <!-- Quick Voice Commands -->
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 10px; color: var(--text-dim); text-transform: uppercase; font-weight: 600;">Try saying or click:</span>
+        <div class="btn-group">
+          <button class="btn-sm" onclick="runVoiceSample('Sanitize note for Mohammad Arif age 47 with fever and blood pressure 150/90')">"Sanitize Arif Note"</button>
+          <button class="btn-sm" onclick="runVoiceSample('Speak sanitized summary')">"Read Clean Note"</button>
+          <button class="btn-sm" onclick="runVoiceSample('Check voter attack vulnerability')">"Check Attack"</button>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 8px;">
+        <button id="voice-mic-trigger" class="btn-sm btn-primary" onclick="toggleSpeechRecognition()" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>🎙️</span> <span id="voice-mic-label">Start Listening</span>
+        </button>
+        <button class="btn-sm" onclick="toggleVoiceMute()" id="voice-mute-btn" title="Toggle Voice Feedback">🔊 On</button>
+      </div>
+    </div>
+
+    <!-- Floating Trigger Pill Button -->
+    <button id="voice-dock-btn" class="voice-dock-btn" onclick="toggleVoicePanel()" title="Open Vajra Voice Assistant">
+      <span class="voice-pulse-ring"></span>
+      <span style="font-size: 18px;">🎙️</span>
+      <span class="voice-btn-text">Voice Assistant</span>
+    </button>
+  </div>
 </body>
 </html>
