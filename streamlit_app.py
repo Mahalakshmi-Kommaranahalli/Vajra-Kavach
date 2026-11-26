@@ -249,17 +249,26 @@ st.markdown(f"""
         font-size: 0.8rem;
     }}
 
-    /* Form Labels (Raw Clinical Input, Patient Full Name, etc.) */
+    /* Universal Form & Input Field Labels (Raw Clinical Input, Patient Full Name, etc.) */
     .stApp label,
+    .stApp label *,
     .stApp label p,
     .stApp label span,
     .stMarkdown label,
+    div[data-testid="stWidgetLabel"],
+    div[data-testid="stWidgetLabel"] *,
     div[data-testid="stWidgetLabel"] p,
-    div[data-testid="stWidgetLabel"] label {{
-        color: #f8fafc !important;
+    div[data-testid="stWidgetLabel"] label,
+    .stTextArea label,
+    .stTextArea label *,
+    .stTextInput label,
+    .stTextInput label * {{
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
         font-weight: 700 !important;
-        font-size: 14.5px !important;
+        font-size: 15px !important;
         letter-spacing: 0.02em !important;
+        opacity: 1 !important;
     }}
 
     /* All Text Input & Text Area Boxes - Deep Black Font Color & Clear White Background */
@@ -499,9 +508,31 @@ with tab2:
             patient_pid = derive_pseudonym(key_id, salt=secret_key)
             record_id = generate_record_id()
             
-            # Sanitize clinical notes
-            full_clinical_text = f"Patient: {p_name}, Relative: {p_relative}, Contact: {p_phone}. Address: {p_district}. Diagnosis: {p_diagnosis}. Rx: {p_meds}. Notes: {p_notes}"
-            clean_text, entity_count = sanitize_text(full_clinical_text, patient_pid=patient_pid)
+            # Sanitize clinical notes with all identifiers and relatives bound
+            meta_parts = [f"Patient: {p_name}"]
+            if p_relative: meta_parts.append(f"Relative: {p_relative}")
+            if p_dob: meta_parts.append(f"DOB: {p_dob}")
+            if p_phone: meta_parts.append(f"Phone: {p_phone}")
+            if p_aadhaar: meta_parts.append(f"Aadhaar: {p_aadhaar}")
+            if p_abha: meta_parts.append(f"ABHA: {p_abha}")
+            if p_pan: meta_parts.append(f"PAN: {p_pan}")
+            if p_district: meta_parts.append(f"Address: {p_district}")
+            meta_parts.append(f"Diagnosis: {p_diagnosis}")
+            meta_parts.append(f"Rx: {p_meds}")
+            if p_notes: meta_parts.append(f"Notes: {p_notes}")
+            
+            full_clinical_text = ". ".join(meta_parts)
+            
+            # Extract clean relative name for propagation
+            clean_rel = p_relative.split("(")[0].strip() if p_relative else None
+            known_rel = [clean_rel, p_relative] if clean_rel else None
+            
+            clean_text, entity_count = sanitize_text(
+                full_clinical_text,
+                patient_pid=patient_pid,
+                known_names=[p_name] if p_name else None,
+                known_relatives=known_rel
+            )
             
             # Store in local SQLite if available
             db = get_storage_engine()

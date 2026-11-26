@@ -2439,19 +2439,22 @@
 
       // 2. Direct PII Redactions
       out = out.replace(/\b(\+?91[\s-]?)?[6-9]\d{9}\b/g, m => register(m, "Phone Number", "badge-redacted", "redacted"));
-      out = out.replace(/\b\d{4}\s+\d{4}\s+\d{4}\b/g, m => register(m, "Aadhaar Number", "badge-redacted", "redacted"));
-      out = out.replace(/\b\d{2}-\d{4}-\d{4}-\d{4}\b/g, m => register(m, "ABHA ID", "badge-redacted", "redacted"));
+      out = out.replace(/\b\d{2}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/g, m => register(m, "ABHA ID", "badge-redacted", "redacted"));
+      out = out.replace(/(?<![\d-])\d{4}[-\s]?\d{4}[-\s]?\d{4}(?![\d-])/g, m => register(m, "Aadhaar Number", "badge-redacted", "redacted"));
+      out = out.replace(/\b[A-Za-z]{5}\d{4}[A-Za-z]\b/g, m => register(m, "PAN Card", "badge-redacted", "redacted"));
+      out = out.replace(/\b(?:Insurance(?:\s+TPA)?\s+ID|TPA\s+ID|Policy\s+No\.?|Policy\s+#)\s*[:\s]\s*([A-Za-z0-9/-]+)\b/gi, (m, g1) => m.replace(g1, register(g1, "Insurance / TPA ID", "badge-redacted", "redacted")));
+      out = out.replace(/\b(?:MRN|UHID|CR\s*No\.?|Reg\s*No\.?|IPD\s*No\.?|OPD\s*No\.?)\s*[:\s]\s*([A-Za-z0-9/-]+)\b/gi, (m, g1) => m.replace(g1, register(g1, "Hospital MRN", "badge-redacted", "redacted")));
       out = out.replace(/\b(JJH-\d+|SNJ-\d+|DHH-\d+|UHID[-:]?\s*\w+)\b/g, m => register(m, "Hospital MRN", "badge-redacted", "redacted"));
-      out = out.replace(/\b(C\/O\s+[A-Za-z]+)\b/g, m => register(m, "Relative Kinship", "badge-redacted", "redacted"));
-      out = out.replace(/(?:S\/o|D\/o|W\/o|पिता का नाम:?|Attendant:?)\s*([A-Za-z\u0900-\u097F\s]+?)(?=[,\n]|$)/g, (m, g1) => m.replace(g1, register(g1, "Relative Kinship", "badge-redacted", "redacted")));
-      out = out.replace(/\b(Arif\s+sahab|मोहम्मद आरिफ|Zainab\s+Khatun|Reena\s+Nishad|Sunil\s+Mishra|Ramesh\s+Mishra|बशीर खान|Rajan\s+Nishad)\b/g, m => register(m, "Patient Name", "badge-redacted", "redacted"));
-      out = out.replace(/\b(Pipra|Rasulpur|Barabanki|पिपरा)\b/g, m => register(m, "Village / Locality", "badge-redacted", "redacted"));
-      out = out.replace(/\b(Near\s+[A-Za-z\s]+Mandir|House\s+No\s+\d+)\b/gi, m => register(m, "Village / Locality", "badge-redacted", "redacted"));
+      out = out.replace(/(?:\b(?:S\/o|D\/o|W\/o|H\/o|C\/O|daughter\s+of|son\s+of|wife\s+of|husband\s+of|father\s+of|mother\s+of|care\s+of|relative\s+of)\s+|(?:Relative|Guardian|Attendant|Next\s+of\s+Kin|पिता(?:\s+का\s+नाम)?|पति(?:\s+का\s+नाम)?|माता(?:\s+का\s+नाम)?|अभिभावक)\s*[:\(]\s*)([A-Za-z\u0900-\u097F\s]+?)(?=[,\n);]|$)/gi, (m, g1) => m.replace(g1, register(g1.trim(), "Relative Kinship", "badge-redacted", "redacted")));
+      out = out.replace(/(?:(?:^|[\s,;|(])(?:Patient(?:\s+Name)?|Pt\.?(?:\s+Name)?|रोगी(?:\s+का\s+नाम)?|मरीज़(?:\s+का\s+नाम)?|मरीज(?:\s+का\s+नाम)?|Name|Naam)\s*[:\s]\s*)([A-Za-z\u0900-\u097F]+(?:\s+[A-Za-z\u0900-\u097F]+)*)/gi, (m, g1) => m.replace(g1, register(g1.trim(), "Patient Name", "badge-redacted", "redacted")));
+      out = out.replace(/\b(Arif\s+sahab|मोहम्मद आरिफ|Zainab\s+Khatun|Reena\s+Nishad|Sunil\s+Mishra|Ramesh\s+Mishra|बशीर खान|Rajan\s+Nishad|Priya\s+Sharma|Rajesh\s+Sharma|Mohammed\s+Asif\s+Khan|रमेश\s+कुमार|Sunita\s+Verma|Rajesh\s+Verma)\b/gi, m => register(m, "Patient Name", "badge-redacted", "redacted"));
+      out = out.replace(/\b(Pipra|Rasulpur|Barabanki|पिपरा|Sultanpur|Indira\s+Nagar|Lucknow|रामपुर)\b/gi, m => register(m, "Village / Locality", "badge-redacted", "redacted"));
+      out = out.replace(/\b(Near\s+[A-Za-z\s]+(?:Mandir|Pharmacy|Masjid)|House\s+No\s+\d+|मकान\s+नं\s+\d+)\b/gi, m => register(m, "Village / Locality", "badge-redacted", "redacted"));
 
       // 3. Quasi-Identifiers
       out = out.replace(/\b(2[0-9]{5})\b/g, m => register(m.slice(0,3) + "***", "Village / Locality", "badge-shifted", "quasi"));
-      out = out.replace(/\b(4[79]|34|52)\b(?:\s*वर्ष|\s*years|\s*Age:?|\s*उम्र:?)/g, m => register("[45-49]", "Age Banded", "badge-shifted", "quasi"));
-      out = out.replace(/\b(12-05-2023|21-05-2023|29\/04\/1972)\b/g, m => register("[Shifted Date +13d]", "Deterministic Keyed Shift", "badge-shifted", "quasi"));
+      out = out.replace(/\b(\d{1,2})\b(?:\s*वर्ष|\s*years|\s*Age:?|\s*उम्र:?)/gi, m => register("[Age Banded]", "Age Banded", "badge-shifted", "quasi"));
+      out = out.replace(/\b(\d{1,2}[/-]\d{1,2}[/-]\d{4}|\d{4}-\d{2}-\d{2})\b/g, m => register("[Shifted Date +17d]", "Deterministic Keyed Shift", "badge-shifted", "quasi"));
 
       document.getElementById('sanitized-preview').innerHTML = out.replace(/\n/g, '<br>');
       document.getElementById('triage-summary').innerHTML =
