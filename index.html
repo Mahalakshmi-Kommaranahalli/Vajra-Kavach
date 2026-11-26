@@ -77,19 +77,391 @@
     .brand-wrap {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
-    .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    .header-shield-wrapper {
+      position: relative;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+      flex-shrink: 0;
+      cursor: pointer;
     }
+    .header-pulse-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(245, 158, 11, 0.7);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+    .header-pulse-ring.ring-1 {
+      animation: headerShieldPulse 2.8s cubic-bezier(0.15, 0.85, 0.35, 1) infinite;
+    }
+    .header-pulse-ring.ring-2 {
+      animation: headerShieldPulse 2.8s cubic-bezier(0.15, 0.85, 0.35, 1) infinite 1.4s;
+    }
+    @keyframes headerShieldPulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.85);
+        opacity: 0.95;
+        border-color: rgba(251, 191, 36, 0.9);
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.0);
+        opacity: 0;
+        border-color: rgba(217, 119, 6, 0);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0);
+      }
+    }
+    .header-shield-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: radial-gradient(circle at 40% 30%, #291b07 0%, #0c1017 90%);
+      border: 1px solid rgba(245, 158, 11, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.4), inset 0 0 8px rgba(245, 158, 11, 0.2);
+      position: relative;
+      z-index: 2;
+      transition: all 0.25s ease;
+    }
+    .header-shield-box:hover {
+      border-color: #fbbf24;
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.8), inset 0 0 12px rgba(245, 158, 11, 0.4);
+      transform: scale(1.06);
+    }
+    .header-shield-svg {
+      width: 24px;
+      height: 28px;
+      filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.9));
+      animation: shieldGlowBreath 3.2s ease-in-out infinite;
+    }
+    @keyframes shieldGlowBreath {
+      0%, 100% {
+        filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.7));
+      }
+      50% {
+        filter: drop-shadow(0 0 12px rgba(251, 191, 36, 1)) drop-shadow(0 0 18px rgba(245, 158, 11, 0.6));
+      }
+    }
+
+    /* -------------------------------------------------------------
+       Grand Cyber Defense Showcase & Concentric Shield Pulse Grid
+       ------------------------------------------------------------- */
+    .cyber-shield-hero {
+      margin-top: 20px;
+      position: relative;
+    }
+    .shield-showcase-panel {
+      background: radial-gradient(ellipse at 50% 50%, #0e1526 0%, #080c14 70%, #04070e 100%);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 20px;
+      padding: 22px 26px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 0 35px rgba(245, 158, 11, 0.04);
+      transition: all 0.3s ease;
+    }
+    .shield-showcase-panel.grid-surge {
+      box-shadow: 0 12px 50px rgba(245, 158, 11, 0.35), inset 0 0 60px rgba(245, 158, 11, 0.25);
+      border-color: #fbbf24;
+    }
+    .shield-showcase-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(245, 158, 11, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .showcase-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 3;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.15);
+    }
+    .showcase-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .status-blinker {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: blinkDot 1.4s infinite ease-in-out;
+    }
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+    .showcase-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Central Pulse Stage */
+    .shield-stage-wrapper {
+      position: relative;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+      z-index: 2;
+    }
+    .stage-constellation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .constellation-line {
+      stroke: rgba(245, 158, 11, 0.35);
+      stroke-width: 1.5;
+      stroke-dasharray: 5 4;
+      animation: dashMove 30s linear infinite;
+    }
+    .constellation-line.active-pulse {
+      stroke: #fbbf24;
+      stroke-width: 2.2;
+      filter: drop-shadow(0 0 6px #f59e0b);
+      transition: all 0.3s;
+    }
+    @keyframes dashMove {
+      to { stroke-dashoffset: -1000; }
+    }
+    .mesh-node {
+      fill: #fbbf24;
+      filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.8));
+      transition: all 0.3s;
+    }
+    .node-pulse-1 { animation: nodeGlow 2.4s ease-in-out infinite 0.2s; }
+    .node-pulse-2 { animation: nodeGlow 2.4s ease-in-out infinite 0.8s; }
+    .node-pulse-3 { animation: nodeGlow 2.4s ease-in-out infinite 1.4s; }
+    @keyframes nodeGlow {
+      0%, 100% { r: 3.5; opacity: 0.6; }
+      50% { r: 5.5; opacity: 1; filter: drop-shadow(0 0 8px #fbbf24); }
+    }
+
+    /* Concentric Radar Pulse Rings */
+    .radar-pulse-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      will-change: transform, opacity;
+      z-index: 1;
+    }
+    .radar-pulse-ring.ring-1 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 0s;
+    }
+    .radar-pulse-ring.ring-2 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 0.95s;
+    }
+    .radar-pulse-ring.ring-3 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 1.9s;
+    }
+    .radar-pulse-ring.ring-4 {
+      animation: radarWavePulse 3.8s cubic-bezier(0.16, 0.84, 0.38, 1) infinite 2.85s;
+    }
+    @keyframes radarWavePulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.65);
+        opacity: 0.95;
+        border: 2px solid rgba(254, 240, 138, 0.9);
+        box-shadow: 0 0 18px rgba(245, 158, 11, 0.7), inset 0 0 12px rgba(245, 158, 11, 0.45);
+      }
+      40% {
+        opacity: 0.75;
+        border: 1.8px solid rgba(245, 158, 11, 0.7);
+        box-shadow: 0 0 30px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(245, 158, 11, 0.25);
+      }
+      80% {
+        opacity: 0.25;
+        border: 1px solid rgba(217, 119, 6, 0.3);
+        box-shadow: 0 0 50px rgba(245, 158, 11, 0.2);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(2.6);
+        opacity: 0;
+        border: 0.5px solid rgba(217, 119, 6, 0);
+        box-shadow: 0 0 70px rgba(245, 158, 11, 0);
+      }
+    }
+
+    /* Central Shield Unit */
+    .center-shield-anchor {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .center-shield-aura {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.35) 0%, rgba(245, 158, 11, 0.1) 50%, transparent 75%);
+      filter: blur(14px);
+      pointer-events: none;
+      animation: auraBreathe 3.6s ease-in-out infinite;
+    }
+    @keyframes auraBreathe {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.95; }
+    }
+    .center-shield-svg {
+      width: 105px;
+      height: 126px;
+      filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.75)) drop-shadow(0 0 45px rgba(245, 158, 11, 0.4));
+      animation: centerShieldFloat 3.6s ease-in-out infinite;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .center-shield-anchor:hover .center-shield-svg {
+      transform: scale(1.06);
+      filter: drop-shadow(0 0 28px rgba(251, 191, 36, 1)) drop-shadow(0 0 60px rgba(245, 158, 11, 0.7));
+    }
+    @keyframes centerShieldFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-4px) scale(1.02); }
+    }
+
+    /* Sentinel Shields (Side wards) */
+    .sentinel-shield-wrap {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .sentinel-shield-wrap:hover {
+      transform: scale(1.1);
+    }
+    .sentinel-shield-wrap.left-sentinel {
+      left: 16%;
+      top: 28%;
+    }
+    .sentinel-shield-wrap.right-sentinel {
+      right: 16%;
+      top: 28%;
+    }
+    .sentinel-svg {
+      width: 44px;
+      height: 52px;
+      filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
+      animation: sentinelFloat 3.6s ease-in-out infinite;
+    }
+    .left-sentinel .sentinel-svg { animation-delay: 0.6s; }
+    .right-sentinel .sentinel-svg { animation-delay: 1.2s; }
+    @keyframes sentinelFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    .sentinel-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #fbbf24;
+      font-family: var(--font-mono);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+    }
+
+    /* Telemetry Grid below shield */
+    .showcase-telemetry {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+      position: relative;
+      z-index: 3;
+      border-top: 1px solid rgba(245, 158, 11, 0.15);
+      padding-top: 14px;
+    }
+    .telemetry-item {
+      background: rgba(13, 19, 31, 0.7);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .telemetry-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .telemetry-val {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .sentinel-shield-wrap { display: none; }
+      .shield-stage-wrapper { height: 180px; }
+      .center-shield-svg { width: 84px; height: 100px; }
+    }
+
     .brand-title {
       font-size: 17px;
       font-weight: 800;
@@ -621,7 +993,27 @@
   <header>
     <div class="app-container header-content">
       <div class="brand-wrap">
-        <div class="brand-icon">🛡️</div>
+        <div class="header-shield-wrapper" onclick="pingDefenseGrid()" title="Click to Ping Vajra Defense Grid">
+          <div class="header-pulse-ring ring-1"></div>
+          <div class="header-pulse-ring ring-2"></div>
+          <div class="header-shield-box">
+            <svg viewBox="0 0 100 120" class="header-shield-svg">
+              <defs>
+                <linearGradient id="hdrShieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#fef08a" />
+                  <stop offset="45%" stop-color="#fbbf24" />
+                  <stop offset="85%" stop-color="#f59e0b" />
+                  <stop offset="100%" stop-color="#b45309" />
+                </linearGradient>
+              </defs>
+              <path d="M 50,6 L 86,18 C 86,58 72,94 50,114 C 28,94 14,58 14,18 Z" fill="none" stroke="url(#hdrShieldGrad)" stroke-width="4" stroke-dasharray="8 4" opacity="0.85" />
+              <path d="M 50,14 L 80,24 C 80,56 68,86 50,104 C 32,86 20,56 20,24 Z" fill="#171206" stroke="url(#hdrShieldGrad)" stroke-width="3" />
+              <path d="M 50,26 L 70,33 C 70,54 62,76 50,88 C 38,76 30,54 30,33 Z" fill="none" stroke="#fbbf24" stroke-width="2.5" />
+              <path d="M 50,38 L 59,50 L 50,62 L 41,50 Z" fill="#fbbf24" />
+              <circle cx="50" cy="50" r="3" fill="#ffffff" />
+            </svg>
+          </div>
+        </div>
         <div>
           <div class="brand-title">
             <span>Vajra-Kavach</span>
@@ -631,11 +1023,155 @@
           <div class="brand-sub">Track 3: Secret Wards &middot; Multilingual Offline Clinical Privacy Firewall</div>
         </div>
       </div>
-      <div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <button class="btn-sm" onclick="pingDefenseGrid()" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24;">⚡ Ping Shield</button>
         <button class="btn-sm btn-primary" onclick="switchNavTab('playground')">Open Live Sandbox</button>
       </div>
     </div>
   </header>
+
+  <!-- Cyber Defense Shield Pulse Showcase -->
+  <section class="cyber-shield-hero app-container" id="shield-hero-section">
+    <div class="shield-showcase-panel" id="shield-showcase-box">
+      <!-- Showcase Top Header -->
+      <div class="showcase-header">
+        <div class="showcase-title-row">
+          <span style="font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px;">
+            <span style="color: #fbbf24;">VAJRA DEFENSE GRID</span>
+            <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">&middot; 4-Hospital Perimeter Shield</span>
+          </span>
+          <span class="live-status-pill">
+            <span class="status-blinker"></span>
+            SHIELD PULSE ACTIVE
+          </span>
+        </div>
+        <div class="showcase-controls">
+          <button class="btn-sm" onclick="pingDefenseGrid()" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #fef08a;">⚡ Ping Defense Grid</button>
+          <button class="btn-sm" id="btn-toggle-glow" onclick="cycleShieldGlow()">Glow: High</button>
+          <button class="btn-sm" id="btn-collapse-hero" onclick="toggleHeroCollapse()" title="Toggle Compact View">Minimize</button>
+        </div>
+      </div>
+
+      <!-- Main Stage with Shield Pulse, Radar Waves & Constellation Mesh -->
+      <div class="shield-stage-wrapper" id="shield-stage-wrapper">
+        <!-- Background SVG Constellation Lines & Connecting Nodes -->
+        <svg class="stage-constellation" viewBox="0 0 1000 240" preserveAspectRatio="none">
+          <line x1="500" y1="120" x2="220" y2="70" class="constellation-line" id="line-left-1" />
+          <line x1="500" y1="120" x2="160" y2="175" class="constellation-line" id="line-left-2" />
+          <line x1="500" y1="120" x2="780" y2="70" class="constellation-line" id="line-right-1" />
+          <line x1="500" y1="120" x2="840" y2="175" class="constellation-line" id="line-right-2" />
+          <line x1="220" y1="70" x2="80" y2="105" class="constellation-line" />
+          <line x1="160" y1="175" x2="70" y2="185" class="constellation-line" />
+          <line x1="780" y1="70" x2="920" y2="105" class="constellation-line" />
+          <line x1="840" y1="175" x2="930" y2="185" class="constellation-line" />
+          <line x1="220" y1="70" x2="160" y2="175" class="constellation-line" opacity="0.4" />
+          <line x1="780" y1="70" x2="840" y2="175" class="constellation-line" opacity="0.4" />
+
+          <!-- Network Constellation Node Points -->
+          <circle cx="80" cy="105" r="4.5" class="mesh-node node-pulse-1" />
+          <circle cx="70" cy="185" r="4" class="mesh-node node-pulse-2" />
+          <circle cx="160" cy="175" r="5" class="mesh-node node-pulse-3" />
+          <circle cx="340" cy="55" r="3.5" class="mesh-node node-pulse-1" />
+          <circle cx="320" cy="185" r="4" class="mesh-node node-pulse-2" />
+
+          <circle cx="920" cy="105" r="4.5" class="mesh-node node-pulse-2" />
+          <circle cx="930" cy="185" r="4" class="mesh-node node-pulse-3" />
+          <circle cx="840" cy="175" r="5" class="mesh-node node-pulse-1" />
+          <circle cx="660" cy="55" r="3.5" class="mesh-node node-pulse-2" />
+          <circle cx="680" cy="185" r="4" class="mesh-node node-pulse-3" />
+        </svg>
+
+        <!-- Left Sentinel Ward (Regional Hospital Alpha) -->
+        <div class="sentinel-shield-wrap left-sentinel" onclick="pingSentinel('Hospital Alpha Ward')" title="Perimeter Sentinel: District Hospital Alpha">
+          <svg viewBox="0 0 100 120" class="sentinel-svg">
+            <path d="M 50,8 L 84,20 C 84,56 70,88 50,108 C 30,88 16,56 16,20 Z" fill="#131722" stroke="#f59e0b" stroke-width="3" />
+            <path d="M 50,22 L 72,30 C 72,52 62,74 50,86 C 38,74 28,52 28,30 Z" fill="none" stroke="#fbbf24" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#fef08a" />
+          </svg>
+          <span class="sentinel-label">HOSP-ALPHA</span>
+        </div>
+
+        <!-- Concentric Expanding Radar Pulse Waves -->
+        <div class="radar-pulse-ring ring-1"></div>
+        <div class="radar-pulse-ring ring-2"></div>
+        <div class="radar-pulse-ring ring-3"></div>
+        <div class="radar-pulse-ring ring-4"></div>
+
+        <!-- Central Vajra Shield (The Glowing Golden Core) -->
+        <div class="center-shield-anchor" onclick="pingDefenseGrid()" title="Click to trigger Vajra Shield Energy Pulse">
+          <div class="center-shield-aura"></div>
+          <svg viewBox="0 0 100 120" class="center-shield-svg" id="center-shield-svg">
+            <defs>
+              <linearGradient id="mainShieldGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fffbeb" />
+                <stop offset="35%" stop-color="#fbbf24" />
+                <stop offset="70%" stop-color="#f59e0b" />
+                <stop offset="100%" stop-color="#92400e" />
+              </linearGradient>
+              <linearGradient id="mainShieldInnerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#2a1d08" stop-opacity="0.95" />
+                <stop offset="100%" stop-color="#0a0e17" stop-opacity="0.98" />
+              </linearGradient>
+              <filter id="goldenGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="5" result="blur1" />
+                <feGaussianBlur stdDeviation="12" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <!-- Outer Segmented Circuit Bracket -->
+            <path d="M 50,4 L 88,18 C 88,60 74,96 50,116 C 26,96 12,60 12,18 Z" fill="none" stroke="url(#mainShieldGoldGrad)" stroke-width="2.8" stroke-dasharray="10 4" opacity="0.85" />
+            <!-- Solid Armored Shield Body with Dual Radiant Stroke -->
+            <path d="M 50,12 L 80,22 C 80,56 68,88 50,106 C 32,88 20,56 20,22 Z" fill="url(#mainShieldInnerGrad)" stroke="url(#mainShieldGoldGrad)" stroke-width="3.5" filter="url(#goldenGlowFilter)" />
+            <!-- Inner Chevron Contours -->
+            <path d="M 50,22 L 72,30 C 72,56 62,80 50,94 C 38,80 28,56 28,30 Z" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.9" />
+            <path d="M 50,29 L 66,35 C 66,54 58,72 50,82 C 42,72 34,54 34,35 Z" fill="none" stroke="#f59e0b" stroke-width="1.2" opacity="0.75" />
+            <!-- Vajra Cryptographic Core: Diamond Spear & Circuit Lattice -->
+            <path d="M 50,34 L 60,48 L 50,62 L 40,48 Z" fill="#fbbf24" opacity="0.95" />
+            <circle cx="50" cy="48" r="3.5" fill="#ffffff" />
+            <!-- Circuit bus lines inside shield -->
+            <path d="M 50,62 L 50,80 M 40,48 L 30,56 M 60,48 L 70,56" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+            <circle cx="50" cy="80" r="2.8" fill="#fef08a" />
+            <circle cx="30" cy="56" r="2.8" fill="#fef08a" />
+            <circle cx="70" cy="56" r="2.8" fill="#fef08a" />
+          </svg>
+        </div>
+
+        <!-- Right Sentinel Ward (Regional Hospital Beta) -->
+        <div class="sentinel-shield-wrap right-sentinel" onclick="pingSentinel('Hospital Beta Ward')" title="Perimeter Sentinel: District Hospital Beta">
+          <svg viewBox="0 0 100 120" class="sentinel-svg">
+            <path d="M 50,8 L 84,20 C 84,56 70,88 50,108 C 30,88 16,56 16,20 Z" fill="#131722" stroke="#f59e0b" stroke-width="3" />
+            <path d="M 50,22 L 72,30 C 72,52 62,74 50,86 C 38,74 28,52 28,30 Z" fill="none" stroke="#fbbf24" stroke-width="2" />
+            <circle cx="50" cy="50" r="5" fill="#fef08a" />
+          </svg>
+          <span class="sentinel-label">HOSP-BETA</span>
+        </div>
+      </div>
+
+      <!-- Live Defense Grid Telemetry -->
+      <div class="showcase-telemetry" id="showcase-telemetry">
+        <div class="telemetry-item">
+          <div class="telemetry-label">Cryptographic Engine</div>
+          <div class="telemetry-val"><span style="color:#34d399;">●</span> Keyed HMAC-SHA256</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Attacker Voter-Match Risk</div>
+          <div class="telemetry-val" style="color: #34d399;">0.00 (Zero Leakage)</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Cross-Script Normalization</div>
+          <div class="telemetry-val">Devanagari + Hinglish</div>
+        </div>
+        <div class="telemetry-item">
+          <div class="telemetry-label">Air-Gap Integrity</div>
+          <div class="telemetry-val"><span style="color:#38bdf8;">●</span> 100% Offline / CPU-Only</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Metric Overview Cards -->
   <div class="app-container">
@@ -1445,6 +1981,69 @@
       document.getElementById('out-offset').textContent = offsetStr;
       document.getElementById('out-adm').textContent = fmt(adm);
       document.getElementById('out-dis').textContent = fmt(dis);
+    }
+
+    // Shield Pulse & Defense Grid Controls
+    let shieldGlowLevel = 1; // 0 = Subtle, 1 = High, 2 = Vibrant
+    const glowLabels = ["Glow: Subtle", "Glow: High", "Glow: Vibrant"];
+
+    function cycleShieldGlow() {
+      shieldGlowLevel = (shieldGlowLevel + 1) % 3;
+      const btn = document.getElementById('btn-toggle-glow');
+      if (btn) btn.textContent = glowLabels[shieldGlowLevel];
+      
+      const svg = document.getElementById('center-shield-svg');
+      const rings = document.querySelectorAll('.radar-pulse-ring');
+      
+      if (shieldGlowLevel === 0) {
+        if (svg) svg.style.filter = "drop-shadow(0 0 10px rgba(245, 158, 11, 0.4))";
+        rings.forEach(r => r.style.opacity = "0.4");
+      } else if (shieldGlowLevel === 1) {
+        if (svg) svg.style.filter = "drop-shadow(0 0 20px rgba(245, 158, 11, 0.75)) drop-shadow(0 0 45px rgba(245, 158, 11, 0.4))";
+        rings.forEach(r => r.style.opacity = "1");
+      } else {
+        if (svg) svg.style.filter = "drop-shadow(0 0 32px rgba(251, 191, 36, 1)) drop-shadow(0 0 70px rgba(245, 158, 11, 0.8))";
+        rings.forEach(r => r.style.opacity = "1.4");
+      }
+      showNotification("Shield Glow Profile: " + glowLabels[shieldGlowLevel].split(": ")[1]);
+    }
+
+    function pingDefenseGrid() {
+      const panel = document.getElementById('shield-showcase-box');
+      if (panel) {
+        panel.classList.add('grid-surge');
+        setTimeout(() => panel.classList.remove('grid-surge'), 1200);
+      }
+      
+      const lines = document.querySelectorAll('.constellation-line');
+      lines.forEach(l => l.classList.add('active-pulse'));
+      setTimeout(() => lines.forEach(l => l.classList.remove('active-pulse')), 1200);
+
+      showNotification("⚡ Defense Grid Pinged: All 4 hospital perimeter nodes synchronized & armored!");
+    }
+
+    function pingSentinel(wardName) {
+      pingDefenseGrid();
+      showNotification("Sentinel Sync: " + wardName + " telemetry active & linked.");
+    }
+
+    let heroCollapsed = false;
+    function toggleHeroCollapse() {
+      heroCollapsed = !heroCollapsed;
+      const stage = document.getElementById('shield-stage-wrapper');
+      const telemetry = document.getElementById('showcase-telemetry');
+      const btn = document.getElementById('btn-collapse-hero');
+      if (heroCollapsed) {
+        if (stage) stage.style.display = 'none';
+        if (telemetry) telemetry.style.display = 'none';
+        if (btn) btn.textContent = "Expand";
+        showNotification("Defense Grid Minimized");
+      } else {
+        if (stage) stage.style.display = 'flex';
+        if (telemetry) telemetry.style.display = 'grid';
+        if (btn) btn.textContent = "Minimize";
+        showNotification("Defense Grid Expanded");
+      }
     }
 
     // Initialize once DOM is ready
