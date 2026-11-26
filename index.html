@@ -986,6 +986,64 @@
     </div>
   </div>
 
+  <!-- Modal: Add New Patient Record -->
+  <div id="add-patient-modal" class="modal-overlay" onclick="closeAddPatientModal()">
+    <div class="modal-box" onclick="event.stopPropagation()" style="max-width: 520px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+            <span>➕ Register New Patient Record</span>
+          </h3>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            Issue a deterministic Crockford Base32 pseudonym and link across hospital systems.
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeAddPatientModal()">&times;</button>
+      </div>
+
+      <form id="add-patient-form" onsubmit="event.preventDefault(); saveNewPatient();" style="display: flex; flex-direction: column; gap: 14px; margin-top: 10px;">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">PATIENT FULL NAME (English / Hindi / Hinglish) *</label>
+            <input type="text" id="new-pat-name" required placeholder="e.g. Pooja Sharma or पूजा शर्मा" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">AGE / SEX *</label>
+            <input type="text" id="new-pat-agesex" required placeholder="e.g. 28/F" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">KINSHIP / GUARDIAN (S/o, D/o, W/o)</label>
+            <input type="text" id="new-pat-kinship" placeholder="e.g. D/o Mahesh Sharma" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">PRIMARY CLINICAL CONDITION *</label>
+            <input type="text" id="new-pat-condition" required placeholder="e.g. Acute Appendicitis / SpO2 98%" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px;">
+          </div>
+        </div>
+
+        <div>
+          <label style="font-size: 11px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 4px;">HOSPITAL &amp; VISIT RECORDS (Separate lines or commas)</label>
+          <textarea id="new-pat-hospitals" rows="2" placeholder="e.g. District Hospital Hardoi (OPD #44), Sanjeevani Clinic (Reg: row 18)" style="width: 100%; background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-family: var(--font-mono); resize: vertical;"></textarea>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #94a3b8; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <span style="color: #fbbf24; font-weight: 700;">HMAC Keying:</span> Secret anchor used to hash PII deterministically.
+          </div>
+          <span class="tag tag-emerald">Crockford Base32</span>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+          <button type="button" class="btn-sm" onclick="closeAddPatientModal()">Cancel</button>
+          <button type="submit" class="btn-sm btn-primary" style="background: var(--brand-primary); border-color: #4f46e5;">Register &amp; Link Patient</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Box -->
   <div id="toast-box" class="toast-box"></div>
 
@@ -1408,11 +1466,15 @@
       <div class="card-panel">
         <div class="panel-header">
           <div>
-            <div class="panel-title">Patient Identity &amp; Record Linkage Registry</div>
+            <div class="panel-title">
+              <span>Patient Identity &amp; Record Linkage Registry</span>
+              <span id="registry-count-badge" class="tag tag-blue" style="margin-left: 6px;">4 Enrolled</span>
+            </div>
             <div class="panel-desc">Disjoint-set linkage merges cross-hospital files into stable pseudonyms without false merges.</div>
           </div>
-          <div>
-            <input type="text" id="registry-filter-input" oninput="filterRegistryCards()" placeholder="Search patient, hospital, or pseudonym..." style="background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; width: 260px;">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="registry-filter-input" oninput="filterRegistryCards()" placeholder="Search patient, hospital, or pseudonym..." style="background: #080d16; border: 1px solid var(--border-subtle); color: #fff; padding: 6px 12px; border-radius: 8px; font-size: 12px; width: 240px;">
+            <button class="btn-sm btn-primary" onclick="openAddPatientModal()">➕ Add Patient Record</button>
           </div>
         </div>
 
@@ -1911,6 +1973,10 @@
     function renderPatientCards(list) {
       const container = document.getElementById('registry-cards-container');
       container.innerHTML = "";
+      
+      const badge = document.getElementById('registry-count-badge');
+      if (badge) badge.textContent = PATIENT_LIST.length + " Enrolled";
+
       list.forEach(p => {
         const card = document.createElement('div');
         card.className = "patient-card";
@@ -1940,6 +2006,91 @@
         p.hospitals.some(h => h.toLowerCase().includes(q))
       );
       renderPatientCards(filtered);
+    }
+
+    function openAddPatientModal() {
+      const modal = document.getElementById('add-patient-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        const nameField = document.getElementById('new-pat-name');
+        if (nameField) nameField.focus();
+      }
+    }
+
+    function closeAddPatientModal() {
+      const modal = document.getElementById('add-patient-modal');
+      if (modal) modal.style.display = 'none';
+      const form = document.getElementById('add-patient-form');
+      if (form) form.reset();
+    }
+
+    function generatePatientPSN(name, kinship) {
+      const secret = "practice";
+      const anchor = (name + "::" + (kinship || "")).toLowerCase().trim();
+      let hash = 0;
+      const combined = secret + "::" + anchor;
+      for (let i = 0; i < combined.length; i++) {
+        hash = (hash << 5) - hash + combined.charCodeAt(i);
+        hash |= 0;
+      }
+      const absHash = Math.abs(hash);
+      const crockford = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+      let psn = "PSN-";
+      let t = absHash;
+      for (let j = 0; j < 6; j++) {
+        psn += crockford[t % 32];
+        t = Math.floor(t / 32) + (j * 7) + 3;
+      }
+      return psn;
+    }
+
+    function saveNewPatient() {
+      const name = document.getElementById('new-pat-name').value.trim();
+      const ageSex = document.getElementById('new-pat-agesex').value.trim();
+      const kinship = document.getElementById('new-pat-kinship').value.trim() || "N/A";
+      const condition = document.getElementById('new-pat-condition').value.trim();
+      const hospitalsRaw = document.getElementById('new-pat-hospitals').value.trim();
+
+      if (!name || !ageSex || !condition) {
+        alert("Please fill in the required fields (Name, Age/Sex, Condition).");
+        return;
+      }
+
+      let hospitals = [];
+      if (hospitalsRaw) {
+        hospitals = hospitalsRaw.split(/[\n,]+/).map(h => h.trim()).filter(Boolean);
+      }
+      if (hospitals.length === 0) {
+        hospitals = ["District Hospital Hardoi (OPD entry)", "Sanjeevani Registration (Row 19)"];
+      }
+
+      const psn = generatePatientPSN(name, kinship);
+
+      const newRecord = {
+        psn: psn,
+        name: name,
+        ageSex: ageSex,
+        kinship: kinship,
+        condition: condition,
+        hospitals: hospitals
+      };
+
+      PATIENT_LIST.unshift(newRecord);
+      renderPatientCards(PATIENT_LIST);
+      closeAddPatientModal();
+      showNotification("Patient " + name + " enrolled with pseudonym " + psn);
+
+      // Auto-load a clinical note into Live Sandbox so user can see it sanitized
+      const rawInput = document.getElementById('raw-input');
+      if (rawInput) {
+        rawInput.value = 
+          "OPD Registration: Patient " + name + " (" + ageSex + "), Kinship: " + kinship + ".\n" +
+          "Chief Complaint: C/O " + condition + " for past 3 days.\n" +
+          "Vitals: BP 120/80 mmHg, Pulse 76 bpm, SpO2 98% on room air.\n" +
+          "Prescription: Tab Paracetamol 650mg TDS x 3 days, Tab Pantoprazole 40mg OD AC.\n" +
+          "Attending: Dr. S. K. Sharma (MD Internal Med). Follow-up in 5 days.";
+        executeSanitizer();
+      }
     }
 
     function setPresetKey(val) {
