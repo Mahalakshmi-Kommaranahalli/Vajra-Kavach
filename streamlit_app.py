@@ -64,101 +64,181 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Theme Presets
+THEME_PRESETS = {
+    "🟡 Cyber Gold (Vajra Core)": {
+        "primary": "#f59e0b",
+        "highlight": "#fbbf24",
+        "dark": "#92400e",
+        "glow": "rgba(245, 158, 11, 0.85)",
+        "glow_soft": "rgba(245, 158, 11, 0.4)",
+        "aura": "radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(3, 7, 18, 0) 70%)",
+        "title_grad": "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
+        "anim_filter": "",
+    },
+    "🔵 Electric Cyan (Cyber SOC)": {
+        "primary": "#06b6d4",
+        "highlight": "#00f0ff",
+        "dark": "#0e7490",
+        "glow": "rgba(0, 240, 255, 0.9)",
+        "glow_soft": "rgba(6, 182, 212, 0.45)",
+        "aura": "radial-gradient(circle, rgba(0, 240, 255, 0.25) 0%, rgba(3, 7, 18, 0) 70%)",
+        "title_grad": "linear-gradient(135deg, #a5f3fc 0%, #00f0ff 50%, #0284c7 100%)",
+        "anim_filter": "",
+    },
+    "🟢 Matrix Emerald (Air-Gap Active)": {
+        "primary": "#10b981",
+        "highlight": "#34d399",
+        "dark": "#065f46",
+        "glow": "rgba(16, 185, 129, 0.9)",
+        "glow_soft": "rgba(52, 211, 153, 0.45)",
+        "aura": "radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, rgba(3, 7, 18, 0) 70%)",
+        "title_grad": "linear-gradient(135deg, #a7f3d0 0%, #34d399 50%, #047857 100%)",
+        "anim_filter": "",
+    },
+    "🟣 Quantum Violet (Cryptographic)": {
+        "primary": "#8b5cf6",
+        "highlight": "#c084fc",
+        "dark": "#581c87",
+        "glow": "rgba(139, 92, 246, 0.9)",
+        "glow_soft": "rgba(192, 132, 252, 0.45)",
+        "aura": "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(3, 7, 18, 0) 70%)",
+        "title_grad": "linear-gradient(135deg, #f3e8ff 0%, #c084fc 50%, #7c3aed 100%)",
+        "anim_filter": "",
+    },
+    "🔴 Plasma Ruby (Defense Alert)": {
+        "primary": "#f43f5e",
+        "highlight": "#fb7185",
+        "dark": "#9f1239",
+        "glow": "rgba(244, 63, 94, 0.9)",
+        "glow_soft": "rgba(251, 113, 133, 0.45)",
+        "aura": "radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, rgba(3, 7, 18, 0) 70%)",
+        "title_grad": "linear-gradient(135deg, #ffe4e6 0%, #fb7185 50%, #be123c 100%)",
+        "anim_filter": "",
+    },
+    "🌈 Dynamic Chromatic Cycle (Animated Rainbow)": {
+        "primary": "#f59e0b",
+        "highlight": "#fbbf24",
+        "dark": "#92400e",
+        "glow": "rgba(245, 158, 11, 0.9)",
+        "glow_soft": "rgba(245, 158, 11, 0.45)",
+        "aura": "radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, rgba(3, 7, 18, 0) 70%)",
+        "title_grad": "linear-gradient(135deg, #fbbf24 0%, #00f0ff 30%, #10b981 60%, #a855f7 90%)",
+        "anim_filter": "animation: chromaticCycle 8s linear infinite;",
+    },
+}
+
+# Sidebar Theme Selector
+with st.sidebar:
+    st.markdown("### 🎨 Shield Color & Animation Theme")
+    selected_theme_name = st.selectbox(
+        "Choose Color Theme:",
+        list(THEME_PRESETS.keys()),
+        index=0
+    )
+    theme = THEME_PRESETS[selected_theme_name]
+
 # Custom Cyberpunk / SOC Theme Styling Matching Command Center
-st.markdown("""
+st.markdown(f"""
 <style>
     /* Dark Theme Base */
-    .stApp {
+    .stApp {{
         background-color: #030712;
         color: #f3f4f6;
         font-family: 'Segoe UI', system-ui, sans-serif;
-    }
+    }}
     
     /* Glowing Shield Header */
-    .shield-container {
+    .shield-container {{
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 24px 0 16px 0;
-        background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(3, 7, 18, 0) 70%);
-    }
+        background: {theme['aura']};
+    }}
     
-    .shield-logo {
+    .shield-logo {{
         position: relative;
         width: 100px;
         height: 100px;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
+        {theme['anim_filter']}
+    }}
     
-    .shield-svg {
+    .shield-svg {{
         width: 80px;
         height: 80px;
-        filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.8)) drop-shadow(0 0 35px rgba(245, 158, 11, 0.5));
+        filter: drop-shadow(0 0 15px {theme['glow']}) drop-shadow(0 0 35px {theme['glow_soft']});
         animation: pulseShield 3s infinite ease-in-out;
-    }
+    }}
     
-    @keyframes pulseShield {
-        0%, 100% {
+    @keyframes pulseShield {{
+        0%, 100% {{
             transform: scale(1);
-            filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.8)) drop-shadow(0 0 30px rgba(245, 158, 11, 0.4));
-        }
-        50% {
-            transform: scale(1.06);
-            filter: drop-shadow(0 0 25px rgba(245, 158, 11, 1)) drop-shadow(0 0 50px rgba(245, 158, 11, 0.7));
-        }
-    }
+            filter: drop-shadow(0 0 15px {theme['glow']}) drop-shadow(0 0 30px {theme['glow_soft']});
+        }}
+        50% {{
+            transform: scale(1.08);
+            filter: drop-shadow(0 0 28px {theme['highlight']}) drop-shadow(0 0 55px {theme['glow']});
+        }}
+    }}
+
+    @keyframes chromaticCycle {{
+        0% {{ filter: hue-rotate(0deg); }}
+        100% {{ filter: hue-rotate(360deg); }}
+    }}
     
-    .title-banner {
+    .title-banner {{
         text-align: center;
         margin-bottom: 24px;
-    }
+    }}
     
-    .main-title {
+    .main-title {{
         font-size: 2.5rem;
         font-weight: 800;
         letter-spacing: 2px;
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+        background: {theme['title_grad']};
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin: 0;
-        text-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
-    }
+        text-shadow: 0 0 20px {theme['glow_soft']};
+    }}
     
-    .sub-title {
+    .sub-title {{
         color: #38bdf8;
         font-size: 1.05rem;
         font-weight: 500;
         letter-spacing: 1px;
         margin-top: 6px;
-    }
+    }}
     
     /* Metrics Card */
-    .metric-card {
+    .metric-card {{
         background: rgba(17, 24, 39, 0.8);
         border: 1px solid rgba(56, 189, 248, 0.2);
         border-radius: 10px;
         padding: 16px;
         text-align: center;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    }
+    }}
     
-    .metric-val {
+    .metric-val {{
         font-size: 2rem;
         font-weight: 700;
         color: #38bdf8;
-    }
+    }}
     
-    .metric-lbl {
+    .metric-lbl {{
         font-size: 0.85rem;
         color: #9ca3af;
         text-transform: uppercase;
         letter-spacing: 1px;
-    }
+    }}
     
     /* Status Badge */
-    .badge-ok {
+    .badge-ok {{
         display: inline-block;
         padding: 4px 12px;
         border-radius: 9999px;
@@ -167,18 +247,18 @@ st.markdown("""
         border: 1px solid rgba(16, 185, 129, 0.4);
         font-weight: 600;
         font-size: 0.8rem;
-    }
+    }}
 </style>
 
 <div class="shield-container">
     <div class="shield-logo">
         <svg class="shield-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- Outer Gold Shield -->
-            <path d="M50 8L88 24V48C88 72 50 92 50 92C50 92 12 72 12 48V24L50 8Z" stroke="#f59e0b" stroke-width="3" fill="rgba(245, 158, 11, 0.15)"/>
+            <!-- Outer Shield -->
+            <path d="M50 8L88 24V48C88 72 50 92 50 92C50 92 12 72 12 48V24L50 8Z" stroke="{theme['primary']}" stroke-width="3" fill="{theme['primary']}22"/>
             <!-- Inner Cyber Shield -->
-            <path d="M50 18L78 30V50C78 68 50 83 50 83C50 83 22 68 22 50V30L50 18Z" stroke="#fbbf24" stroke-width="2" fill="rgba(251, 191, 36, 0.25)"/>
+            <path d="M50 18L78 30V50C78 68 50 83 50 83C50 83 22 68 22 50V30L50 18Z" stroke="{theme['highlight']}" stroke-width="2" fill="{theme['highlight']}33"/>
             <!-- Core Emblem -->
-            <path d="M50 28L68 36V50C68 62 50 72 50 72C50 72 32 62 32 50V36L50 28Z" stroke="#d97706" stroke-width="1.5" fill="#f59e0b"/>
+            <path d="M50 28L68 36V50C68 62 50 72 50 72C50 72 32 62 32 50V36L50 28Z" stroke="{theme['dark']}" stroke-width="1.5" fill="{theme['primary']}"/>
             <!-- Center Cross Line -->
             <line x1="50" y1="36" x2="50" y2="64" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
             <line x1="38" y1="48" x2="62" y2="48" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
