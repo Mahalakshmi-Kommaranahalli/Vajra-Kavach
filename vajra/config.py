@@ -1,6 +1,37 @@
 from __future__ import annotations
 import os
 from pathlib import Path
+from vajra.airgap import is_offline_mode, enforce_airgap
+
+def load_dotenv(env_path: Path | None = None) -> None:
+    """Load key-value pairs from a .env file into os.environ if not already set (pure stdlib)."""
+    if env_path is None:
+        env_path = Path(__file__).resolve().parent.parent / ".env"
+    if not env_path.exists():
+        return
+    try:
+        for line in env_path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            k = k.strip()
+            v = v.strip().strip('"').strip("'")
+            if k not in os.environ:
+                os.environ[k] = v
+    except Exception:
+        pass
+
+# Automatically load .env if present
+load_dotenv()
+
+# Enforce strict offline airgap
+OFFLINE_MODE = is_offline_mode()
+if OFFLINE_MODE:
+    enforce_airgap(strict=True, allow_loopback=True)
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+ASSETS_DIR = ROOT_DIR / "assets"
 
 def load_policy(path: Path | None = None) -> dict:
     if path is None:
@@ -8,8 +39,9 @@ def load_policy(path: Path | None = None) -> dict:
         if policy_env and Path(policy_env).exists():
             path = Path(policy_env)
         else:
-            path = Path(__file__).resolve().parent.parent / "config" / "policy.yaml"
+            path = ROOT_DIR / "config" / "policy.yaml"
     policy = {
+        "offline_mode": 1 if OFFLINE_MODE else 0,
         "date_shift_max_days": 180,
         "age_band_years": 5,
         "generalize_pin": 1,
@@ -22,6 +54,10 @@ def load_policy(path: Path | None = None) -> dict:
         "quarantine_unsupported": 1,
         "max_file_size_mb": 50,
         "max_json_depth": 100,
+        "database_adapter": "sqlite",
+        "sqlite_path": str(ROOT_DIR / "data" / "vajra_records.db"),
+        "assets_dir": str(ASSETS_DIR),
+        "wheelhouse_dir": str(ROOT_DIR / "wheelhouse"),
     }
     if path and path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():

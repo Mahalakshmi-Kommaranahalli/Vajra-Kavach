@@ -1,4 +1,11 @@
-# Vajra-Kavach: Fully offline, CPU-only privacy firewall
-# Zero LLMs, Zero cloud dependencies, 100% deterministic
-cryptography>=41.0.0
-python-dateutil>=2.8.2
+# ==============================================================================
+# Vajra-Kavach: Pinned Dependencies Manifest for Air-Gapped / Offline Deployments
+# ==============================================================================
+# All packages are 100% CPU-only with zero cloud or GPU dependencies.
+# Transitive dependencies are explicitly pinned for reproducible offline builds.
+
+cryptography>=41.0.0,<=47.0.0
+python-dateutil>=2.8.2,<=2.9.0.post0
+six>=1.16.0,<=1.17.0
+cffi>=1.16.0,<=2.0.0
+pycparser>=2.21,<=3.0

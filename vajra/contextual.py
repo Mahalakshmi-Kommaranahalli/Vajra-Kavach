@@ -1,11 +1,26 @@
 from __future__ import annotations
+import json
 import re
+from pathlib import Path
+from vajra.config import ASSETS_DIR
 
 # Preserved districts (vital for epidemiological research utility)
 PRESERVED_DISTRICTS = {
     "rae bareli", "barabanki", "sitapur", "hardoi", "unnao", "sultanpur", "lucknow", "bahraich",
     "रायबरेली", "बाराबंकी", "सीतापुर", "हरदोई", "उन्नाव", "सुल्तानपुर", "लखनऊ", "बहराइच"
 }
+
+# Load from local assets if available (offline-first)
+try:
+    districts_file = ASSETS_DIR / "gazetteers" / "districts.json"
+    if districts_file.exists():
+        dist_data = json.loads(districts_file.read_text(encoding="utf-8"))
+        for d in dist_data.get("approved_research_districts", []):
+            PRESERVED_DISTRICTS.add(d.lower())
+        for hd in dist_data.get("hindi_districts", {}).keys():
+            PRESERVED_DISTRICTS.add(hd)
+except Exception:
+    pass
 
 # Doctor mentions
 RE_DOCTOR = re.compile(

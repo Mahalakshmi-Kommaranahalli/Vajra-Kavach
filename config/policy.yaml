@@ -1,5 +1,10 @@
-# Vajra-Kavach Privacy & Anonymization Policy
-policy_version: "1.0.0"
+# Vajra-Kavach Privacy & Air-Gapped Architecture Policy
+policy_version: "2.0.0"
+offline_mode: true
+airgap_enforcement: strict
+block_outbound_sockets: true
+
+# Privacy & De-Identification Rules
 date_shift_max_days: 180
 age_band_years: 5
 generalize_pin: 1
@@ -12,3 +17,9 @@ pseudonym_prefix: "PSN"
 quarantine_unsupported: 1
 max_file_size_mb: 50
 max_json_depth: 100
+
+# Local Storage & Asset Localization
+database_adapter: "sqlite"
+sqlite_path: "./data/vajra_records.db"
+assets_dir: "./assets"
+wheelhouse_dir: "./wheelhouse"

@@ -1,0 +1,58 @@
+{
+  "version": "1.0.0",
+  "state": "Yugaantar Pradesh",
+  "approved_research_districts": [
+    "Gorakhpur",
+    "Meerut",
+    "Aligarh",
+    "Agra",
+    "Ayodhya",
+    "Bareilly",
+    "Jhansi",
+    "Kanpur Nagar",
+    "Hardoi",
+    "Lucknow",
+    "Varanasi",
+    "Prayagraj"
+  ],
+  "hindi_districts": {
+    "गोरखपुर": "Gorakhpur",
+    "मेरठ": "Meerut",
+    "अलीगढ़": "Aligarh",
+    "आगरा": "Agra",
+    "अयोध्या": "Ayodhya",
+    "बरेली": "Bareilly",
+    "झांसी": "Jhansi",
+    "कानपुर": "Kanpur Nagar",
+    "हरदोई": "Hardoi",
+    "लखनऊ": "Lucknow"
+  },
+  "pin_prefixes": {
+    "273": "Gorakhpur Region",
+    "250": "Meerut Region",
+    "202": "Aligarh Region",
+    "282": "Agra Region",
+    "224": "Ayodhya Region",
+    "243": "Bareilly Region",
+    "284": "Jhansi Region",
+    "208": "Kanpur Region",
+    "241": "Hardoi Region",
+    "226": "Lucknow Region"
+  },
+  "common_villages": [
+    "Pipra",
+    "Rasulpur",
+    "Barabanki",
+    "Gopamau",
+    "Bhatpar",
+    "Chauri",
+    "Munderwa",
+    "Khair",
+    "Iglas",
+    "Bilhaur",
+    "Sardhana",
+    "पिपरा",
+    "रसूलपुर",
+    "गोपामऊ"
+  ]
+}

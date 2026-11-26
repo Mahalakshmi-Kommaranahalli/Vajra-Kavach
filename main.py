@@ -21,12 +21,18 @@ from pathlib import Path
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from vajra.airgap import enforce_airgap, is_offline_mode
 from vajra.config import POLICY
+from vajra.storage import get_storage
 from vajra.linkage import extract_clues_from_record, cluster_records
 from vajra.processors.csv_processor import process_csv_content
 from vajra.processors.json_processor import process_json_content
 from vajra.processors.fhir_processor import process_fhir_bundle
 from vajra.processors.text_processor import process_text_content
+
+# Enforce strict offline air-gap boundary if OFFLINE_MODE is set
+if is_offline_mode():
+    enforce_airgap(strict=True, allow_loopback=True)
 
 # Recursion limit for deeply nested structures
 sys.setrecursionlimit(5000)
@@ -289,10 +295,28 @@ def main() -> int:
     exported_files = {e["output"] for e in files_report if e["output"]}
     all_exported_records = [r for r in all_exported_records if r["file"] in exported_files]
 
-    # Write records.jsonl
+    # Write records.jsonl and sync with local offline SQLite database
+    db = get_storage()
     with open(out / "records.jsonl", "w", encoding="utf-8") as f:
         for r in all_exported_records:
             f.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
+            if r.get("patient"):
+                db.link_record(
+                    file_hash="",
+                    rel_path=r.get("file", ""),
+                    row_loc=r.get("loc", ""),
+                    psn=r.get("patient", ""),
+                    status="sanitized"
+                )
+
+    # Sync quarantine entries to local storage
+    for e in files_report:
+        if e.get("status") == "quarantined":
+            db.log_quarantine(
+                file_hash=e.get("input_sha256", ""),
+                original_name=e.get("reason", "unsupported"),
+                reason=e.get("reason", "unsupported")
+            )
 
     # Write report.json
     n_san = sum(1 for e in files_report if e["status"] == "sanitized")

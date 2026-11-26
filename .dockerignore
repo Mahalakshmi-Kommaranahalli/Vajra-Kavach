@@ -1,0 +1,15 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.github
+.venv
+venv
+ENV
+my_output
+output
+.pytest_cache
+.coverage
+htmlcov
+*.log

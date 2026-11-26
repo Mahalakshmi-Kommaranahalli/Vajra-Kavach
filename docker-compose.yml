@@ -1,0 +1,40 @@
+# ==============================================================================
+# Vajra-Kavach: Air-Gapped Docker Compose Specification
+# Configured with network_mode: "none" to prove true air-gapped isolation.
+# ==============================================================================
+version: "3.8"
+
+services:
+  vajra-firewall:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vajra-kavach:offline-latest
+    container_name: vajra_kavach_airgap
+
+    # CRITICAL: Disable all network interfaces to enforce 100% air-gapped execution
+    network_mode: "none"
+
+    environment:
+      - OFFLINE_MODE=true
+      - RAKSHA_SECRET=${RAKSHA_SECRET:-practice}
+      - RAKSHAK_POLICY=/app/config/policy.yaml
+      - SQLITE_DB_PATH=/app/data/vajra_records.db
+
+    volumes:
+      # Read-only input records
+      - ./toolkit/dev/input:/app/input:ro
+      # Output sanitized directory
+      - ./output:/app/output:rw
+      # Local SQLite database persistence
+      - ./data:/app/data:rw
+
+    restart: "no"
+
+    # Healthcheck executed entirely inside container without networking
+    healthcheck:
+      test: ["CMD-SHELL", "python /app/scripts/verify_airgap.py || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 1
+      start_period: 5s

@@ -5,14 +5,22 @@ __pycache__/
 
 # Virtual environments & wrappers
 .venv/
-*.bat
+venv/
+ENV/
+
+# Local databases
+data/*.db
+data/*.db-wal
+data/*.db-shm
 
 # Test runs & temporary outputs
 starter_out/
 vajra_out/
 my_output/
+output/
 out_*/
 *.tmp
+*.log
 
 # Scratch analysis files
 scratch/

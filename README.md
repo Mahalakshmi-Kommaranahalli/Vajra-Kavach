@@ -202,7 +202,94 @@ python toolkit/check_submission.py --repo . --run
 
 ---
 
-## 8. Known Limitations & Future Work
+## 8. Air-Gapped & Offline-First Deployment
+
+Vajra-Kavach is engineered from the ground up for **100% offline-first, air-gapped environments** with zero external network dependencies, zero telemetry, and zero runtime model downloads.
+
+### 8.1 Offline Architecture Summary
+* **Outbound Socket Guard (`vajra/airgap.py`):** Low-level socket interceptor blocks any outbound network socket attempt with an immediate `AirGapViolationError`.
+* **Local Persistence Adapter (`vajra/storage.py`):** Self-contained SQLite database engine (`data/vajra_records.db`) replacing external cloud databases/queues.
+* **Local Assets & Gazetteers (`assets/`):** Bundled lookup tables for administrative research districts, Indian name transliterations, and essential medical drug formularies.
+* **Local Dependency Wheelhouse (`wheelhouse/`):** Pre-downloaded, pinned binary wheels for reproducible offline installations.
+
+---
+
+### 8.2 Building the Offline Bundle (Online Stage)
+Run on an internet-connected build workstation before deployment:
+
+**Linux / macOS:**
+```bash
+chmod +x scripts/*.sh
+./scripts/build_offline_bundle.sh
+```
+
+**Windows:**
+```cmd
+scripts\build_offline_bundle.bat
+```
+This downloads all pinned dependency wheels into `./wheelhouse/` and generates SHA-256 checksums.
+
+---
+
+### 8.3 Transfer & Disconnected Installation (Air-Gapped Stage)
+Transfer the repository folder (including `./wheelhouse/` and `./assets/`) to the air-gapped machine via USB or secure media:
+
+**Linux / macOS (Air-Gapped):**
+```bash
+./scripts/install_offline.sh
+```
+
+**Windows (Air-Gapped):**
+```cmd
+scripts\install_offline.bat
+```
+
+Run the pipeline in air-gapped mode:
+```bash
+export OFFLINE_MODE=true
+export RAKSHA_SECRET=practice
+python main.py --input dev/input --output my_output
+```
+
+---
+
+### 8.4 Air-Gapped Docker Deployment (`network_mode: "none"`)
+To prove and enforce true air-gapped isolation at the container kernel level, the provided `docker-compose.yml` runs with **`network_mode: "none"`**:
+
+```bash
+# Build the multi-stage image (online build machine)
+docker compose build
+
+# Run in complete network isolation (air-gapped target host)
+docker compose up
+```
+
+---
+
+### 8.5 Verifying Zero Outbound Network Traffic
+To verify that the application never makes outbound socket connections:
+
+```bash
+python scripts/verify_airgap.py
+```
+**Expected Output:**
+```text
+[1/4] Checking OFFLINE_MODE status...
+  ✓ OFFLINE_MODE=True and AirGapGuard active.
+[2/4] Testing outbound socket interceptor...
+  ✓ Outbound socket successfully blocked: [AIR-GAP VIOLATION BLOCKED]
+[3/4] Testing local SQLite persistence adapter...
+  ✓ Local SQLite adapter verified: {'total_patients': 1, 'database_engine': 'SQLite 3 (Air-Gapped Local)'}
+[4/4] Verifying pipeline runner dry-run...
+  ✓ Clinical firewall sanitized 1 entities with zero network calls.
+======================================================================
+🛡️  AIR-GAP CONTRACT OK: 100% DISCONNECTED OPERATION VERIFIED
+======================================================================
+```
+
+---
+
+## 9. Known Limitations & Future Work
 
 1. **Unstructured Image Forms:** Scanned handwritten prescriptions and paper charts are safely diverted to quarantine. Future iterations will incorporate lightweight, CPU-efficient offline OCR (Tesseract / Indic-OCR) to extract text before processing.
 2. **Sub-Tehsil Dialects:** Highly localized rural dialects outside Awadhi/Bhojpuri/Braj may exhibit lower name boundary confidence. Future releases will integrate census-level revenue village gazetteers.

@@ -1,0 +1,47 @@
+{
+  "version": "1.0.0",
+  "name_variants": {
+    "mohammad": ["mohd", "md", "mohammed", "mohamed", "मोहम्मद", "मो."],
+    "arif": ["aarif", "आरिफ़", "आरिफ"],
+    "reena": ["rina", "रीना"],
+    "nishad": ["निषाद"],
+    "sunil": ["सुनील"],
+    "mishra": ["मिश्रा", "मिश्र"],
+    "zainab": ["ज़ैनब", "जैनब"],
+    "khatun": ["खातून"],
+    "bashir": ["बशीर", "basheer"],
+    "khan": ["खान", "ख़ान"],
+    "ramesh": ["रमेश"],
+    "suresh": ["सुरेश"],
+    "gupta": ["गुप्ता"],
+    "sharma": ["शर्मा"],
+    "verma": ["वर्मा"],
+    "singh": ["सिंह"]
+  },
+  "honorifics": [
+    "ji",
+    "sahab",
+    "saheb",
+    "didi",
+    "babu",
+    "bhai",
+    "shri",
+    "smt",
+    "km",
+    "डॉ.",
+    "श्री",
+    "श्रीमती"
+  ],
+  "kinship_prefixes": [
+    "s/o",
+    "d/o",
+    "w/o",
+    "c/o",
+    "son of",
+    "daughter of",
+    "wife of",
+    "care of",
+    "पिता का नाम",
+    "पति का नाम"
+  ]
+}
