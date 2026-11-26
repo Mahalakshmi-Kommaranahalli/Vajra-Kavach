@@ -1,0 +1,22 @@
+# Bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments & wrappers
+.venv/
+*.bat
+
+# Test runs & temporary outputs
+starter_out/
+vajra_out/
+my_output/
+out_*/
+*.tmp
+
+# Scratch analysis files
+scratch/
+
+# Reference starter toolkit
+toolkit/
+

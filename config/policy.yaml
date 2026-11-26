@@ -1,0 +1,14 @@
+# Vajra-Kavach Privacy & Anonymization Policy
+policy_version: "1.0.0"
+date_shift_max_days: 180
+age_band_years: 5
+generalize_pin: 1
+pin_prefix_digits: 3
+generalize_village: 1
+preserve_districts: 1
+suppress_high_risk: 1
+rare_age_threshold: 85
+pseudonym_prefix: "PSN"
+quarantine_unsupported: 1
+max_file_size_mb: 50
+max_json_depth: 100
